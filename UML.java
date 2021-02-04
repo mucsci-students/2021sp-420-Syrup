@@ -1,9 +1,5 @@
 import java.util.*;
 
-/**
- * @author Jom Papyrus
- *
- */
 public class UML {
 	
 	private static Map<String, ArrayList<String>> theMap = new HashMap<String, ArrayList<String>>();
