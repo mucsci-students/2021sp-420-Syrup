@@ -66,6 +66,34 @@ public class Main
     	
     	classMap.put(className, new Class());
     }
+///////////////////////////////////////////////////////////
+//
+//	renameClass
+//
+///////////////////////////////////////////////////////////
+    public static void renameClass(Class name, String newName){
+
+       	if (classMap.containsKey(newName))
+    	{
+    		System.out.println("There is an class with the new name.");
+    		return;
+    	}
+
+        if(classMap.containsKey(name))
+        {
+           System.out.println("There is not a class with the old name.");
+    		return; 
+        }
+    	
+    	if (classMap.equals(newName))
+    	{
+    		System.out.println("The new name is the same as the class name.");
+    		return;
+    	}
+        classMap.put(newName, classMap.get(name));
+    	classMap.remove(name);
+    	
+    }
     
 ///////////////////////////////////////////////////////////
 //

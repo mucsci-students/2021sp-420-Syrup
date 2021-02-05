@@ -69,11 +69,16 @@ public class Class {
     public void renameAttribute(String attrName, String newName)
     {
     	// Checks to see if there is an attribute with the same name.
-    	if (attrMap.containsKey(newName) || !attrMap.containsKey(attrName))
+    	if (attrMap.containsKey(newName))
     	{
     		System.out.println("There is an attribute with the new name.");
     		return;
     	}
+		if(!attrMap.containsKey(attrName))
+		{
+			System.out.println("There is not an attribute with the old name.");
+    		return;
+		}
     	
     	if (attrName.equals(newName))
     	{
