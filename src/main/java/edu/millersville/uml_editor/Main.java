@@ -92,7 +92,10 @@ public class Main
     		System.out.println("The new name is the same as the class name.");
     		return;
     	}
-
+      classMap.put(newName, classMap.get(name));
+    	classMap.remove(name);
+    }
+  
 ///////////////////////////////////////////////////////////
 //
 //	deleteClass
@@ -101,7 +104,7 @@ public class Main
 
     public static void deleteClass(class name){
 
-        if (!classMap.containsKey(name))
+      if (!classMap.containsKey(name))
     	{
     		System.out.println("There is not a class with that name.");
     		return;
