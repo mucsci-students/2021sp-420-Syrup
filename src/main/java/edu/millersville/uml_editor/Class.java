@@ -74,11 +74,11 @@ public class Class {
     		System.out.println("There is an attribute with the new name.");
     		return;
     	}
-		if(!attrMap.containsKey(attrName))
-		{
-			System.out.println("There is not an attribute with the old name.");
+	if(!attrMap.containsKey(attrName))
+	{
+		System.out.println("There is not an attribute with the old name.");
     		return;
-		}
+	}
     	
     	if (attrName.equals(newName))
     	{
