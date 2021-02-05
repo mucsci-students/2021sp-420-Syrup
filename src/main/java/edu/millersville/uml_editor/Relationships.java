@@ -4,11 +4,13 @@ import java.util.*;
 
 public class Relationships {
 
-	private String[] attribute;
-	private String name;
+	private Class source;
+	private Class destination ;
+
 	
-	public void Relationships(String className) {
-		name = className;
-		attribute = new String[10];
+	public void Relationships(Class class1, Class class2) {
+		source = class1;
+		destination = class2;
 	}
+
 }
