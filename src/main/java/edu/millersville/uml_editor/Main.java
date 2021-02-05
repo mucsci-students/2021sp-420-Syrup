@@ -92,6 +92,7 @@ public class Main
     	}
         classMap.put(newName, classMap.get(name));
     	classMap.remove(name);
+	    ////
     	
     }
     
