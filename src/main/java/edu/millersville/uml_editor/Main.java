@@ -66,11 +66,13 @@ public class Main
     	
     	classMap.put(className, new Class());
     }
+  
 ///////////////////////////////////////////////////////////
 //
 //	renameClass
 //
 ///////////////////////////////////////////////////////////
+  
     public static void renameClass(Class name, String newName){
 
        	if (classMap.containsKey(newName))
@@ -90,11 +92,10 @@ public class Main
     		System.out.println("The new name is the same as the class name.");
     		return;
     	}
-        classMap.put(newName, classMap.get(name));
+      classMap.put(newName, classMap.get(name));
     	classMap.remove(name);
-	    
-    	
     }
+  
 ///////////////////////////////////////////////////////////
 //
 //	deleteClass
@@ -103,7 +104,7 @@ public class Main
 
     public static void deleteClass(class name){
 
-        if (!classMap.containsKey(name))
+      if (!classMap.containsKey(name))
     	{
     		System.out.println("There is not a class with that name.");
     		return;
@@ -116,6 +117,7 @@ public class Main
 //	printClass
 //
 ///////////////////////////////////////////////////////////
+      
     public static void printClass ()
     {
     	for (String key : classMap.keySet()) 
