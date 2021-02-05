@@ -92,8 +92,23 @@ public class Main
     	}
         classMap.put(newName, classMap.get(name));
     	classMap.remove(name);
-	    ////
+	    
     	
+    }
+///////////////////////////////////////////////////////////
+//
+//	deleteClass
+//
+///////////////////////////////////////////////////////////
+
+    public static void deleteClass(class name){
+
+        if (!classMap.containsKey(name))
+    	{
+    		System.out.println("There is not a class with that name.");
+    		return;
+    	}
+        classMap.remove(name);
     }
     
 ///////////////////////////////////////////////////////////
