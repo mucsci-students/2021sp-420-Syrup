@@ -19,6 +19,8 @@ public class Main
 	
 	private static Map<String, Class> classMap = 
 			new HashMap<String, Class>();
+	private static Map<Class, Class> relMap = 
+			new HashMap<Class, Class>();
 	private static Scanner console = new Scanner(System.in);
 	
 ///////////////////////////////////////////////////////////
@@ -73,7 +75,8 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
   
-    public static void renameClass(Class name, String newName){
+    public static void renameClass(Class name, String newName)
+    {
 
        	if (classMap.containsKey(newName))
     	{
@@ -92,8 +95,8 @@ public class Main
     		System.out.println("The new name is the same as the class name.");
     		return;
     	}
-      classMap.put(newName, classMap.get(name));
-    	classMap.remove(name);
+    classMap.put(newName, classMap.get(name));
+    classMap.remove(name);
     }
   
 ///////////////////////////////////////////////////////////
@@ -102,15 +105,49 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
 
-    public static void deleteClass(class name){
+    public static void deleteClass(class name)
+    {
 
-      if (!classMap.containsKey(name))
+        if (!classMap.containsKey(name))
     	{
     		System.out.println("There is not a class with that name.");
     		return;
     	}
         classMap.remove(name);
     }
+
+//////////////////////////////////////////////////////////
+//
+//	createRelationship
+//
+///////////////////////////////////////////////////////////
+    public static void createRelationship(String class1, String class2, int ID )
+    {
+        if (relMap.containsKey(ID))
+    	    {
+    		    System.out.println("There is already a relationship with that ID.");
+    		    return;
+    	}
+    //create temp class to be able to create relationship
+        Class source = classMap.get(class1);
+        Class destination = classMap.get(class2);
+        relMap.put(ID, new Relationships(source, destination, ID)); 
+    }
+
+//////////////////////////////////////////////////////////
+//
+//	deleteRelationship
+//
+///////////////////////////////////////////////////////////
+public static void deleteRelationship( int ID )
+{
+    if (!relMap.containsKey(ID))
+    	{
+    		System.out.println("There is not a relationship with that ID.");
+    		return;
+    	}
+    relMap.remove(ID); 
+}
     
 ///////////////////////////////////////////////////////////
 //
