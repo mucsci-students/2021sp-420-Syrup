@@ -105,7 +105,7 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
 
-    public static void deleteClass(class name)
+    public static void deleteClass(Class name)
     {
 
         if (!classMap.containsKey(name))
@@ -113,6 +113,7 @@ public class Main
     		System.out.println("There is not a class with that name.");
     		return;
     	}
+        classMap.get(name).deleteAttributes();
         classMap.remove(name);
     }
 
@@ -139,15 +140,15 @@ public class Main
 //	deleteRelationship
 //
 ///////////////////////////////////////////////////////////
-public static void deleteRelationship( int ID )
-{
-    if (!relMap.containsKey(ID))
-    	{
-    		System.out.println("There is not a relationship with that ID.");
-    		return;
-    	}
-    relMap.remove(ID); 
-}
+    public static void deleteRelationship( int ID )
+    {
+        if (!relMap.containsKey(ID))
+    	    {
+    		    System.out.println("There is not a relationship with that ID.");
+    		    return;
+    	    }
+        relMap.remove(ID); 
+    }
     
 ///////////////////////////////////////////////////////////
 //
