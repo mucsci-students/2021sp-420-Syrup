@@ -113,6 +113,7 @@ public class Main
     		System.out.println("There is not a class with that name.");
     		return;
     	}
+        classMap.get(name).deleteAttributes();
         classMap.remove(name);
     }
 
