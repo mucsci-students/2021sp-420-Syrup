@@ -387,6 +387,7 @@ public class Main
         //checks to make sure the relationship is not already created
         if(relMap.containsKey(ID))
         {
+            System.out.println();
             System.out.println("This relationship already exists");
             return;
         }
