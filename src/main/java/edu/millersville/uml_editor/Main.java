@@ -73,7 +73,7 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
   
-    public static void renameClass(Class name, String newName)
+    public static void renameClass(String name, String newName)
     {
 
        	if (classMap.containsKey(newName))
@@ -103,7 +103,7 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
 
-    public static void deleteClass(Class name)
+    public static void deleteClass(String name)
     {
 
         if (!classMap.containsKey(name))
