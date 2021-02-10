@@ -1,8 +1,6 @@
 package edu.millersville.uml_editor;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * 
@@ -21,8 +19,10 @@ public class Main
 			new HashMap<String, Class>();
 	private static Map<String, Relationships> relMap =
 			new HashMap<String, Relationships>();
+	private static Map <Integer, Relationships> relMap =
+            new HashMap<Integer, Relationships>();
 	private static Scanner console = new Scanner(System.in);
-	
+
 ///////////////////////////////////////////////////////////
 //
 //	Main Method
@@ -108,6 +108,7 @@ public class Main
     		System.out.println("There is not a class with that name.");
     		return;
     	}
+        classMap.get(name).deleteAttributes();
         classMap.remove(name);
     }
 
@@ -118,15 +119,17 @@ public class Main
 ///////////////////////////////////////////////////////////
     public static void createRelationship(String class1, String class2, String ID )
     {
-        if (relMap.containsKey(ID))
-    	    {
-    		    System.out.println("There is already a relationship with that ID.");
-    		    return;
-    	}
-    //create temp class to be able to create relationship
+
+        //checks to make sure the relationship is not already created
+        if(relID.containsKey(ID))
+        {
+            System.out.println("This relationship already exists");
+            break;
+        }
+        //create temp class to be able to create relationship
         Class source = classMap.get(class1);
         Class destination = classMap.get(class2);
-        relMap.put(ID, new Relationships(source, destination, ID)); 
+        relID.put(ID, new Relationships(source, destination, ID)); 
     }
 
 //////////////////////////////////////////////////////////
@@ -134,6 +137,7 @@ public class Main
 //	deleteRelationship
 //
 ///////////////////////////////////////////////////////////
+
 public static void deleteRelationship(String ID)
 {
     if (!relMap.containsKey(ID))
