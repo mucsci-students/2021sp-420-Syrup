@@ -6,13 +6,13 @@ public class Relationships {
 
 	private Class source;
 	private Class destination;
-	private int ID;
+	private static String ID;
 
 	
-	public Relationships(Class class1, Class class2, int IDD) {
+	public Relationships(Class class1, Class class2, String id) {
 		source = class1;
 		destination = class2;
-		ID = IDD;
+		ID = id;
 	}
 
 }

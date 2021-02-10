@@ -19,8 +19,8 @@ public class Main
 	
 	private static Map<String, Class> classMap = 
 			new HashMap<String, Class>();
-	private static Map<Class, Class> relMap = 
-			new HashMap<Class, Class>();
+	private static Map<String, Relationships> relMap =
+			new HashMap<String, Relationships>();
 	private static Scanner console = new Scanner(System.in);
 	
 ///////////////////////////////////////////////////////////
@@ -75,7 +75,7 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
   
-    public static void renameClass(Class name, String newName)
+    public static void renameClass(String name, String newName)
     {
 
        	if (classMap.containsKey(newName))
@@ -84,19 +84,14 @@ public class Main
     		return;
     	}
 
-        if(classMap.containsKey(name))
+        if(!classMap.containsKey(name))
         {
-           System.out.println("There is not a class with the old name.");
+           System.out.println("There is not an existing class with the name: " + name + ".");
     		return; 
         }
-    	
-    	if (classMap.equals(newName))
-    	{
-    		System.out.println("The new name is the same as the class name.");
-    		return;
-    	}
-    classMap.put(newName, classMap.get(name));
-    classMap.remove(name);
+
+        classMap.put(newName, classMap.get(name));
+        classMap.remove(name);
     }
   
 ///////////////////////////////////////////////////////////
@@ -105,7 +100,7 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
 
-    public static void deleteClass(class name)
+    public static void deleteClass(String name)
     {
 
         if (!classMap.containsKey(name))
@@ -121,7 +116,7 @@ public class Main
 //	createRelationship
 //
 ///////////////////////////////////////////////////////////
-    public static void createRelationship(String class1, String class2, int ID )
+    public static void createRelationship(String class1, String class2, String ID )
     {
         if (relMap.containsKey(ID))
     	    {
@@ -139,7 +134,7 @@ public class Main
 //	deleteRelationship
 //
 ///////////////////////////////////////////////////////////
-public static void deleteRelationship( int ID )
+public static void deleteRelationship(String ID)
 {
     if (!relMap.containsKey(ID))
     	{
