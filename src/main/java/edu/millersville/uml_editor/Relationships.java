@@ -6,10 +6,10 @@ public class Relationships {
 
 	private Class source;
 	private Class destination;
-	private int ID;
+	private Integer ID;
 
 	
-	public Relationships(Class class1, Class class2, int IDD) {
+	public Relationships(Class class1, Class class2, Integer IDD) {
 		source = class1;
 		destination = class2;
 		ID = IDD;

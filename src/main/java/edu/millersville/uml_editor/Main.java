@@ -1,8 +1,6 @@
 package edu.millersville.uml_editor;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * 
@@ -19,10 +17,10 @@ public class Main
 	
 	private static Map<String, Class> classMap = 
 			new HashMap<String, Class>();
-	private static Map<Class, Class> relMap = 
-			new HashMap<Class, Class>();
+	private static Map <Integer, Relationships> relMap =
+            new HashMap<Integer, Relationships>();
 	private static Scanner console = new Scanner(System.in);
-	
+
 ///////////////////////////////////////////////////////////
 //
 //	Main Method
@@ -105,7 +103,7 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
 
-    public static void deleteClass(class name)
+    public static void deleteClass(Class name)
     {
 
         if (!classMap.containsKey(name))
@@ -122,17 +120,19 @@ public class Main
 //	createRelationship
 //
 ///////////////////////////////////////////////////////////
-    public static void createRelationship(String class1, String class2, int ID )
+    public static void createRelationship(String class1, String class2, Integer ID)
     {
-        if (relMap.containsKey(ID))
-    	    {
-    		    System.out.println("There is already a relationship with that ID.");
-    		    return;
-    	}
-    //create temp class to be able to create relationship
+
+        //checks to make sure the relationship is not already created
+        if(relID.containsKey(ID))
+        {
+            System.out.println("This relationship already exists");
+            break;
+        }
+        //create temp class to be able to create relationship
         Class source = classMap.get(class1);
         Class destination = classMap.get(class2);
-        relMap.put(ID, new Relationships(source, destination, ID)); 
+        relID.put(ID, new Relationships(source, destination, ID)); 
     }
 
 //////////////////////////////////////////////////////////
@@ -140,15 +140,16 @@ public class Main
 //	deleteRelationship
 //
 ///////////////////////////////////////////////////////////
-public static void deleteRelationship( int ID )
-{
-    if (!relMap.containsKey(ID))
-    	{
-    		System.out.println("There is not a relationship with that ID.");
-    		return;
-    	}
-    relMap.remove(ID); 
-}
+    public static void deleteRelationship(Integer ID)
+    {
+        if (!relID.containsKey(ID) )
+    	    {
+    		    System.out.println("There is not a relationship with that ID.");
+    		    return;
+    	    }
+        
+        relID.remove(ID); 
+    }
     
 ///////////////////////////////////////////////////////////
 //
