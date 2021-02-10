@@ -103,6 +103,7 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
 
+
     public static void deleteClass(String name)
     {
 
@@ -140,15 +141,16 @@ public class Main
 //	deleteRelationship
 //
 ///////////////////////////////////////////////////////////
-    public static void deleteRelationship(Integer ID)
+
+    public static void deleteRelationship( int ID )
     {
-        if (!relID.containsKey(ID) )
+        if (!relMap.containsKey(ID))
     	    {
     		    System.out.println("There is not a relationship with that ID.");
     		    return;
     	    }
-        
-        relID.remove(ID); 
+
+        relMap.remove(ID); 
     }
     
 ///////////////////////////////////////////////////////////
