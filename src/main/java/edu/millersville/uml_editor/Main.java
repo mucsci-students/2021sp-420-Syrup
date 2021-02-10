@@ -253,7 +253,7 @@ public class Main
                     case 1:
 
                     System.out.println();
-                    printClass();
+                    printClasses();
                     break;
 
                     case 2:
@@ -271,6 +271,7 @@ public class Main
                     {
                         Class classCall = classMap.get(listAttr);
                         System.out.println();
+                        System.out.println(listAttr);
                         classCall.printAttr();
                     }
                     break;
@@ -387,7 +388,7 @@ public class Main
         if(relMap.containsKey(ID))
         {
             System.out.println("This relationship already exists");
-            break;
+            return;
         }
         //create temp class to be able to create relationship
         Class source = classMap.get(class1);
@@ -424,19 +425,16 @@ public static void deleteRelationship(String ID)
 //
 ///////////////////////////////////////////////////////////
       
-   public static void printClass ()
-    {
-    	for (String key : classMap.keySet()) 
+   public static void printClass(String className) {
+       System.out.println(className);     
+       classMap.get(className).printAttr();
+    }
+
+    public static void printClasses() {
+        for (String key : classMap.keySet()) 
     	{
-    		System.out.println(key);
-            for(String attrKey : attrMap.keySet())
-            {
-                if(key == attrMap.get(attrKey).getClassName())
-                {
-                    System.out.println(attrKey);
-                }
-            }
-    	} 
+            printClass(key);
+    	}
     }
 
 }
