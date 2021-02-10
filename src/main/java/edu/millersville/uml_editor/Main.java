@@ -19,8 +19,6 @@ public class Main
 			new HashMap<String, Class>();
 	private static Map<String, Relationships> relMap =
 			new HashMap<String, Relationships>();
-	private static Map <Integer, Relationships> relMap =
-            new HashMap<Integer, Relationships>();
 	private static Scanner console = new Scanner(System.in);
 
 ///////////////////////////////////////////////////////////
@@ -29,7 +27,7 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
 	
-    public static void main( String[] args )
+    public static void main(String[] args)
     {
         boolean loop = true;
         while(loop)
@@ -122,9 +120,10 @@ public class Main
                     }
                     else
                     {
+                        Class classCall = classMap.get(classAdd);
                         System.out.print("Enter the name of the attribute to add: ");
                         attrAdd = console.next();
-                        addNewAttribute(attrAdd, classAdd);
+                        classCall.addNewAttribute(attrAdd);
                     }
                     break;
                 
@@ -141,9 +140,10 @@ public class Main
                     }
                     else 
                     {
+                        Class classCall = classMap.get(classDel);
                         System.out.print("Enter the name of the attribute to delete: ");
                         attrDel = console.next();
-                        deleteAttribute(attrDel);
+                        classCall.deleteAttribute(attrDel);
                     }
                     break;
 
@@ -161,11 +161,12 @@ public class Main
                     }
                     else 
                     {
+                        Class classCall = classMap.get(classRen);
                         System.out.print("Enter the current name for the attribute: ");
                         attrOld = console.next();
                         System.out.print("Enter the new name for the attribute: ");
                         attrNew = console.next();
-                        renameAttribute(attrOld, attrNew);
+                        classCall.renameAttribute(attrOld, attrNew);
                     }
                     break;
 
@@ -268,8 +269,9 @@ public class Main
                     }
                     else 
                     {
+                        Class classCall = classMap.get(listAttr);
                         System.out.println();
-                        printAttr();
+                        classCall.printAttr();
                     }
                     break;
 
@@ -382,7 +384,7 @@ public class Main
     {
 
         //checks to make sure the relationship is not already created
-        if(relID.containsKey(ID))
+        if(relMap.containsKey(ID))
         {
             System.out.println("This relationship already exists");
             break;
@@ -390,7 +392,7 @@ public class Main
         //create temp class to be able to create relationship
         Class source = classMap.get(class1);
         Class destination = classMap.get(class2);
-        relID.put(ID, new Relationships(source, destination, ID)); 
+        relMap.put(ID, new Relationships(source, destination, ID)); 
 	    
 	System.out.println();
         System.out.print("The relationship has been added!");
@@ -437,4 +439,4 @@ public static void deleteRelationship(String ID)
     	} 
     }
 
-
+}
