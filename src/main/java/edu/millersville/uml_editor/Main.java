@@ -43,7 +43,25 @@ public class Main
             System.out.println("6. Exit the program");
             System.out.println();
             System.out.print("Please select a menu option: ");
-            number = console.nextInt();
+            
+            boolean isNumber = false;
+            
+            while (!isNumber)
+            {
+            	String temp = console.next();
+            	try {
+            		number = Integer.parseInt(temp);
+            		isNumber = true;
+            	}
+            	catch (NumberFormatException ex) {
+            		System.out.println();
+            		System.out.println("This is not a number. Use a number when selecting a menu option.");
+            		System.out.println();
+            		System.out.print("Please select a menu option: ");
+            	}
+            }
+            
+            
 
             switch(number){
                 case 1: 
