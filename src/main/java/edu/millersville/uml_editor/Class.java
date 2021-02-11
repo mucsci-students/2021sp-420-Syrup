@@ -8,7 +8,7 @@ import edu.millersville.uml_editor.Class;
 
 public class Class {
 	
-	private static Map<String, Attribute> attrMap = 
+	private Map<String, Attribute> attrMap = 
 			new HashMap<String, Attribute>();
 
 ///////////////////////////////////////////////////////////
