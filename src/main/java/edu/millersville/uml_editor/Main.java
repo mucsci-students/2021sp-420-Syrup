@@ -269,10 +269,10 @@ public class Main
                     }
                     else 
                     {
-                        Class classCall = classMap.get(listAttr);
                         System.out.println();
-                        System.out.println(listAttr);
-                        classCall.printAttr();
+                        System.out.println("Class Name: " + listAttr);
+                        System.out.print("Attributes: ");
+                        classMap.get(listAttr).printAttr();
                     }
                     break;
 
@@ -280,12 +280,12 @@ public class Main
                     
                     //***LIST RELATIONSHIPS HERE  ***/
                     System.out.println();
+                    listRelationships();
                     break;
 
                     default:
                     System.out.println();
-                    System.out.print("That is not a menu option! Please try again.");
-                    System.out.println();
+                    System.out.println("That is not a menu option! Please try again.");
                     break;
                 }
                 break;
@@ -318,7 +318,7 @@ public class Main
     		return;
     	}
     	
-    	classMap.put(className, new Class());
+    	classMap.put(className, new Class(className));
 	    
 	System.out.println();
         System.out.print("The class has been added!");
@@ -427,7 +427,9 @@ public static void deleteRelationship(String ID)
 ///////////////////////////////////////////////////////////
       
    public static void printClass(String className) {
-       System.out.println(className);     
+       System.out.println("Class Name: " + className);  
+       
+       System.out.print("Attributes: ");
        classMap.get(className).printAttr();
     }
 
@@ -438,4 +440,21 @@ public static void deleteRelationship(String ID)
     	}
     }
 
+
+
+///////////////////////////////////////////////////////////
+//
+//	listRelationships
+//
+///////////////////////////////////////////////////////////
+
+	public static void listRelationships()	{
+		for (String key : relMap.keySet())
+		{
+			System.out.print(key + ": ");
+			System.out.println(relMap.get(key).sourceName() + ", " + relMap.get(key).destinationName());
+		}
+	}
+	
 }
+

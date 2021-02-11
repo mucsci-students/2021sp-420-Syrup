@@ -14,5 +14,15 @@ public class Relationships {
 		destination = class2;
 		ID = id;
 	}
+	
+	public String sourceName()
+	{
+		return source.getClassName();
+	}
+	
+	public String destinationName()
+	{
+		return destination.getClassName();
+	}
 
 }

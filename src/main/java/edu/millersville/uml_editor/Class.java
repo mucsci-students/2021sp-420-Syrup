@@ -10,6 +10,7 @@ public class Class {
 	
 	private Map<String, Attribute> attrMap = 
 			new HashMap<String, Attribute>();
+	private String className;
 
 ///////////////////////////////////////////////////////////
 //
@@ -17,8 +18,9 @@ public class Class {
 //
 ///////////////////////////////////////////////////////////
 	
-    public Class()
+    public Class(String name)
     {
+    	className = name;
         //JSONObject obj = new JSONObject();
     }
 
@@ -39,6 +41,9 @@ public class Class {
     	}
     	
     	attrMap.put(name, new Attribute(name));
+    	
+    	System.out.println();
+    	System.out.println("Attribute has been added!");
     }
 ///////////////////////////////////////////////////////////
 //
@@ -69,6 +74,8 @@ public class Class {
     	}
     	
     	attrMap.remove(name);
+    	System.out.println();
+    	System.out.println("Attribute has been deleted.");
     }
     
 ///////////////////////////////////////////////////////////
@@ -101,6 +108,8 @@ public class Class {
     	attrMap.put(newName, attrMap.get(attrName));
     	attrMap.remove(attrName);
     	
+    	System.out.println();
+    	System.out.println("The attribute has been renamed!");
     }
     
 ///////////////////////////////////////////////////////////
@@ -110,8 +119,28 @@ public class Class {
 ///////////////////////////////////////////////////////////
     public void printAttr ()
     {
+    	int attSize = attrMap.size();
     	for (String key : attrMap.keySet()) {
-            System.out.println(key);
+    		if (attSize > 1)
+    		{
+    			System.out.print(key + ", ");
+    			--attSize;
+    		}
+    		else
+    		{
+    			System.out.println(key);
+    		}
         } 
     }
+    
+///////////////////////////////////////////////////////////
+//
+//	getClassName
+//
+///////////////////////////////////////////////////////////
+    public String getClassName()
+    {
+    	return className;
+    }
+    
 }
