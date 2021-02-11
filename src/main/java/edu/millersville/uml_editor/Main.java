@@ -1,6 +1,15 @@
 package edu.millersville.uml_editor;
-
 import java.util.*;
+import java.io.FileWriter;
+import java.io.IOException;
+// Updated upstream
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+// Stashed changes
+
+import org.json.JSONObject;
+
 
 /**
  * 
@@ -29,7 +38,7 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
 	
-    public static void main( String[] args )
+    public static void main( String[] args ) throws IOException
     {
     	// testing stuff. IGNORE IT
     	
@@ -50,6 +59,20 @@ public class Main
         
         printClass();
         classMap.get(name).printAttr();
+
+        // ********** simple print line to print a map ***********
+        // 
+        // output should look like: 
+        // { "class2": {}, "class1": {}}
+    	System.out.println(new JSONObject(classMap));        
+        
+    	// filepath + new file name
+    	// example: C:/Millersville/2020-2021/420/example.json
+    	System.out.println("Enter filepath (filepath+filename): ");
+    	String filename = console.next();
+    	saveJSON(filename, classMap);
+    	
+
     }
     
 ///////////////////////////////////////////////////////////
@@ -128,8 +151,12 @@ public class Main
         }
         //create temp class to be able to create relationship
         Class source = classMap.get(class1);
-        Class destination = classMap.get(class2);
-        relID.put(ID, new Relationships(source, destination, ID)); 
+        Class destination = classMap.get(class2);;
+
+        //relID.put(ID, new Relationships(source, destination, ID)); 
+
+        //relMap.put(ID, new Relationships(source, destination, ID)); 
+
     }
 
 //////////////////////////////////////////////////////////
@@ -161,6 +188,28 @@ public static void deleteRelationship(String ID)
     		System.out.println(key);
     	} 
     }
+///////////////////////////////////////////////////////////
+//
+//	saveJSON(String, Map<String, Class>)
+//
+//	function that creates and saves classMap to a JSON file using 
+//	a prompted file name and the classMap.
+//
+///////////////////////////////////////////////////////////
+
+    public static void saveJSON(String name, Map<String, Class> map) throws IOException{
+    	//converts map into JSON object
+    	JSONObject jsonMap = new JSONObject(map);
+    	// writing map to JSON file
+    	try {
+    		FileWriter file = new FileWriter(name);
+    		file.write(jsonMap.toString());
+    		file.close();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    }
+
 }
 
 
