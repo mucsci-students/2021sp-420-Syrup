@@ -39,7 +39,8 @@ public class Main
             System.out.println("2. Attributes");
             System.out.println("3. Relationships");
             System.out.println("4. List Classes/Attributes/Relationships");
-            System.out.println("5. Exit the program");
+            System.out.println("5. Help");
+            System.out.println("6. Exit the program");
             System.out.println();
             System.out.print("Please select a menu option: ");
             number = console.nextInt();
@@ -289,8 +290,42 @@ public class Main
                     break;
                 }
                 break;
-
+                
                 case 5:
+                
+                System.out.println();
+                System.out.println("The menu options accept numbers only. Any words while selecting a menu option will have you try again.");
+                System.out.println();
+                
+                System.out.println("In the Classes command, you'll be able to do the following: ");
+                System.out.println(" -> Create a class");
+                System.out.println(" -> Delete a class");
+                System.out.println(" -> Rename a class");
+                System.out.println();
+
+                System.out.println("In the Attribute command, you'll be able to do the following: ");
+                System.out.println(" -> Create an attribute");
+                System.out.println(" -> Delete an attribute");
+                System.out.println(" -> Rename an attribute");
+                System.out.println();
+                
+                System.out.println("In the Relationships command, you'll be able to do the following: ");
+                System.out.println(" -> Create a relationship");
+                System.out.println(" -> Delete a relationship");
+                System.out.println();
+                
+                System.out.println("In the List command, you'll be able to do the following: ");
+                System.out.println(" -> List all the classes with their attributes");
+                System.out.println(" -> List a specific class with its attributes");
+                System.out.println(" -> List all the existing relationships");
+                System.out.println();
+                
+                System.out.println("Once you are finished, you may exit the program by selecting 'Exit the program'");
+                
+                
+                break;
+
+                case 6:
                 loop = false;
                 break;
 
