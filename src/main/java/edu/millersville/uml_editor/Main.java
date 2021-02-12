@@ -71,12 +71,30 @@ public class Main
                 System.out.println("1. Add a class");
                 System.out.println("2. Delete a class");
                 System.out.println("3. Rename a class");
+                System.out.println("4. Go back to main menu");
                 System.out.println();
                 System.out.print("What would you like to do with classes? ");
-                classNum = console.nextInt();
+                
+                isNumber = false;
+                
+                while (!isNumber)
+                {
+                	String temp = console.next();
+                	try {
+                		classNum = Integer.parseInt(temp);
+                		isNumber = true;
+                	}
+                	catch (NumberFormatException ex) {
+                		System.out.println();
+                		System.out.println("This is not a number. Use a number when selecting a menu option.");
+                		System.out.println();
+                		System.out.print("Please select a menu option: ");
+                	}
+                }
 
                 switch(classNum){
                     case 1:
+                    
                     System.out.println();
                     System.out.print("Enter the new class name: ");
                     String nameAdd = console.next();
@@ -105,7 +123,10 @@ public class Main
 
                     renameClass(className, newName);
                     break;
-
+                    
+                    case 4:
+                    break;
+                    
                     default:
                     System.out.println();
                     System.out.print("That is not a menu option! Please try again.");
@@ -121,9 +142,26 @@ public class Main
                 System.out.println("1. Add an attribute");
                 System.out.println("2. Delete an attribute");
                 System.out.println("3. Rename an attribute");
+                System.out.println("4. Go back to main menu");
                 System.out.println();
                 System.out.print("What would you like to do with attributes? ");
-                attrNum = console.nextInt();
+                
+                isNumber = false;
+                
+                while (!isNumber)
+                {
+                	String temp = console.next();
+                	try {
+                		attrNum = Integer.parseInt(temp);
+                		isNumber = true;
+                	}
+                	catch (NumberFormatException ex) {
+                		System.out.println();
+                		System.out.println("This is not a number. Use a number when selecting a menu option.");
+                		System.out.println();
+                		System.out.print("Please select a menu option: ");
+                	}
+                }
 
                 switch(attrNum){
                     case 1:
@@ -188,6 +226,9 @@ public class Main
                         classCall.renameAttribute(attrOld, attrNew);
                     }
                     break;
+                    
+                    case 4:
+                    break;
 
                     default:
                     System.out.println();
@@ -203,10 +244,26 @@ public class Main
                 System.out.println();
                 System.out.println("1. Add a relationship");
                 System.out.println("2. Delete a relationship");
-                System.out.println("3. Rename a relationship");
+                System.out.println("3. Go back to main menu");
                 System.out.println();
                 System.out.print("What would you like to do with relationships? ");
-                relNum = console.nextInt();
+                
+                isNumber = false;
+                
+                while (!isNumber)
+                {
+                	String temp = console.next();
+                	try {
+                		relNum = Integer.parseInt(temp);
+                		isNumber = true;
+                	}
+                	catch (NumberFormatException ex) {
+                		System.out.println();
+                		System.out.println("This is not a number. Use a number when selecting a menu option.");
+                		System.out.println();
+                		System.out.print("Please select a menu option: ");
+                	}
+                }
 
                 switch(relNum){
                     case 1:
@@ -248,6 +305,9 @@ public class Main
                     }
                     deleteRelationship(delID);
                     break;
+                    
+                    case 3:
+                    break;
 
                     default:
                     System.out.println();
@@ -264,9 +324,26 @@ public class Main
                 System.out.println("1. List classes");
                 System.out.println("2. List attributes");
                 System.out.println("3. List relationships");
+                System.out.println("4. Go back to main menu");
                 System.out.println();
                 System.out.print("What would you like to list? ");
-                listNum = console.nextInt();
+                
+                isNumber = false;
+                
+                while (!isNumber)
+                {
+                	String temp = console.next();
+                	try {
+                		listNum = Integer.parseInt(temp);
+                		isNumber = true;
+                	}
+                	catch (NumberFormatException ex) {
+                		System.out.println();
+                		System.out.println("This is not a number. Use a number when selecting a menu option.");
+                		System.out.println();
+                		System.out.print("Please select a menu option: ");
+                	}
+                }
 
                 switch(listNum){
                     case 1:
@@ -300,6 +377,9 @@ public class Main
                     //***LIST RELATIONSHIPS HERE  ***/
                     System.out.println();
                     listRelationships();
+                    break;
+                    
+                    case 4:
                     break;
 
                     default:
