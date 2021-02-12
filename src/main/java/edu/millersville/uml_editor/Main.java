@@ -1,18 +1,15 @@
 package edu.millersville.uml_editor;
 import java.util.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-// Updated upstream
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-// Stashed changes
-
+import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
-
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 
 /**
  * 
@@ -39,13 +36,8 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
 
-    	
-
-     
-
     public static void main(String[] args) throws IOException
     {
-    	
         boolean loop = true;
         while(loop)
         {
@@ -58,7 +50,8 @@ public class Main
             System.out.println("3. Relationships");
             System.out.println("4. List Classes/Attributes/Relationships");
             System.out.println("5. Create JSON file");
-            System.out.println("6. Exit the program");
+            System.out.println("6. Load from a JSON file");
+            System.out.println("7. Exit the program");
             System.out.println();
             System.out.print("Please select a menu option: ");
             number = console.nextInt();
@@ -335,22 +328,46 @@ public class Main
                 // Save JSON menu
             	case 5: 
                 
-               System.out.println();        
-                
+                System.out.println();        
             	// filepath + new file name
             	// example: C:/Millersville/2020-2021/420/example.json
             	System.out.println("Enter filepath (filepath+filename): ");
             	String filename = console.next();
-            	saveJSON(filename, classMap);
-            	System.out.println();
-            	System.out.println("JSON file saved to: " + filename);
-              
+            	File testFile = new File(filename);
+            	if(testFile.exists()) {
+            		saveJSON(filename, classMap);
+            		System.out.println();
+            		System.out.println("JSON file saved to: " + filename);
+            		System.out.println(classMap.toString());
+            	} else {
+            		System.out.println("No such file exists. Please enter filepath again.");
+            	}
             	
-            	System.out.println(classMap.toString());
+                
+            	break;
+                
+                
+                // Load JSON menu
+            	case 6: 
+                
+                System.out.println();        
+                
+            	// filepath + new file name
+            	// example: C:/Millersville/2020-2021/420/example.json
+              	System.out.println("Enter filepath (filepath+filename): ");
+            	String filepath = console.next();
+            	File jsonFile = new File(filepath);
+            	if (jsonFile.exists()) {
+            		System.out.println(loadJSON(filepath));
+            		System.out.println();
+            	} else {
+            		System.out.println("No such file exists. Please enter filepath again.");
+            	}
+            	
                 break;
                
                 // Error
-                case 6:
+                case 7:
                 loop = false;
                 break;
 
@@ -457,11 +474,6 @@ public class Main
         Class source = classMap.get(class1);
         Class destination = classMap.get(class2);;
 
-        //relID.put(ID, new Relationships(source, destination, ID)); 
-
-        //relMap.put(ID, new Relationships(source, destination, ID)); 
-
-        //Class destination = classMap.get(class2);
         relMap.put(ID, new Relationships(source, destination, ID)); 
 	    
 	System.out.println();
@@ -522,19 +534,41 @@ public static void deleteRelationship(String ID)
     
     }
     
+///////////////////////////////////////////////////////////
+//
+// loadJSON(String, Map<String, Class>)
+//
+// function that loads a JSON file using 
+// a prompted filepath.
+//
+///////////////////////////////////////////////////////////
+    
+    public static String loadJSON(String filepath) throws IOException, FileNotFoundException {
+        // added JAR file
+    	return FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);   	
+    	
+    }
+    
+///////////////////////////////////////////////////////////
+//
+// toString()
+//
+// function that creates a string of the map. 
+// Look at the Class toString().
+//
+///////////////////////////////////////////////////////////
     
     @Override
     public String toString() {
     	StringBuffer s = new StringBuffer();
     	s.append("{");
     	s.append("\n");
+    	// streams the map and calls Class.toString()
     	classMap.values().stream().map(Class::toString);
     	s.append("}");
     	return s.toString();
     }
-
-
-    
+     
 
     public static void printClasses() {
         for (String key : classMap.keySet()) 

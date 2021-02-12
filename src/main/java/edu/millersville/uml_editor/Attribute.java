@@ -3,14 +3,21 @@ package edu.millersville.uml_editor;
 public class Attribute 
 {
 	private String uniqueName;
-	String attributeKey;
-	String attributeValue;
 	
 
 	public Attribute (String name) 
 	{
 		uniqueName = name;
 	}
+	
+///////////////////////////////////////////////////////////
+//
+// toString()
+//
+// function that creates a string of the map. 
+// 
+//
+///////////////////////////////////////////////////////////
 	
 	public String toString() {
 		StringBuffer s = new StringBuffer();
