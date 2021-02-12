@@ -2,13 +2,12 @@ package edu.millersville.uml_editor;
 
 import java.util.*;
 
-//import org.json.JSONObject;
-
 import edu.millersville.uml_editor.Class;
 
 public class Class {
-	
-	private static Map<String, Attribute> attrMap = 
+	String className;
+	private ArrayList<Attribute> attrArray;
+	private Map<String, Attribute> attrMap = 
 			new HashMap<String, Attribute>();
 
 ///////////////////////////////////////////////////////////
@@ -19,7 +18,7 @@ public class Class {
 	
     public Class()
     {
-        //JSONObject obj = new JSONObject();
+      
     }
 
 ///////////////////////////////////////////////////////////
@@ -114,4 +113,25 @@ public class Class {
             System.out.println(key);
         } 
     }
+    
+    @Override
+    public String toString() {
+    	StringBuffer s = new StringBuffer();
+    	s.append(" : {");
+    	//s.append("\n");
+    	for(String key : attrMap.keySet()) {
+    		//s.append("{\n");
+    		s.append(attrMap.get(key).toString());
+    		s.append(",");
+    	}
+    	s.append("}");
+    	return s.toString();
+    	
+    }
+    
+  
+
+    
+    
+    
 }
