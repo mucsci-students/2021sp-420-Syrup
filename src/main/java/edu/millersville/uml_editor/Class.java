@@ -126,14 +126,21 @@ public class Class {
     @Override
     public String toString() {
     	StringBuffer s = new StringBuffer();
-    	s.append(" : {");
     	// goes through the Attributes of each Class
     	// calls Attribute.toString()
+    	boolean firstRow = true;
     	for(String key : attrMap.keySet()) {
+    		if (firstRow) {
+    			firstRow = false;
+    		} else {
+    			s.append(",\n");
+    		}
+    		s.append("\"");
+    		s.append(key);
+    		s.append("\" : ");
     		s.append(attrMap.get(key).toString());
-    		s.append(",");
     	}
-    	s.append("}");
+    	s.append("\n");
     	return s.toString();
     	
     }

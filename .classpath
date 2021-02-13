@@ -27,5 +27,6 @@
 	<classpathentry kind="lib" path="C:/Users/yangc/Downloads/jackson-databind-2.12.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/yangc/Downloads/jackson-core-2.12.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/yangc/Downloads/commons-io-2.8.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/yangc/Downloads/jackson-annotations-2.12.1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

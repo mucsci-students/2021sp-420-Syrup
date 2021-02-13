@@ -1,5 +1,4 @@
 package edu.millersville.uml_editor;
-import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -8,8 +7,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+
 import org.apache.commons.io.FileUtils;
-import org.json.JSONObject;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * 
@@ -24,8 +25,36 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
 	
+	// Had to override HashMap's toString(). There was no "this". 
+	
 	private static Map<String, Class> classMap = 
-			new HashMap<String, Class>();
+			new HashMap<String, Class>() {
+		@Override
+		public java.lang.String toString() {
+	    	StringBuffer s = new StringBuffer();
+	    	s.append("{");
+	    	s.append(System.lineSeparator());
+	    	boolean firstRow = true;
+	    	for (String key: classMap.keySet()) {
+	    		if (firstRow) {
+	    			firstRow = false;
+
+	    		} else {
+	    			s.append(",\n");
+	    		}
+	    		s.append("\"" + key + "\" : ");
+	    		s.append("{");
+	    		s.append(System.lineSeparator());
+	    		s.append(classMap.get(key).toString());
+	    		s.append("}");
+	    	}
+	    	s.append("\n");
+	    	s.append("}\n");
+	    	System.out.println(s.toString());
+	    	return s.toString();
+	    }
+		
+	};
 	private static Map<String, Relationships> relMap =
 			new HashMap<String, Relationships>();
 	private static Scanner console = new Scanner(System.in);
@@ -327,34 +356,22 @@ public class Main
 
                 // Save JSON menu
             	case 5: 
-                
-                System.out.println();        
-            	// filepath + new file name
-            	// example: C:/Millersville/2020-2021/420/example.json
+                System.out.println();   
             	System.out.println("Enter filepath (filepath+filename): ");
             	String filename = console.next();
             	File testFile = new File(filename);
-            	if(testFile.exists()) {
-            		saveJSON(filename, classMap);
-            		System.out.println();
-            		System.out.println("JSON file saved to: " + filename);
-            		System.out.println(classMap.toString());
-            	} else {
-            		System.out.println("No such file exists. Please enter filepath again.");
-            	}
-            	
-                
+            	saveJSON(filename, classMap);
+            	System.out.println();
+            	System.out.println("JSON file saved to: " + filename);
+            	System.out.println(classMap.toString());
+            	System.out.println("No such file exists. Please enter filepath again.");
             	break;
                 
                 
                 // Load JSON menu
-            	case 6: 
-                
+            	case 6:                
                 System.out.println();        
-                
-            	// filepath + new file name
-            	// example: C:/Millersville/2020-2021/420/example.json
-              	System.out.println("Enter filepath (filepath+filename): ");
+              	System.out.println("Enter filepath (filepath+filename) of file to open: ");
             	String filepath = console.next();
             	File jsonFile = new File(filepath);
             	if (jsonFile.exists()) {
@@ -363,7 +380,6 @@ public class Main
             	} else {
             		System.out.println("No such file exists. Please enter filepath again.");
             	}
-            	
                 break;
                
                 // Error
@@ -521,7 +537,6 @@ public static void deleteRelationship(String ID)
 
     public static void saveJSON(String name, Map<String, Class> map) throws IOException{
     	//converts map into JSON object
-    	JSONObject jsonMap = new JSONObject(map);
     	String s = map.toString();
     	// writing map to JSON file
     	try {
@@ -543,32 +558,15 @@ public static void deleteRelationship(String ID)
 //
 ///////////////////////////////////////////////////////////
     
-    public static String loadJSON(String filepath) throws IOException, FileNotFoundException {
+    public static Map<String, Class> loadJSON(String filepath) throws IOException, FileNotFoundException {
         // added JAR file
-    	return FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);   	
-    	
+    	String file = FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);    	
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	Map<String, Class> newObj = objectMapper.readValue(file, HashMap.class);
+    	classMap = newObj;
+    	return newObj;
     }
-    
-///////////////////////////////////////////////////////////
-//
-// toString()
-//
-// function that creates a string of the map. 
-// Look at the Class toString().
-//
-///////////////////////////////////////////////////////////
-    
-    @Override
-    public String toString() {
-    	StringBuffer s = new StringBuffer();
-    	s.append("{");
-    	s.append("\n");
-    	// streams the map and calls Class.toString()
-    	classMap.values().stream().map(Class::toString);
-    	s.append("}");
-    	return s.toString();
-    }
-     
+  
 
     public static void printClasses() {
         for (String key : classMap.keySet()) 
