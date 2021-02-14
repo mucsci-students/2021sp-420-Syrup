@@ -1,7 +1,16 @@
 package edu.millersville.uml_editor;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
-import java.util.*;
+import org.apache.commons.io.FileUtils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * 
  *
@@ -15,8 +24,33 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
 	
-	private static Map<String, Class> classMap = 
-			new HashMap<String, Class>();
+    private static Map<String, Class> classMap = 
+			new HashMap<String, Class>() {
+		@Override
+		public java.lang.String toString() {
+	    	StringBuffer s = new StringBuffer();
+	    	s.append("{");
+	    	s.append(System.lineSeparator());
+	    	boolean firstRow = true;
+	    	for (String key: classMap.keySet()) {
+	    		if (firstRow) {
+	    			firstRow = false;
+
+	    		} else {
+	    			s.append(",\n");
+	    		}
+	    		s.append("\"" + key + "\" : ");
+	    		s.append("{");
+	    		s.append(System.lineSeparator());
+	    		s.append(classMap.get(key).toString());
+	    		s.append("}");
+	    	}
+	    	s.append("\n");
+	    	s.append("}\n");
+	    	System.out.println(s.toString());
+	    	return s.toString();
+	    }
+	};
 	private static Map<String, Relationships> relMap =
 			new HashMap<String, Relationships>();
 	private static Scanner console = new Scanner(System.in);
@@ -27,25 +61,30 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
 	
-    public static void main(String[] args)
+    public static void main(String[] args) throws IOException
     {
         boolean loop = true;
+        //Loop that controls the entire program
         while(loop)
         {
             int number = 0;
 
+        //Display menu
             System.out.println();
             System.out.println("1. Classes");
             System.out.println("2. Attributes");
             System.out.println("3. Relationships");
             System.out.println("4. List Classes/Attributes/Relationships");
-            System.out.println("5. Help");
-            System.out.println("6. Exit the program");
+	        System.out.println("5. Create JSON file");
+            System.out.println("6. Load from a JSON file");
+            System.out.println("7. Help");
+            System.out.println("8. Exit the program");
             System.out.println();
             System.out.print("Please select a menu option: ");
             
             boolean isNumber = false;
             
+            //****While loop that considers string input...repeated throughout the program for each switch statement****\\
             while (!isNumber)
             {
             	String temp = console.next();
@@ -61,12 +100,12 @@ public class Main
             	}
             }
             
-            
-
             switch(number){
+                //Case for Classes
                 case 1: 
                 int classNum = 0;
 
+                //Class menu
                 System.out.println();
                 System.out.println("1. Add a class");
                 System.out.println("2. Delete a class");
@@ -92,9 +131,10 @@ public class Main
                 	}
                 }
 
+                //Switch statement within the class menu
                 switch(classNum){
+                    //Asks for class name and adds
                     case 1:
-                    
                     System.out.println();
                     System.out.print("Enter the new class name: ");
                     String nameAdd = console.next();
@@ -102,6 +142,7 @@ public class Main
                     createNewClass(nameAdd);
                     break;
 
+                    //Asks for class name and deletes
                     case 2:
                     String nameDel = "";
                     System.out.println();
@@ -111,6 +152,7 @@ public class Main
                     deleteClass(nameDel);
                     break;
 
+                    //Asks for class name, new class name and renames
                     case 3: 
                     String className = "";
                     String newName = "";
@@ -127,6 +169,7 @@ public class Main
                     case 4:
                     break;
                     
+                    //Default case that sends user back to main menu if a number not on the menu is entered
                     default:
                     System.out.println();
                     System.out.print("That is not a menu option! Please try again.");
@@ -135,9 +178,11 @@ public class Main
                 }
                 break;
 
+                //Case for Attributes
                 case 2:
                 int attrNum = 0;
 
+                //Attribute menu
                 System.out.println();
                 System.out.println("1. Add an attribute");
                 System.out.println("2. Delete an attribute");
@@ -163,6 +208,7 @@ public class Main
                 	}
                 }
 
+                //Switch statement within attribute menu
                 switch(attrNum){
                     case 1:
                     String classAdd = "";
@@ -170,11 +216,13 @@ public class Main
                     System.out.println();
                     System.out.print("Enter the class name for the attribute: ");
                     classAdd = console.next();
+                    //Checks to see if the class name exists
                     if(!classMap.containsKey(classAdd))
                     {
                         System.out.println("There is not a class with this name.");
     		            break;
                     }
+                    //If it does, prompts for attribute name and adds
                     else
                     {
                         Class classCall = classMap.get(classAdd);
@@ -183,18 +231,20 @@ public class Main
                         classCall.addNewAttribute(attrAdd);
                     }
                     break;
-                
+                    
                     case 2:
                     String classDel = "";
                     String attrDel = "";
                     System.out.println();
                     System.out.print("Enter the class name for the attribute: ");
                     classDel = console.next();
+                    //Checks to see if the class exists
                     if(!classMap.containsKey(classDel))
                     {
                         System.out.println("There is not a class with this name.");
     		            break;
                     }
+                    //If it does, ask for attribute name and delete
                     else 
                     {
                         Class classCall = classMap.get(classDel);
@@ -211,11 +261,13 @@ public class Main
                     System.out.println();
                     System.out.print("Enter the class for the attribute: ");
                     classRen = console.next();
+                    //Checks to see if the class exists
                     if(!classMap.containsKey(classRen))
                     {
                         System.out.println("There is not a class with this name.");
     		            break;
                     }
+                    //If it does, ask for current and new name for attribute and renames
                     else 
                     {
                         Class classCall = classMap.get(classRen);
@@ -230,6 +282,7 @@ public class Main
                     case 4:
                     break;
 
+                    //Default case that sends user back to main menu if a number not on the menu is entered
                     default:
                     System.out.println();
                     System.out.print("That is not a menu option! Please try again.");
@@ -238,9 +291,11 @@ public class Main
                 }
                 break;
 
+                //Case for Relationships
                 case 3:
                 int relNum = 0;
 
+                //Relationship menu
                 System.out.println();
                 System.out.println("1. Add a relationship");
                 System.out.println("2. Delete a relationship");
@@ -265,7 +320,9 @@ public class Main
                 	}
                 }
 
+                //Switch statement within relationship menu
                 switch(relNum){
+                    //Case to add relationship
                     case 1:
                     String sourceAdd = "";
                     String destAdd = "";
@@ -275,16 +332,18 @@ public class Main
                     sourceAdd = console.next();
                     System.out.print("Enter the destination of the relationship: ");
                     destAdd = console.next();
+                    //If statements that check to see if the classes entered for source and destination exist
                     if(!classMap.containsKey(sourceAdd))
                     {
-                        System.out.println("There is not a class with this name.");
+                        System.out.println("There is not a class with the source name.");
     		            break;
                     }
                     else if(!classMap.containsKey(destAdd))
                     {
-                        System.out.println("There is not a class with this name.");
+                        System.out.println("There is not a class with the destination name.");
     		            break;
                     }
+                    //If they do, ask for ID and adds relationship
                     else 
                     {
                         System.out.print("Enter an ID for the relationship: ");
@@ -293,22 +352,26 @@ public class Main
                     }
                     break;
                     
+                    //Case to delete relationship
                     case 2:
                     String delID = "";
                     System.out.println();
                     System.out.print("Enter the ID of the relationship: ");
                     delID = console.next();
+                    //Checks if ID exists
                     if(!relMap.containsKey(delID))
                     {
                         System.out.println("There is not a relationship with this ID.");
     		            break;
                     }
+                    //If it does, delete relationship
                     deleteRelationship(delID);
                     break;
                     
                     case 3:
                     break;
 
+                    //Default case that sends user back to main menu if a number not on the menu is entered
                     default:
                     System.out.println();
                     System.out.print("That is not a menu option! Please try again.");
@@ -317,9 +380,11 @@ public class Main
                 }
                 break;
 
+                //Case to list data
                 case 4:
                 int listNum = 0;
 
+                //List menu
                 System.out.println();
                 System.out.println("1. List classes");
                 System.out.println("2. List attributes");
@@ -345,24 +410,27 @@ public class Main
                 	}
                 }
 
+                //Switch statement with the list option
                 switch(listNum){
+                    //List classes with their attributes
                     case 1:
-
                     System.out.println();
                     printClasses();
                     break;
 
+                    //List a specific class with its attributes
                     case 2:
-
                     String listAttr = "";
                     System.out.println();
                     System.out.print("Enter the class name: ");
                     listAttr = console.next();
+                    //Checks to see if the class exists
                     if(!classMap.containsKey(listAttr))
                     {
                         System.out.println("There is not a class with this name.");
     		            break;
                     }
+                    //If it does, print it and its attributes
                     else 
                     {
                         System.out.println();
@@ -372,9 +440,8 @@ public class Main
                     }
                     break;
 
+                    //List relationships
                     case 3: 
-                    
-                    //***LIST RELATIONSHIPS HERE  ***/
                     System.out.println();
                     listRelationships();
                     break;
@@ -382,15 +449,43 @@ public class Main
                     case 4:
                     break;
 
+                    //Default case that sends user back to main menu if a number not on the menu is entered
                     default:
                     System.out.println();
                     System.out.println("That is not a menu option! Please try again.");
                     break;
                 }
                 break;
+		
+                //Save JSON case
+		        case 5:
+		        System.out.println();   
+            	System.out.println("Enter filepath (filepath+filename): ");
+            	String filename = console.next();
+            	File testFile = new File(filename);
+            	saveJSON(filename, classMap);
+            	System.out.println();
+            	System.out.println("JSON file saved to: " + filename);
+            	System.out.println(classMap.toString());
+            	System.out.println("No such file exists. Please enter filepath again.");
+            	break;
+			    
+                //Load JSON case
+		        case 6:
+		        System.out.println();        
+              	System.out.println("Enter filepath (filepath+filename) of file to open: ");
+            	String filepath = console.next();
+            	File jsonFile = new File(filepath);
+            	if (jsonFile.exists()) {
+            		System.out.println(loadJSON(filepath));
+            		System.out.println();
+            	} else {
+            		System.out.println("No such file exists. Please enter filepath again.");
+            	}
+                break;
                 
-                case 5:
-                
+                //Case that displays help instructions
+                case 7:
                 System.out.println();
                 System.out.println("The menu options accept numbers only. Any words while selecting a menu option will have you try again.");
                 System.out.println();
@@ -419,14 +514,14 @@ public class Main
                 System.out.println();
                 
                 System.out.println("Once you are finished, you may exit the program by selecting 'Exit the program'");
-                
-                
                 break;
 
-                case 6:
+                //Case that exists the program
+                case 8:
                 loop = false;
                 break;
 
+                //Default case that sends user back to main menu if a number not on the menu is entered
                 default:
                 System.out.println();
                 System.out.print("That is not a menu option! Please try again.");
@@ -436,7 +531,6 @@ public class Main
         }
     }
  
-    
 ///////////////////////////////////////////////////////////
 //
 //	createClass
@@ -445,15 +539,15 @@ public class Main
 
     public static void createNewClass(String className) 
     {
+        //Checks if the class already exists
     	if (classMap.containsKey(className))
     	{
     		System.out.println("There is already a class with that name.");
     		return;
     	}
-    	
     	classMap.put(className, new Class(className));
 	    
-	System.out.println();
+	    System.out.println();
         System.out.print("The class has been added!");
         System.out.println();
     }
@@ -466,23 +560,22 @@ public class Main
   
     public static void renameClass(String name, String newName)
     {
-
+        //Checks if class exists, doesn't exists or if the name is a duplicate
        	if (classMap.containsKey(newName))
     	{
-    		System.out.println("There is an class with the new name.");
+    		System.out.println("There is a class with the new name.");
     		return;
     	}
-
         if(!classMap.containsKey(name))
         {
            System.out.println("There is not an existing class with the name: " + name + ".");
     		return; 
         }
-
+        //Rename class but putting into map with new name and removing the old name
         classMap.put(newName, classMap.get(name));
         classMap.remove(name);
 	    
-	System.out.println();
+	    System.out.println();
         System.out.print("The class has been renamed!");
         System.out.println();
     }
@@ -495,16 +588,17 @@ public class Main
 
     public static void deleteClass(String name)
     {
-
+        //Checks if class exists
         if (!classMap.containsKey(name))
     	{
     		System.out.println("There is not a class with that name.");
     		return;
     	}
+        //Deletes attributes and the deletes the class
         classMap.get(name).deleteAttributes();
         classMap.remove(name);
 	    
-	System.out.println();
+	    System.out.println();
         System.out.print("The class has been deleted!");
         System.out.println();
     }
@@ -514,22 +608,22 @@ public class Main
 //	createRelationship
 //
 ///////////////////////////////////////////////////////////
+
     public static void createRelationship(String class1, String class2, String ID )
     {
-
-        //checks to make sure the relationship is not already created
+        //Checks to make sure the relationship is not already created
         if(relMap.containsKey(ID))
         {
             System.out.println();
             System.out.println("This relationship already exists");
             return;
         }
-        //create temp class to be able to create relationship
+        //Create temp classes to be able to create relationship
         Class source = classMap.get(class1);
         Class destination = classMap.get(class2);
         relMap.put(ID, new Relationships(source, destination, ID)); 
 	    
-	System.out.println();
+	    System.out.println();
         System.out.print("The relationship has been added!");
         System.out.println();
     }
@@ -540,18 +634,20 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
 
-public static void deleteRelationship(String ID)
-{
-    if (!relMap.containsKey(ID))
-    	{
-    		System.out.println("There is not a relationship with that ID.");
-    		return;
-    	}
-    relMap.remove(ID); 
-    System.out.println();
-    System.out.print("The relationship has been deleted!");
-    System.out.println();
-}
+    public static void deleteRelationship(String ID)
+    {
+        //Checks to see if relationship exists
+        if (!relMap.containsKey(ID))
+        {
+            System.out.println("There is not a relationship with that ID.");
+            return;
+        }
+        relMap.remove(ID); 
+        
+        System.out.println();
+        System.out.print("The relationship has been deleted!");
+        System.out.println();
+    }
     
 ///////////////////////////////////////////////////////////
 //
@@ -559,21 +655,20 @@ public static void deleteRelationship(String ID)
 //
 ///////////////////////////////////////////////////////////
       
-   public static void printClass(String className) {
-       System.out.println("Class Name: " + className);  
-       
-       System.out.print("Attributes: ");
-       classMap.get(className).printAttr();
+    public static void printClass(String className) 
+    {
+        System.out.println("Class Name: " + className);  
+        System.out.print("Attributes: ");
+        classMap.get(className).printAttr();
     }
 
-    public static void printClasses() {
+    public static void printClasses() 
+    {
         for (String key : classMap.keySet()) 
     	{
             printClass(key);
     	}
     }
-
-
 
 ///////////////////////////////////////////////////////////
 //
@@ -581,7 +676,8 @@ public static void deleteRelationship(String ID)
 //
 ///////////////////////////////////////////////////////////
 
-	public static void listRelationships()	{
+	public static void listRelationships()	
+    {
 		for (String key : relMap.keySet())
 		{
 			System.out.print(key + ": ");
@@ -589,5 +685,44 @@ public static void deleteRelationship(String ID)
 		}
 	}
 	
-}
+///////////////////////////////////////////////////////////
+//
+//	saveJSON(String, Map<String, Class>)
+//
+//	function that creates and saves classMap to a JSON file using 
+//	a prompted file name and the classMap.
+//
+///////////////////////////////////////////////////////////
 
+    public static void saveJSON(String name, Map<String, Class> map) throws IOException{
+    	//converts map into JSON object
+    	String s = map.toString();
+    	// writing map to JSON file
+    	try {
+    		FileWriter file = new FileWriter(name);
+    		file.write(s.toString());
+    		file.close();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    
+    }
+    
+///////////////////////////////////////////////////////////
+//
+// loadJSON(String, Map<String, Class>)
+//
+// function that loads a JSON file using 
+// a prompted filepath.
+//
+///////////////////////////////////////////////////////////
+    
+    public static Map<String, Class> loadJSON(String filepath) throws IOException, FileNotFoundException {
+        // added JAR file
+    	String file = FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);    	
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	Map<String, Class> newObj = objectMapper.readValue(file, HashMap.class);
+    	classMap = newObj;
+    	return newObj;
+    }
+}
