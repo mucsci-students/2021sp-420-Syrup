@@ -6,8 +6,8 @@ This is a command line program that allows the user to create a UML diagram in t
 
 1. Download our UML repository from Github.
 2. Open a new terminal and find the directory with our UML files in it
-3. Type in 'javac Main.java' to compile the program
-4. Type in 'java Main' to run the program and see your menu options
+3. Type in "javac Main.java" to compile the program
+4. Type in "java Main" to run the program and see your menu options
 
 ## Authors
 
