@@ -19,4 +19,4 @@ This is a command line program that allows the user to create a UML diagram in t
 
 ## License
 
-Licensed under the [MIT License](#LICENSE)
+Licensed under the [MIT License](https://github.com/mucsci-students/2021sp-420-Syrup/blob/README-file/LICENSE)
