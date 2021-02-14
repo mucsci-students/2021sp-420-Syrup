@@ -1,7 +1,14 @@
 package edu.millersville.uml_editor;
-
-import java.util.*;
-
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+import org.apache.commons.io.FileUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * 
  *
@@ -16,7 +23,33 @@ public class Main
 ///////////////////////////////////////////////////////////
 	
 	private static Map<String, Class> classMap = 
-			new HashMap<String, Class>();
+			new HashMap<String, Class>() {
+		@Override
+		public java.lang.String toString() {
+	    	StringBuffer s = new StringBuffer();
+	    	s.append("{");
+	    	s.append(System.lineSeparator());
+	    	boolean firstRow = true;
+	    	for (String key: classMap.keySet()) {
+	    		if (firstRow) {
+	    			firstRow = false;
+
+	    		} else {
+	    			s.append(",\n");
+	    		}
+	    		s.append("\"" + key + "\" : ");
+	    		s.append("{");
+	    		s.append(System.lineSeparator());
+	    		s.append(classMap.get(key).toString());
+	    		s.append("}");
+	    	}
+	    	s.append("\n");
+	    	s.append("}\n");
+	    	System.out.println(s.toString());
+	    	return s.toString();
+	    }
+		
+	};
 	private static Map<String, Relationships> relMap =
 			new HashMap<String, Relationships>();
 	private static Scanner console = new Scanner(System.in);
@@ -39,8 +72,10 @@ public class Main
             System.out.println("2. Attributes");
             System.out.println("3. Relationships");
             System.out.println("4. List Classes/Attributes/Relationships");
-            System.out.println("5. Help");
-            System.out.println("6. Exit the program");
+	    System.out.println("5. Create JSON file");
+            System.out.println("6. Load from a JSON file");
+            System.out.println("7. Help");
+            System.out.println("8. Exit the program");
             System.out.println();
             System.out.print("Please select a menu option: ");
             
@@ -388,8 +423,33 @@ public class Main
                     break;
                 }
                 break;
+		
+		case 5:
+		System.out.println();   
+            	System.out.println("Enter filepath (filepath+filename): ");
+            	String filename = console.next();
+            	File testFile = new File(filename);
+            	saveJSON(filename, classMap);
+            	System.out.println();
+            	System.out.println("JSON file saved to: " + filename);
+            	System.out.println(classMap.toString());
+            	System.out.println("No such file exists. Please enter filepath again.");
+            	break;
+			    
+		case 6:
+		System.out.println();        
+              	System.out.println("Enter filepath (filepath+filename) of file to open: ");
+            	String filepath = console.next();
+            	File jsonFile = new File(filepath);
+            	if (jsonFile.exists()) {
+            		System.out.println(loadJSON(filepath));
+            		System.out.println();
+            	} else {
+            		System.out.println("No such file exists. Please enter filepath again.");
+            	}
+                break;
                 
-                case 5:
+                case 7:
                 
                 System.out.println();
                 System.out.println("The menu options accept numbers only. Any words while selecting a menu option will have you try again.");
@@ -423,7 +483,7 @@ public class Main
                 
                 break;
 
-                case 6:
+                case 8:
                 loop = false;
                 break;
 
@@ -588,6 +648,47 @@ public static void deleteRelationship(String ID)
 			System.out.println(relMap.get(key).sourceName() + ", " + relMap.get(key).destinationName());
 		}
 	}
+	
+///////////////////////////////////////////////////////////
+//
+//	saveJSON(String, Map<String, Class>)
+//
+//	function that creates and saves classMap to a JSON file using 
+//	a prompted file name and the classMap.
+//
+///////////////////////////////////////////////////////////
+
+    public static void saveJSON(String name, Map<String, Class> map) throws IOException{
+    	//converts map into JSON object
+    	String s = map.toString();
+    	// writing map to JSON file
+    	try {
+    		FileWriter file = new FileWriter(name);
+    		file.write(s.toString());
+    		file.close();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    
+    }
+    
+///////////////////////////////////////////////////////////
+//
+// loadJSON(String, Map<String, Class>)
+//
+// function that loads a JSON file using 
+// a prompted filepath.
+//
+///////////////////////////////////////////////////////////
+    
+    public static Map<String, Class> loadJSON(String filepath) throws IOException, FileNotFoundException {
+        // added JAR file
+    	String file = FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);    	
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	Map<String, Class> newObj = objectMapper.readValue(file, HashMap.class);
+    	classMap = newObj;
+    	return newObj;
+    }
 	
 }
 
