@@ -8,6 +8,7 @@ import edu.millersville.uml_editor.Class;
 
 public class Class {
 	
+	private ArrayList<Attribute> attrArray;
 	private Map<String, Attribute> attrMap = 
 			new HashMap<String, Attribute>();
 	private String className;
@@ -141,6 +142,36 @@ public class Class {
     public String getClassName()
     {
     	return className;
+    }
+	
+///////////////////////////////////////////////////////////
+//
+// toString()
+//
+// function that creates a string of the map. 
+// Look at the Attribute toString().
+//
+///////////////////////////////////////////////////////////
+
+    @Override
+    public String toString() {
+    	StringBuffer s = new StringBuffer();
+    	// goes through the Attributes of each Class
+    	// calls Attribute.toString()
+    	boolean firstRow = true;
+    	for(String key : attrMap.keySet()) {
+    		if (firstRow) {
+    			firstRow = false;
+    		} else {
+    			s.append(",\n");
+    		}
+    		s.append("\"");
+    		s.append(key);
+    		s.append("\" : ");
+    		s.append(attrMap.get(key).toString());
+    	}
+    	s.append("\n");
+    	return s.toString();
     }
     
 }
