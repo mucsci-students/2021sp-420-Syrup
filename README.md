@@ -11,11 +11,11 @@ This is a command line program that allows the user to create a UML diagram in t
 
 ## Authors
 ```
-* Anthony P.
-* Jerek M.
-* Daulson C.
-* Mike W.
-* Andrew Y.
+-> Anthony P.
+-> Jerek M.
+-> Daulson C.
+-> Mike W.
+-> Andrew Y.
 ```
 ## License
 
