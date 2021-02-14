@@ -295,6 +295,7 @@ public class Main
                 case 3:
                 int relNum = 0;
 
+                //Relationship menu
                 System.out.println();
                 System.out.println("1. Add a relationship");
                 System.out.println("2. Delete a relationship");
@@ -319,7 +320,9 @@ public class Main
                 	}
                 }
 
+                //Switch statement within relationship menu
                 switch(relNum){
+                    //Case to add relationship
                     case 1:
                     String sourceAdd = "";
                     String destAdd = "";
@@ -329,6 +332,7 @@ public class Main
                     sourceAdd = console.next();
                     System.out.print("Enter the destination of the relationship: ");
                     destAdd = console.next();
+                    //If statements that check to see if the classes entered for source and destination exist
                     if(!classMap.containsKey(sourceAdd))
                     {
                         System.out.println("There is not a class with the source name.");
@@ -339,6 +343,7 @@ public class Main
                         System.out.println("There is not a class with the destination name.");
     		            break;
                     }
+                    //If they do, ask for ID and adds relationship
                     else 
                     {
                         System.out.print("Enter an ID for the relationship: ");
@@ -347,22 +352,26 @@ public class Main
                     }
                     break;
                     
+                    //Case to delete relationship
                     case 2:
                     String delID = "";
                     System.out.println();
                     System.out.print("Enter the ID of the relationship: ");
                     delID = console.next();
+                    //Checks if ID exists
                     if(!relMap.containsKey(delID))
                     {
                         System.out.println("There is not a relationship with this ID.");
     		            break;
                     }
+                    //If it does, delete relationship
                     deleteRelationship(delID);
                     break;
                     
                     case 3:
                     break;
 
+                    //Default case that sends user back to main menu if a number not on the menu is entered
                     default:
                     System.out.println();
                     System.out.print("That is not a menu option! Please try again.");
@@ -371,9 +380,11 @@ public class Main
                 }
                 break;
 
+                //Case to list data
                 case 4:
                 int listNum = 0;
 
+                //List menu
                 System.out.println();
                 System.out.println("1. List classes");
                 System.out.println("2. List attributes");
@@ -399,22 +410,27 @@ public class Main
                 	}
                 }
 
+                //Switch statement with the list option
                 switch(listNum){
+                    //List classes with their attributes
                     case 1:
                     System.out.println();
                     printClasses();
                     break;
 
+                    //List a specific class with its attributes
                     case 2:
                     String listAttr = "";
                     System.out.println();
                     System.out.print("Enter the class name: ");
                     listAttr = console.next();
+                    //Checks to see if the class exists
                     if(!classMap.containsKey(listAttr))
                     {
                         System.out.println("There is not a class with this name.");
     		            break;
                     }
+                    //If it does, print it and its attributes
                     else 
                     {
                         System.out.println();
@@ -424,6 +440,7 @@ public class Main
                     }
                     break;
 
+                    //List relationships
                     case 3: 
                     System.out.println();
                     listRelationships();
@@ -432,6 +449,7 @@ public class Main
                     case 4:
                     break;
 
+                    //Default case that sends user back to main menu if a number not on the menu is entered
                     default:
                     System.out.println();
                     System.out.println("That is not a menu option! Please try again.");
@@ -439,6 +457,7 @@ public class Main
                 }
                 break;
 		
+                //Save JSON case
 		        case 5:
 		        System.out.println();   
             	System.out.println("Enter filepath (filepath+filename): ");
@@ -451,6 +470,7 @@ public class Main
             	System.out.println("No such file exists. Please enter filepath again.");
             	break;
 			    
+                //Load JSON case
 		        case 6:
 		        System.out.println();        
               	System.out.println("Enter filepath (filepath+filename) of file to open: ");
@@ -464,6 +484,7 @@ public class Main
             	}
                 break;
                 
+                //Case that displays help instructions
                 case 7:
                 System.out.println();
                 System.out.println("The menu options accept numbers only. Any words while selecting a menu option will have you try again.");
@@ -495,10 +516,12 @@ public class Main
                 System.out.println("Once you are finished, you may exit the program by selecting 'Exit the program'");
                 break;
 
+                //Case that exists the program
                 case 8:
                 loop = false;
                 break;
 
+                //Default case that sends user back to main menu if a number not on the menu is entered
                 default:
                 System.out.println();
                 System.out.print("That is not a menu option! Please try again.");
@@ -516,6 +539,7 @@ public class Main
 
     public static void createNewClass(String className) 
     {
+        //Checks if the class already exists
     	if (classMap.containsKey(className))
     	{
     		System.out.println("There is already a class with that name.");
@@ -536,6 +560,7 @@ public class Main
   
     public static void renameClass(String name, String newName)
     {
+        //Checks if class exists, doesn't exists or if the name is a duplicate
        	if (classMap.containsKey(newName))
     	{
     		System.out.println("There is a class with the new name.");
@@ -546,6 +571,7 @@ public class Main
            System.out.println("There is not an existing class with the name: " + name + ".");
     		return; 
         }
+        //Rename class but putting into map with new name and removing the old name
         classMap.put(newName, classMap.get(name));
         classMap.remove(name);
 	    
@@ -562,11 +588,13 @@ public class Main
 
     public static void deleteClass(String name)
     {
+        //Checks if class exists
         if (!classMap.containsKey(name))
     	{
     		System.out.println("There is not a class with that name.");
     		return;
     	}
+        //Deletes attributes and the deletes the class
         classMap.get(name).deleteAttributes();
         classMap.remove(name);
 	    
@@ -583,14 +611,14 @@ public class Main
 
     public static void createRelationship(String class1, String class2, String ID )
     {
-        //checks to make sure the relationship is not already created
+        //Checks to make sure the relationship is not already created
         if(relMap.containsKey(ID))
         {
             System.out.println();
             System.out.println("This relationship already exists");
             return;
         }
-        //create temp classes to be able to create relationship
+        //Create temp classes to be able to create relationship
         Class source = classMap.get(class1);
         Class destination = classMap.get(class2);
         relMap.put(ID, new Relationships(source, destination, ID)); 
@@ -606,18 +634,20 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
 
-public static void deleteRelationship(String ID)
-{
-    if (!relMap.containsKey(ID))
+    public static void deleteRelationship(String ID)
     {
-    	System.out.println("There is not a relationship with that ID.");
-    	return;
+        //Checks to see if relationship exists
+        if (!relMap.containsKey(ID))
+        {
+            System.out.println("There is not a relationship with that ID.");
+            return;
+        }
+        relMap.remove(ID); 
+        
+        System.out.println();
+        System.out.print("The relationship has been deleted!");
+        System.out.println();
     }
-    relMap.remove(ID); 
-    System.out.println();
-    System.out.print("The relationship has been deleted!");
-    System.out.println();
-}
     
 ///////////////////////////////////////////////////////////
 //
@@ -625,11 +655,11 @@ public static void deleteRelationship(String ID)
 //
 ///////////////////////////////////////////////////////////
       
-   public static void printClass(String className) 
-   {
-       System.out.println("Class Name: " + className);  
-       System.out.print("Attributes: ");
-       classMap.get(className).printAttr();
+    public static void printClass(String className) 
+    {
+        System.out.println("Class Name: " + className);  
+        System.out.print("Attributes: ");
+        classMap.get(className).printAttr();
     }
 
     public static void printClasses() 
