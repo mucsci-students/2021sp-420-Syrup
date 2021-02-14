@@ -10,13 +10,13 @@ This is a command line program that allows the user to create a UML diagram in t
 4. Type in `java Main` to run the program and see your menu options
 
 ## Authors
-
+```
 * Anthony P.
 * Jerek M.
 * Daulson C.
 * Mike W.
 * Andrew Y.
-
+```
 ## License
 
 Licensed under the [MIT License](https://github.com/mucsci-students/2021sp-420-Syrup/blob/README-file/LICENSE)
