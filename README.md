@@ -10,9 +10,10 @@ This is a command line program that allows the user to create a UML diagram in t
 ## Running the program
 
 1. Download our UML [repository](https://github.com/mucsci-students/2021sp-420-Syrup/tree/develop) from Github.
-2. Open a new terminal and find the directory with our UML files in it
-3. Type in `javac Main.java` to compile the program
-4. Type in `java Main` to run the program and see your menu options
+2. Download the [jackson](https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations/2.12.1) and [commons.io](https://mvnrepository.com/artifact/commons-io/commons-io/2.8.0) jar files
+3. In eclipse, go to package properties -> java build path -> add external jar files
+4. Add the `jackson` and `commons.io` jar files
+5. Run the program!
 
 ## Authors
 ```
