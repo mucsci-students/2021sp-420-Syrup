@@ -460,14 +460,11 @@ public class Main
                 //Save JSON case
 		        case 5:
 		        System.out.println();   
-            	System.out.println("Enter filepath (filepath+filename): ");
+            	System.out.print("Enter filepath (filepath+filename): ");
             	String filename = console.next();
-            	File testFile = new File(filename);
             	saveJSON(filename, classMap);
             	System.out.println();
             	System.out.println("JSON file saved to: " + filename);
-            	System.out.println(classMap.toString());
-            	System.out.println("No such file exists. Please enter filepath again.");
             	break;
 			    
                 //Load JSON case
@@ -477,7 +474,7 @@ public class Main
             	String filepath = console.next();
             	File jsonFile = new File(filepath);
             	if (jsonFile.exists()) {
-            		System.out.println(loadJSON(filepath));
+            		//System.out.println(loadJSON(filepath));
             		System.out.println();
             	} else {
             		System.out.println("No such file exists. Please enter filepath again.");
@@ -704,8 +701,8 @@ public class Main
     		file.close();
     	} catch (IOException e) {
     		e.printStackTrace();
+            System.out.println("The filepath does not exist. Enter a correct filepath.")
     	}
-    
     }
     
 ///////////////////////////////////////////////////////////
