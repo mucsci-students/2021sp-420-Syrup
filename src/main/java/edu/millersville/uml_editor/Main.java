@@ -23,9 +23,9 @@ public class Main
 //	Private Variables
 //
 ///////////////////////////////////////////////////////////
-	
+
     private static Map<String, Class> classMap = 
-			new HashMap<String, Class>() {
+			new HashMap<String, Class>(){
 		@Override
 		public java.lang.String toString() {
 	    	StringBuffer s = new StringBuffer();
@@ -50,7 +50,7 @@ public class Main
 	    	System.out.println(s.toString());
 	    	return s.toString();
 	    }
-	};
+    };
 	private static Map<String, Relationships> relMap =
 			new HashMap<String, Relationships>();
 	private static Scanner console = new Scanner(System.in);
@@ -701,7 +701,7 @@ public class Main
     		file.close();
     	} catch (IOException e) {
     		e.printStackTrace();
-            System.out.println("The filepath does not exist. Enter a correct filepath.")
+            System.out.println("The filepath does not exist. Enter a correct filepath.");
     	}
     }
     
