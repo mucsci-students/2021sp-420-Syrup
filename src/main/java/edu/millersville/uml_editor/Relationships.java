@@ -1,4 +1,4 @@
-
+package edu.millersville.uml_editor;
 import java.util.*;
 
 public class Relationships {

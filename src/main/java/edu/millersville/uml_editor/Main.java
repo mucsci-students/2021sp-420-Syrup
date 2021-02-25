@@ -1,13 +1,10 @@
+package edu.millersville.uml_editor;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-
-import javax.lang.model.util.ElementScanner6;
 
 //import org.apache.commons.io.FileUtils;
 
