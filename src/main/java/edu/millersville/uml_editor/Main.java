@@ -1,4 +1,3 @@
-package edu.millersville.uml_editor;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -8,9 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import org.apache.commons.io.FileUtils;
+import javax.lang.model.util.ElementScanner6;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+//import org.apache.commons.io.FileUtils;
+
+//import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * 
  *
@@ -23,9 +24,9 @@ public class Main
 //	Private Variables
 //
 ///////////////////////////////////////////////////////////
-
+	
     private static Map<String, Class> classMap = 
-			new HashMap<String, Class>(){
+			new HashMap<String, Class>() {
 		@Override
 		public java.lang.String toString() {
 	    	StringBuffer s = new StringBuffer();
@@ -50,7 +51,7 @@ public class Main
 	    	System.out.println(s.toString());
 	    	return s.toString();
 	    }
-    };
+	};
 	private static Map<String, Relationships> relMap =
 			new HashMap<String, Relationships>();
 	private static Scanner console = new Scanner(System.in);
@@ -299,7 +300,8 @@ public class Main
                 System.out.println();
                 System.out.println("1. Add a relationship");
                 System.out.println("2. Delete a relationship");
-                System.out.println("3. Go back to main menu");
+                System.out.println("3. Change Relationship Type");
+                System.out.println("4. Go back to main menu");
                 System.out.println();
                 System.out.print("What would you like to do with relationships? ");
                 
@@ -348,7 +350,17 @@ public class Main
                     {
                         System.out.print("Enter an ID for the relationship: ");
                         ID = console.next();
-                        createRelationship(sourceAdd, destAdd, ID);
+
+                        System.out.print("Please enter Aggregation, Composition, Inheritance, Realiztion: ");
+                        String newType = console.next();
+                        if(newType.equals("Aggregation") || newType.equals("Composition") || newType.equals("Inheritance") || newType.equals("Realization"))
+                            createRelationship(sourceAdd, destAdd, ID, newType);
+                            else
+                            {
+                                System.out.println();
+                                System.out.println("This is not a proper type");
+                                break;
+                            }
                     }
                     break;
                     
@@ -369,6 +381,26 @@ public class Main
                     break;
                     
                     case 3:
+                    System.out.print("Enter the relationship ID: ");
+                    String relID = console.next();
+
+                    if(!relMap.containsKey(relID))
+                    {
+                        System.out.println("There is not a relationship with this ID.");
+    		            break;
+                    }
+                    System.out.print("Please enter: Aggregation, Composition, Inheritance, Realization: ");
+                    String newType = console.next();
+                    if(newType.equals("Aggregation") || newType.equals("Composition") || newType.equals("Inheritance") || newType.equals("Realization"))
+                        changeRelationshipType(relID, newType);
+                        else 
+                        {
+                            System.out.println();
+                            System.out.println("This is not a proper type");
+                            break;
+                        }
+
+                    case 4:
                     break;
 
                     //Default case that sends user back to main menu if a number not on the menu is entered
@@ -606,7 +638,7 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
 
-    public static void createRelationship(String class1, String class2, String ID )
+    public static void createRelationship(String class1, String class2, String ID, String newType)
     {
         //Checks to make sure the relationship is not already created
         if(relMap.containsKey(ID))
@@ -618,7 +650,7 @@ public class Main
         //Create temp classes to be able to create relationship
         Class source = classMap.get(class1);
         Class destination = classMap.get(class2);
-        relMap.put(ID, new Relationships(source, destination, ID)); 
+        relMap.put(ID, new Relationships(source, destination, ID, newType)); 
 	    
 	    System.out.println();
         System.out.print("The relationship has been added!");
@@ -643,6 +675,27 @@ public class Main
         
         System.out.println();
         System.out.print("The relationship has been deleted!");
+        System.out.println();
+    }
+
+//////////////////////////////////////////////////////////
+//
+//	changeRelationshipType
+//
+///////////////////////////////////////////////////////////
+
+    public static void changeRelationshipType(String ID, String newType)
+    {
+        if(newType.equals(relMap.get(ID).relType()))
+        {
+            System.out.println();
+            System.out.println("There is already the type of the relationship.");
+            return;
+        }
+        relMap.get(ID).changeType(newType);
+
+        System.out.println();
+        System.out.print("The relationship type has been changed!");
         System.out.println();
     }
     
@@ -714,12 +767,12 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
     
-    public static Map<String, Class> loadJSON(String filepath) throws IOException, FileNotFoundException {
+    /*public static Map<String, Class> loadJSON(String filepath) throws IOException, FileNotFoundException {
         // added JAR file
     	String file = FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);    	
     	ObjectMapper objectMapper = new ObjectMapper();
     	Map<String, Class> newObj = objectMapper.readValue(file, HashMap.class);
     	classMap = newObj;
     	return newObj;
-    }
+    }*/
 }
