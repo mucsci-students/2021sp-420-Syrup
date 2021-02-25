@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 import org.apache.commons.io.FileUtils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * 
  *
@@ -714,6 +714,7 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
     
+    /*    
     public static Map<String, Class> loadJSON(String filepath) throws IOException, FileNotFoundException {
         // added JAR file
     	String file = FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);    	
@@ -721,5 +722,5 @@ public class Main
     	Map<String, Class> newObj = objectMapper.readValue(file, HashMap.class);
     	classMap = newObj;
     	return newObj;
-    }
+    }*/
 }

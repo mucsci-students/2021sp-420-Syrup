@@ -1,3 +1,5 @@
+package edu.millersville.uml_editor;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -27,7 +29,6 @@ public class UMLGUI implements ActionListener {
         // Buttons
         ///////////////
         JButton classButton = new JButton(new AbstractAction("Class") {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 classPanel();
 
@@ -35,20 +36,17 @@ public class UMLGUI implements ActionListener {
         });
 
         JButton attrButton = new JButton(new AbstractAction("Attribute") {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 attrPanel();
             }
         });
 
         JButton relButton = new JButton(new AbstractAction("Relationship") {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 relPanel();
             }
         });
         JButton printButton = new JButton(new AbstractAction("Print") {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 printPanel();
             }
@@ -87,25 +85,21 @@ public class UMLGUI implements ActionListener {
         // Buttons
         ///////////////
         JButton createClass = new JButton(new AbstractAction("Create a new Class") {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 //implementation needed
             }
         });
         JButton removeClass = new JButton(new AbstractAction("Remove a Class") {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 //implementation needed
             }
         });
         JButton renameClass = new JButton(new AbstractAction("Rename a Class") {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 //implementation needed
             }
         });
         JButton backButton = new JButton(new AbstractAction("<--") {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 menuPanel();
             }
@@ -139,25 +133,21 @@ public class UMLGUI implements ActionListener {
         // Buttons
         ///////////////
         JButton createAttr = new JButton(new AbstractAction("Create a new Attribute") {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 //implementation needed
             }
         });
         JButton removeAttr = new JButton(new AbstractAction("Remove a Attribute") {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 //implementation needed
             }
         });
         JButton renameAttr = new JButton(new AbstractAction("Rename a Attribute") {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 //implementation needed
             }
         });
         JButton backButton = new JButton(new AbstractAction("<--") {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 menuPanel();
             }
@@ -190,25 +180,21 @@ public class UMLGUI implements ActionListener {
         // Buttons
         ///////////////
         JButton createRel = new JButton(new AbstractAction("Create a new Relationship") {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 //implementation needed
             }
         });
         JButton removeRel = new JButton(new AbstractAction("Remove a Relationship") {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 //implementation needed
             }
         });
         JButton changeRelType = new JButton(new AbstractAction("Change a Relationship Type") {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 //implementation needed
             }
         });
         JButton backButton = new JButton(new AbstractAction("<--") {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 menuPanel();
             }
@@ -242,25 +228,21 @@ public class UMLGUI implements ActionListener {
         // Buttons
         ///////////////
         JButton printClasses = new JButton(new AbstractAction("Print Classes") {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 //implementation needed
             }
         });
         JButton printClassesAttr = new JButton(new AbstractAction("Print Classes and Attributes") {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 //implementation needed
             }
         });
         JButton printRel = new JButton(new AbstractAction("Print Relationships") {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 //implementation needed
             }
         });
         JButton backButton = new JButton(new AbstractAction("<--") {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 menuPanel();
 
@@ -315,7 +297,6 @@ public class UMLGUI implements ActionListener {
     }
 
 
-    @Override
     public void actionPerformed(ActionEvent e) {
 
 
