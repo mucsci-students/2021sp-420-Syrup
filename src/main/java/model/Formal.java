@@ -1,4 +1,4 @@
-package edu.millersville.uml_editor;
+package model;
 
 /**
  * Class that creates a formal outline with a name and a type 

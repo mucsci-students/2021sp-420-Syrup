@@ -1,4 +1,4 @@
-package edu.millersville.uml_editor;
+package model;
 
 import java.util.ArrayList;
 /**
