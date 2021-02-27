@@ -1,4 +1,5 @@
 package edu.millersville.uml_editor;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,15 +13,16 @@ public class UMLGUI {
     private JPanel relPanel = null;
     private JPanel printPanel = null;
     private JPanel createClassPanel = null;
-    private JPanel removeClassPanel = null;
+    private JPanel deleteClassPanel = null;
     private JPanel renameClassPanel = null;
     private JPanel createRelPanel = null;
-    private JPanel removeRelPanel = null;
+    private JPanel deleteRelPanel = null;
     private JPanel changeRelTypePanel = null;
     private JPanel createdClassPanel = null;
-    private JPanel removedClassPanel = null;
+    private JPanel deletedClassPanel = null;
     private JPanel renamedClassPanel = null;
     private JPanel dupPanel = null;
+    private JPanel notExistPanel = null;
     
 
     private UMLController controller;
@@ -63,42 +65,6 @@ public class UMLGUI {
         select.setVerticalAlignment(SwingConstants.BOTTOM);
 
         ///////////////
-        // Buttons
-        ///////////////
-        JButton classButton = new JButton(new AbstractAction("Class") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                classPanel();
-
-            }
-        });
-
-        JButton attrButton = new JButton(new AbstractAction("Attribute") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                attrPanel();
-            }
-        });
-
-        JButton relButton = new JButton(new AbstractAction("Relationship") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                relPanel();
-            }
-        });
-        JButton printButton = new JButton(new AbstractAction("Print") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                printPanel();
-            }
-        });
-
-        ///////////////
-        // Panel
-        ///////////////
-        JPanel menuPanel = new JPanel(new GridLayout(8, 1, 8, 8));
-        //adds everything to the panel
-
         // Panel
         ///////////////
         menuPanel = new JPanel(new GridLayout(8, 1, 8, 8));
@@ -110,230 +76,6 @@ public class UMLGUI {
         menuPanel.add(printButton);
         menuPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
 
-        ///////////////
-        // Frame
-        ///////////////
-        changePanel(menuPanel);
-    }
-
-    public static void classPanel() {
-        //Class Page
-        ///////////////
-        // Heading/Labels
-        ///////////////
-        JLabel classLabel = new JLabel("Class Functions:", SwingConstants.CENTER);
-        classLabel.setFont(new Font("Serif", Font.BOLD, 20));
-
-        classLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-
-        ///////////////
-        // Buttons
-        ///////////////
-        JButton createClass = new JButton(new AbstractAction("Create a new Class") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //implementation needed
-            }
-        });
-        JButton removeClass = new JButton(new AbstractAction("Remove a Class") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //implementation needed
-            }
-        });
-        JButton renameClass = new JButton(new AbstractAction("Rename a Class") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //implementation needed
-            }
-        });
-        JButton backButton = new JButton(new AbstractAction("<--") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                menuPanel();
-            }
-        });
-
-        ///////////////
-        // Panel
-        ///////////////
-        classPanel = new JPanel(new GridLayout(8, 1, 8, 8));
-        classPanel.add(classLabel);
-        classPanel.add(createClass);
-        classPanel.add(removeClass);
-        classPanel.add(renameClass);
-        classPanel.add(backButton);
-        classPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
-        changePanel(classPanel);
-
-    }
-
-    public static void attrPanel() {
-        //Attribute Page
-        ///////////////
-        // Heading/Labels
-        ///////////////
-        JLabel attrLabel = new JLabel("Attribute Functions:", SwingConstants.CENTER);
-        attrLabel.setFont(new Font("Serif", Font.BOLD, 20));
-
-        attrLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-
-        ///////////////
-        // Buttons
-        ///////////////
-        JButton createAttr = new JButton(new AbstractAction("Create a new Attribute") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //implementation needed
-            }
-        });
-        JButton removeAttr = new JButton(new AbstractAction("Remove a Attribute") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //implementation needed
-            }
-        });
-        JButton renameAttr = new JButton(new AbstractAction("Rename a Attribute") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //implementation needed
-            }
-        });
-        JButton backButton = new JButton(new AbstractAction("<--") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                menuPanel();
-            }
-        });
-
-        ///////////////
-        // Panel
-        ///////////////
-        attrPanel = new JPanel(new GridLayout(8, 1, 8, 8));
-        attrPanel.add(attrLabel);
-        attrPanel.add(createAttr);
-        attrPanel.add(removeAttr);
-        attrPanel.add(renameAttr);
-        attrPanel.add(backButton);
-        attrPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
-        changePanel(attrPanel);
-    }
-
-    public static void relPanel() {
-        //Relationship Page
-        ///////////////
-        // Heading/Labels
-        ///////////////
-        JLabel relLabel = new JLabel("Relationship Functions:", SwingConstants.CENTER);
-        relLabel.setFont(new Font("Serif", Font.BOLD, 20));
-
-        relLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-
-        ///////////////
-        // Buttons
-        ///////////////
-        JButton createRel = new JButton(new AbstractAction("Create a new Relationship") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //implementation needed
-            }
-        });
-        JButton removeRel = new JButton(new AbstractAction("Remove a Relationship") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //implementation needed
-            }
-        });
-        JButton changeRelType = new JButton(new AbstractAction("Change a Relationship Type") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //implementation needed
-            }
-        });
-        JButton backButton = new JButton(new AbstractAction("<--") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                menuPanel();
-            }
-        });
-
-        ///////////////
-        // Panel
-        ///////////////
-        relPanel = new JPanel(new GridLayout(8, 1, 8, 8));
-        relPanel.add(relLabel);
-        relPanel.add(createRel);
-        relPanel.add(removeRel);
-        relPanel.add(changeRelType);
-        relPanel.add(backButton);
-        relPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
-        changePanel(relPanel);
-
-    }
-
-    public static void printPanel() {
-        //Print Page
-        ///////////////
-        // Heading/Labels
-        ///////////////
-        JLabel printLabel = new JLabel("Print Functions:", SwingConstants.CENTER);
-        printLabel.setFont(new Font("Serif", Font.BOLD, 20));
-
-        printLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-
-        ///////////////
-        // Buttons
-        ///////////////
-        JButton printClasses = new JButton(new AbstractAction("Print Classes") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //implementation needed
-            }
-        });
-        JButton printClassesAttr = new JButton(new AbstractAction("Print Classes and Attributes") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //implementation needed
-            }
-        });
-        JButton printRel = new JButton(new AbstractAction("Print Relationships") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //implementation needed
-            }
-        });
-        JButton backButton = new JButton(new AbstractAction("<--") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                menuPanel();
-
-            }
-        });
-
-        ///////////////
-        // Panel
-        ///////////////
-        printPanel = new JPanel(new GridLayout(8, 1, 8, 8));
-        printPanel.add(printLabel);
-        printPanel.add(printClasses);
-        printPanel.add(printClassesAttr);
-        printPanel.add(printRel);
-        printPanel.add(backButton);
-        printPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
-        changePanel(printPanel);
-    }
-
-    public static void changePanel(JPanel newPanel) {
-        umlEditor.setContentPane(newPanel);
-        umlEditor.validate();
-        umlEditor.repaint();
-    }
-
-    public static void main(String[] args) {
-
-        ///////////////
-        // MENU
-        ///////////////
         changePanel(menuPanel);
     }
 
@@ -343,13 +85,13 @@ public class UMLGUI {
     
         // view
         JButton createClass = new JButton("Create a new Class");
-        JButton removeClass = new JButton("Remove a Class");
+        JButton deleteClass = new JButton("Delete a Class");
         JButton renameClass = new JButton("Rename a Class");
         JButton backButton = new JButton("<--");
 
         //register controller to view
         createClass.addActionListener(controller.getClassPageListener());
-        removeClass.addActionListener(controller.getClassPageListener());
+        deleteClass.addActionListener(controller.getClassPageListener());
         renameClass.addActionListener(controller.getClassPageListener());
         backButton.addActionListener(controller.getClassPageListener());
 
@@ -367,7 +109,7 @@ public class UMLGUI {
         classPanel = new JPanel(new GridLayout(8, 1, 8, 8));
         classPanel.add(classLabel);
         classPanel.add(createClass);
-        classPanel.add(removeClass);
+        classPanel.add(deleteClass);
         classPanel.add(renameClass);
         classPanel.add(backButton);
         classPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
@@ -380,13 +122,13 @@ public class UMLGUI {
 
        //view
         JButton createAttr = new JButton("Create a new Attribute");
-        JButton removeAttr = new JButton("Remove a Attribute");
+        JButton deleteAttr = new JButton("Delete a Attribute");
         JButton renameAttr = new JButton("Rename a Attribute");
         JButton backButton = new JButton("<--");
 
         //register controller to view
         createAttr.addActionListener(controller.getAttrPageListener());
-        removeAttr.addActionListener(controller.getAttrPageListener());
+        deleteAttr.addActionListener(controller.getAttrPageListener());
         renameAttr.addActionListener(controller.getAttrPageListener());
         backButton.addActionListener(controller.getAttrPageListener());
 
@@ -405,7 +147,7 @@ public class UMLGUI {
         attrPanel = new JPanel(new GridLayout(8, 1, 8, 8));
         attrPanel.add(attrLabel);
         attrPanel.add(createAttr);
-        attrPanel.add(removeAttr);
+        attrPanel.add(deleteAttr);
         attrPanel.add(renameAttr);
         attrPanel.add(backButton);
         attrPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
@@ -418,13 +160,13 @@ public class UMLGUI {
 
         //view
         JButton createRel = new JButton("Create a new Relationship");
-        JButton removeRel = new JButton("Remove a Relationship");
+        JButton deleteRel = new JButton("Delete a Relationship");
         JButton changeRelType = new JButton("Change a Relationship Type");
         JButton backButton = new JButton("<--");
 
         //register the controller to view
         createRel.addActionListener(controller.getRelPageListener());
-        removeRel.addActionListener(controller.getRelPageListener());
+        deleteRel.addActionListener(controller.getRelPageListener());
         changeRelType.addActionListener(controller.getRelPageListener());
         backButton.addActionListener(controller.getRelPageListener());
 
@@ -443,7 +185,7 @@ public class UMLGUI {
         relPanel = new JPanel(new GridLayout(8, 1, 8, 8));
         relPanel.add(relLabel);
         relPanel.add(createRel);
-        relPanel.add(removeRel);
+        relPanel.add(deleteRel);
         relPanel.add(changeRelType);
         relPanel.add(backButton);
         relPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
@@ -526,7 +268,7 @@ public class UMLGUI {
     }
     public void createdClassPanel(){
         panelCheck(createdClassPanel);
-        JLabel label = new JLabel("Created the class");
+        JLabel label = new JLabel("The class has been added!");
         createdClassPanel = new JPanel(new GridLayout(8, 1, 8, 8));
 
         JButton backButton = new JButton ("<--");
@@ -538,19 +280,35 @@ public class UMLGUI {
         changePanel(createdClassPanel);
     }
 
-    public void removeClassPanel(){
+    public void deleteClassPanel(){
         //checks to see if the panel was already created
-        panelCheck(removeClassPanel);
+        panelCheck(deleteClassPanel);
 
-        JLabel remove = new JLabel("Delete Class:");
-        remove.setFont(new Font("Serif", Font.BOLD, 16));
+        JLabel delete = new JLabel("Delete Class:");
+        delete.setFont(new Font("Serif", Font.BOLD, 16));
+        
+        JTextField deleteClass = new JTextField();
+        deleteClass.addActionListener(controller.deleteClassCall());
 
-        JTextField removeClass = new JTextField();
-        removeClassPanel = new JPanel(new GridLayout(8, 1, 8, 8));
-        removeClassPanel.add(remove);
-        removeClassPanel.add(removeClass);
-        removeClassPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
-        changePanel(removeClassPanel);
+        deleteClassPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+        deleteClassPanel.add(delete);
+        deleteClassPanel.add(deleteClass);
+        deleteClassPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(deleteClassPanel);
+    }
+    
+    public void deletedClassPanel(){
+        panelCheck(deletedClassPanel);
+        JLabel label = new JLabel("The class has been deleted!");
+        deletedClassPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+
+        JButton backButton = new JButton ("<--");
+        backButton.addActionListener(controller.getClassPageListener());
+
+        deletedClassPanel.add(label);
+        deletedClassPanel.add(backButton);
+        deletedClassPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(deletedClassPanel);
     }
 
     public void renameClassPanel(){
@@ -606,20 +364,20 @@ public class UMLGUI {
         changePanel(createRelPanel);
     }
 
-    public void removeRelPanel(){
+    public void deleteRelPanel(){
         //checks to see if the panel was already created
-        panelCheck(removeRelPanel);
+        panelCheck(deleteRelPanel);
 
         JLabel ID = new JLabel("Enter ID:");
         ID.setFont(new Font("Serif", Font.BOLD, 16));
 
         JTextField IDText = new JTextField();
         
-        removeRelPanel = new JPanel(new GridLayout(8, 1, 8, 8));
-        removeRelPanel.add(ID);
-        removeRelPanel.add(IDText);
-        removeRelPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
-        changePanel(removeRelPanel);
+        deleteRelPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+        deleteRelPanel.add(ID);
+        deleteRelPanel.add(IDText);
+        deleteRelPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(deleteRelPanel);
     }
 
     public void changeRelTypePanel(){
@@ -657,6 +415,21 @@ public class UMLGUI {
         changePanel(dupPanel);
 
     }
+    
+    public void notExistPanel(){
+        panelCheck(notExistPanel);
+        JLabel dup = new JLabel("Class does not exist");
+        notExistPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+
+        JButton backButton = new JButton ("<--");
+        backButton.addActionListener(controller.getClassPageListener());
+
+        notExistPanel.add(dup);
+        notExistPanel.add(backButton);
+        notExistPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(notExistPanel);
+
+    }
 
     public void show() {
         
@@ -671,7 +444,6 @@ public class UMLGUI {
         JMenuItem load = new JMenuItem("Load");
         JMenuItem help = new JMenuItem("Help");
         menu.add(save);
-
 
         //registering the view to controller
         save.addActionListener(controller.getSaveJSON());
@@ -692,17 +464,6 @@ public class UMLGUI {
         umlEditor.setVisible(true);
 
         menuPanel();
-
-    }
-
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-
-    }
-
-}
     }
 
     public static void main(String[] args) {
