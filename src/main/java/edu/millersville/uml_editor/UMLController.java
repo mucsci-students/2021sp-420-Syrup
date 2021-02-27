@@ -3,6 +3,8 @@ package edu.millersville.uml_editor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JLabel;
+
 public class UMLController {
     private UMLGUI gui;
     private UMLModel model;
@@ -129,5 +131,20 @@ public class UMLController {
             }
         };
     }
+
+    public ActionListener createClassCall(){
+        return (ActionEvent e) -> {
+            String className = e.getActionCommand();
+            if(!model.hasClass(className)){
+                model.createNewClass(className);
+                gui.createdClassPanel();
+            }
+            else{
+                gui.dupPanel();
+            }
+        };
+    }
+    
+
 
 }

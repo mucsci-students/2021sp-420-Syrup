@@ -135,7 +135,7 @@ public class Main
                     System.out.print("Enter the new class name: ");
                     String nameAdd = console.next();
 
-                    createNewClass(nameAdd);
+                    model.createNewClass(nameAdd);
                     break;
 
                     //Asks for class name and deletes
@@ -145,7 +145,7 @@ public class Main
                     System.out.print("Enter the class to delete: ");
                     nameDel = console.next();
 
-                    deleteClass(nameDel);
+                    model.deleteClass(nameDel);
                     break;
 
                     //Asks for class name, new class name and renames
@@ -159,7 +159,7 @@ public class Main
                     System.out.print("Enter the new name for the class: ");
                     newName = console.next();
 
-                    renameClass(className, newName);
+                    model.renameClass(className, newName);
                     break;
                     
                     case 4:
@@ -349,7 +349,7 @@ public class Main
                         System.out.print("Please enter Aggregation, Composition, Inheritance, Realiztion: ");
                         String newType = console.next();
                         if(newType.equals("Aggregation") || newType.equals("Composition") || newType.equals("Inheritance") || newType.equals("Realization"))
-                            createRelationship(sourceAdd, destAdd, ID, newType);
+                            model.createRelationship(sourceAdd, destAdd, ID, newType);
                             else
                             {
                                 System.out.println();
@@ -372,7 +372,7 @@ public class Main
     		            break;
                     }
                     //If it does, delete relationship
-                    deleteRelationship(delID);
+                    model.deleteRelationship(delID);
                     break;
                     
                     case 3:
@@ -387,7 +387,7 @@ public class Main
                     System.out.print("Please enter: Aggregation, Composition, Inheritance, Realization: ");
                     String newType = console.next();
                     if(newType.equals("Aggregation") || newType.equals("Composition") || newType.equals("Inheritance") || newType.equals("Realization"))
-                        changeRelationshipType(relID, newType);
+                        model.changeRelationshipType(relID, newType);
                         else 
                         {
                             System.out.println();
@@ -553,145 +553,6 @@ public class Main
                 break;
             }
         }
-    }
- 
-///////////////////////////////////////////////////////////
-//
-//	createClass
-//
-///////////////////////////////////////////////////////////
-
-    public static void createNewClass(String className) 
-    {
-        //Checks if the class already exists
-    	if (model.hasClass(className))
-    	{
-    		System.out.println("There is already a class with that name.");
-    		return;
-    	}
-    	model.getClasses().put(className, new ClassObject(className));
-	    
-	    System.out.println();
-        System.out.print("The class has been added!");
-        System.out.println();
-    }
-  
-///////////////////////////////////////////////////////////
-//
-//	renameClass
-//
-///////////////////////////////////////////////////////////
-  
-    public static void renameClass(String name, String newName)
-    {
-        //Checks if class exists, doesn't exists or if the name is a duplicate
-       	if (model.hasClass(newName))
-    	{
-    		System.out.println("There is a class with the new name.");
-    		return;
-    	}
-        if(!model.hasClass(name))
-        {
-           System.out.println("There is not an existing class with the name: " + name + ".");
-    		return; 
-        }
-        //Rename class but putting into map with new name and removing the old name
-        model.getClasses().put(newName, model.getClassFor(name));
-        model.getClasses().remove(name);
-	    
-	    System.out.println();
-        System.out.print("The class has been renamed!");
-        System.out.println();
-    }
-  
-///////////////////////////////////////////////////////////
-//
-//	deleteClass
-//
-///////////////////////////////////////////////////////////
-
-    public static void deleteClass(String name)
-    {
-        //Checks if class exists
-        if (!model.hasClass(name))
-    	{
-    		System.out.println("There is not a class with that name.");
-    		return;
-    	}
-        //Deletes attributes and the deletes the class
-        model.getClassFor(name).deleteAttributes();
-        model.getClasses().remove(name);
-	    
-	    System.out.println();
-        System.out.print("The class has been deleted!");
-        System.out.println();
-    }
-
-//////////////////////////////////////////////////////////
-//
-//	createRelationship
-//
-///////////////////////////////////////////////////////////
-
-    public static void createRelationship(String class1, String class2, String ID, String newType)
-    {
-        //Checks to make sure the relationship is not already created
-        if(model.getRelationships().containsKey(ID))
-        {
-            System.out.println();
-            System.out.println("This relationship already exists");
-            return;
-        }
-        //Create temp classes to be able to create relationship
-        ClassObject source = model.getClassFor(class1);
-        ClassObject destination = model.getClassFor(class2);
-        model.getRelationships().put(ID, new Relationships(source, destination, ID, newType)); 
-	    
-	    System.out.println();
-        System.out.print("The relationship has been added!");
-        System.out.println();
-    }
-
-//////////////////////////////////////////////////////////
-//
-//	deleteRelationship
-//
-///////////////////////////////////////////////////////////
-
-    public static void deleteRelationship(String ID)
-    {
-        //Checks to see if relationship exists
-        if (!model.getRelationships().containsKey(ID))
-        {
-            System.out.println("There is not a relationship with that ID.");
-            return;
-        }
-        model.getRelationships().remove(ID); 
-        
-        System.out.println();
-        System.out.print("The relationship has been deleted!");
-        System.out.println();
-    }
-
-//////////////////////////////////////////////////////////
-//
-//	changeRelationshipType
-//
-///////////////////////////////////////////////////////////
-
-    public static void changeRelationshipType(String ID, String newType)
-    {
-        if(newType.equals(model.getRelationships().get(ID).relType()))
-        {
-            System.out.println();
-            System.out.println("There is already the type of the relationship.");
-            return;
-        }
-        model.getRelationships().get(ID).changeType(newType);
-
-        System.out.println();
-        System.out.print("The relationship type has been changed!");
-        System.out.println();
     }
     
 ///////////////////////////////////////////////////////////
