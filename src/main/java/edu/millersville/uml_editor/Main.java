@@ -1,5 +1,4 @@
 package edu.millersville.uml_editor;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
