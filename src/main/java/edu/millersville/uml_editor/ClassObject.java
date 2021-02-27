@@ -1,9 +1,8 @@
 package edu.millersville.uml_editor;
 import java.util.*;
 import org.json.JSONObject;
-import edu.millersville.uml_editor.Class;
 
-public class Class 
+public class ClassObject
 {
 	private ArrayList<Attribute> attrArray;
 	private Map<String, Attribute> attrMap = 
@@ -16,7 +15,7 @@ public class Class
 //
 ///////////////////////////////////////////////////////////
 	
-    public Class(String name)
+    public ClassObject(String name)
     {
     	className = name;
         //JSONObject obj = new JSONObject();
