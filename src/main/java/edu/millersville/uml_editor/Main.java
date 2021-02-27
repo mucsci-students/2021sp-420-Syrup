@@ -28,8 +28,8 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
 	
-    private static Map<String, Class> classMap = 
-			new HashMap<String, Class>() {
+    private static Map<String, ClassObject> classMap = 
+			new HashMap<String, ClassObject>() {
 		@Override
 		public java.lang.String toString() {
 	    	StringBuffer s = new StringBuffer();
@@ -229,7 +229,7 @@ public class Main
                     //If it does, prompts for attribute name and adds
                     else
                     {
-                        Class classCall = classMap.get(classAdd);
+                        ClassObject classCall = classMap.get(classAdd);
                         System.out.print("Enter the name of the attribute to add: ");
                         attrAdd = console.next();
                         classCall.addNewAttribute(attrAdd);
@@ -251,7 +251,7 @@ public class Main
                     //If it does, ask for attribute name and delete
                     else 
                     {
-                        Class classCall = classMap.get(classDel);
+                        ClassObject classCall = classMap.get(classDel);
                         System.out.print("Enter the name of the attribute to delete: ");
                         attrDel = console.next();
                         classCall.deleteAttribute(attrDel);
@@ -274,7 +274,7 @@ public class Main
                     //If it does, ask for current and new name for attribute and renames
                     else 
                     {
-                        Class classCall = classMap.get(classRen);
+                        ClassObject classCall = classMap.get(classRen);
                         System.out.print("Enter the current name for the attribute: ");
                         attrOld = console.next();
                         System.out.print("Enter the new name for the attribute: ");
@@ -577,7 +577,7 @@ public class Main
     		System.out.println("There is already a class with that name.");
     		return;
     	}
-    	classMap.put(className, new Class(className));
+    	classMap.put(className, new ClassObject(className));
 	    
 	    System.out.println();
         System.out.print("The class has been added!");
@@ -651,8 +651,8 @@ public class Main
             return;
         }
         //Create temp classes to be able to create relationship
-        Class source = classMap.get(class1);
-        Class destination = classMap.get(class2);
+        ClassObject source = classMap.get(class1);
+        ClassObject destination = classMap.get(class2);
         relMap.put(ID, new Relationships(source, destination, ID, newType)); 
 	    
 	    System.out.println();
@@ -747,7 +747,7 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
 
-    public static void saveJSON(String name, Map<String, Class> map) throws IOException{
+    public static void saveJSON(String name, Map<String, ClassObject> map) throws IOException{
     	//converts map into JSON object
     	String s = map.toString();
     	// writing map to JSON file
