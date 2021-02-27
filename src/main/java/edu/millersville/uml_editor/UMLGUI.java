@@ -24,6 +24,9 @@ public class UMLGUI {
     private JPanel dupPanel = null;
     private JPanel notExistPanel = null;
     
+    private JTextField renameClass;
+    private JTextField newNameClass;
+    
 
     private UMLController controller;
     private UMLModel model;
@@ -254,14 +257,19 @@ public class UMLGUI {
 
         JLabel create = new JLabel("Enter Class:");
         create.setFont(new Font("Serif", Font.BOLD, 16));
+        
 
         JTextField newClass = new JTextField();
         newClass.addActionListener(controller.createClassCall());
+        
+        JButton backButton = new JButton("<--");
+        backButton.addActionListener(controller.getPrintPageListener());
 
 
         createClassPanel = new JPanel(new GridLayout(8, 1, 8, 8));
         createClassPanel.add(create);
         createClassPanel.add(newClass);
+        createClassPanel.add(backButton);
         createClassPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
         changePanel(createClassPanel);
 
@@ -289,10 +297,14 @@ public class UMLGUI {
         
         JTextField deleteClass = new JTextField();
         deleteClass.addActionListener(controller.deleteClassCall());
+        
+        JButton backButton = new JButton("<--");
+        backButton.addActionListener(controller.getPrintPageListener());
 
         deleteClassPanel = new JPanel(new GridLayout(8, 1, 8, 8));
         deleteClassPanel.add(delete);
         deleteClassPanel.add(deleteClass);
+        deleteClassPanel.add(backButton);
         deleteClassPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
         changePanel(deleteClassPanel);
     }
@@ -321,16 +333,50 @@ public class UMLGUI {
         rename.setFont(new Font("Serif", Font.BOLD, 16));
         newName.setFont(new Font("Serif", Font.BOLD, 16));
 
-        JTextField renameClass = new JTextField();
-        JTextField newNameClass = new JTextField();
+        renameClass = new JTextField();
+        newNameClass = new JTextField();
+        
+        JButton renameButton = new JButton("Rename");
+        renameButton.addActionListener(controller.renameClassCall());
+        
+        JButton backButton = new JButton("<--");
+        backButton.addActionListener(controller.getPrintPageListener());
         
         renameClassPanel = new JPanel(new GridLayout(8, 1, 8, 8));
         renameClassPanel.add(rename);
         renameClassPanel.add(renameClass);
         renameClassPanel.add(newName);
         renameClassPanel.add(newNameClass);
+        renameClassPanel.add(renameButton);
+        renameClassPanel.add(backButton);
         renameClassPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
         changePanel(renameClassPanel);
+    }
+    
+    public void renameActionPerformed(ActionEvent e)
+    {
+    	String className = renameClass.getText();
+    	String newClassName = newNameClass.getText();
+    	
+    	if(model.hasClass(className) && !model.hasClass(newClassName))
+    	{
+    		model.renameClass(className, newClassName);
+    		renamedClassPanel();
+    	}
+    }
+    
+    public void renamedClassPanel(){
+        panelCheck(renamedClassPanel);
+        JLabel label = new JLabel("The class has been renamed!");
+        renamedClassPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+
+        JButton backButton = new JButton ("<--");
+        backButton.addActionListener(controller.getClassPageListener());
+
+        renamedClassPanel.add(label);
+        renamedClassPanel.add(backButton);
+        renamedClassPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(renamedClassPanel);
     }
 
     public void createRelPanel(){

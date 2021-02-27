@@ -63,7 +63,7 @@ public class UMLController {
                 case "Create a new Class":
                     gui.createClassPanel();
                     break;
-                case "delete a Class":
+                case "Delete a Class":
                     gui.deleteClassPanel();
                     break;
                 case "Rename a Class":
@@ -81,7 +81,7 @@ public class UMLController {
                 case "Create a new Attribute":
                     //implementation needed
                     break;
-                case "delete a Attribute":
+                case "Delete a Attribute":
                     //implementation needed
                     break;
                 case "Rename a Attribute":
@@ -100,7 +100,7 @@ public class UMLController {
                 case "Create a new Relationship":
                     gui.createRelPanel();
                     break;
-                case "delete a Relationship":
+                case "Delete a Relationship":
                     gui.deleteRelPanel();
                     break;
                 case "Change a Relationship Type":
@@ -159,6 +159,12 @@ public class UMLController {
         };
     }
     
-
-
+    public ActionListener renameClassCall(){
+        return (ActionEvent e) -> {
+            gui.renameActionPerformed(e);
+        };
+    }
+    
+    
+    
 }
