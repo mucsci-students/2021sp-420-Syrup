@@ -4,12 +4,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
-public class UMLGUI implements ActionListener {
-    private static JFrame umlEditor;
-    private static JPanel menuPanel, classPanel, attrPanel, relPanel, printPanel;
-
-    public static void menuPanel() {
 public class UMLGUI {
     private JFrame umlEditor = null;
     private JPanel menuPanel = null;
