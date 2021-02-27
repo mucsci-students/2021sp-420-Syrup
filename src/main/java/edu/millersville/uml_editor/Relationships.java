@@ -1,9 +1,12 @@
 package edu.millersville.uml_editor;
 
+
+import java.util.*;
+
 public class Relationships {
 
-	private ClassObject source;
-	private ClassObject destination;
+	private Class source;
+	private Class destination;
 	private static String ID;
 	private String type;
 
@@ -13,7 +16,7 @@ public class Relationships {
 //
 ///////////////////////////////////////////////////////////
 
-	public Relationships(ClassObject class1, ClassObject class2, String id, String type1) 
+	public Relationships(Class class1, Class class2, String id, String type1) 
 	{
 		source = class1;
 		destination = class2;
