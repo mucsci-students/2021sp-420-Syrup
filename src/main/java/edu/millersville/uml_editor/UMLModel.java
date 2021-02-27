@@ -2,7 +2,7 @@ package edu.millersville.uml_editor;
 
 import java.util.HashMap;
 import java.util.Map;
-
+ 
 
 public class UMLModel {
     private Map<String, ClassObject> classMap;

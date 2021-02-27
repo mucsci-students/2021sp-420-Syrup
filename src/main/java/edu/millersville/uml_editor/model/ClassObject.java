@@ -1,4 +1,4 @@
-package model;
+package edu.millersville.uml_editor.model;
 
 import java.util.*;
 

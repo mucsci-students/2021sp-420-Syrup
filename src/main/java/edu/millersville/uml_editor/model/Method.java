@@ -1,5 +1,4 @@
-package model;
-
+package edu.millersville.uml_editor.model;
 import java.util.ArrayList;
 /**
  * A method has a specific name, a type, and a list of parameters.

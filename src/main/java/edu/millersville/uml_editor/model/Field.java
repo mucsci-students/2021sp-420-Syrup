@@ -1,4 +1,4 @@
-package model;
+package edu.millersville.uml_editor.model;
 
 /** A class that stores a field.
 	 * 
