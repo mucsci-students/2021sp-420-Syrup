@@ -1,3 +1,6 @@
+package edu.millersville.uml_editor;
+ 
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

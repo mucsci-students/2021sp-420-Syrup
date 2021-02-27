@@ -24,5 +24,4 @@ public class Field extends Formal {
 		public String toString() {
 			return getName() + " " + getType();
 		}
-
 }

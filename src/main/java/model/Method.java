@@ -104,6 +104,20 @@ public class Method extends Formal {
 		return false;
 	}
 	
+	public boolean renameParameter(String originalName, String newName) {
+		if(containsParameter(newName)) {
+			return false;
+		}
+		for(Parameter param : parameters) {
+			if(param.getName().equals(originalName)) {
+				param.setName(newName);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
 	/**
 	 * Helper method that returns true if a parameter already exists. 
 	 * If the parameter list exists for the method, then so does the method. 

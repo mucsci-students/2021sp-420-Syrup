@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 /**
  * Class that creates a formal outline with a name and a type 
  * for methods, fields, and parameters.
@@ -45,7 +47,7 @@ public class Formal {
 	}
 	
 	/**
-	 * Getter method that returns the type.
+	 * Mutator method that returns the type.
 	 * @return
 	 * 		Type of the object.
 	 */
@@ -54,11 +56,25 @@ public class Formal {
 	}
 	
 	/**
-	 * Setter method that sets this objects type to a different type.
+	 * Mutator method that sets this objects type to a different type.
 	 * @param newType
 	 * 		The new type of the object.
 	 */
 	public void setType(String newType) {
 		this.type = newType;
+	}
+	
+	/**
+	 * A method to check if there is an instance of another object with the same name 
+	 * since objects cannot have the same names.
+	 * @param name
+	 * 		The name of the object.
+	 */
+	public boolean equals(Object name) {
+		if(name instanceof Formal) {
+			Formal test = (Formal) name;
+			return Objects.equals(this.name, test.name);
+		}
+		return false;
 	}
 }
