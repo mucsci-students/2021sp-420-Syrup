@@ -18,6 +18,10 @@ public class UMLGUI {
     private JPanel createRelPanel = null;
     private JPanel removeRelPanel = null;
     private JPanel changeRelTypePanel = null;
+    private JPanel createdClassPanel = null;
+    private JPanel removedClassPanel = null;
+    private JPanel renamedClassPanel = null;
+    private JPanel dupPanel = null;
     
 
     private UMLController controller;
@@ -251,12 +255,28 @@ public class UMLGUI {
         create.setFont(new Font("Serif", Font.BOLD, 16));
 
         JTextField newClass = new JTextField();
+        newClass.addActionListener(controller.createClassCall());
+
+
         createClassPanel = new JPanel(new GridLayout(8, 1, 8, 8));
         createClassPanel.add(create);
         createClassPanel.add(newClass);
         createClassPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
         changePanel(createClassPanel);
 
+    }
+    public void createdClassPanel(){
+        panelCheck(createdClassPanel);
+        JLabel label = new JLabel("Created the class");
+        createdClassPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+
+        JButton backButton = new JButton ("<--");
+        backButton.addActionListener(controller.getClassPageListener());
+
+        createdClassPanel.add(label);
+        createdClassPanel.add(backButton);
+        createdClassPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(createdClassPanel);
     }
 
     public void removeClassPanel(){
@@ -362,6 +382,21 @@ public class UMLGUI {
        changeRelTypePanel.add(IDText);
        changeRelTypePanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
        changePanel(changeRelTypePanel);
+    }
+
+    public void dupPanel(){
+        panelCheck(dupPanel);
+        JLabel dup = new JLabel("This is a duplicate name");
+        dupPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+
+        JButton backButton = new JButton ("<--");
+        backButton.addActionListener(controller.getClassPageListener());
+
+        dupPanel.add(dup);
+        dupPanel.add(backButton);
+        dupPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(dupPanel);
+
     }
 
     public void show() {
