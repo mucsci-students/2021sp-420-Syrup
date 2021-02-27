@@ -1,13 +1,17 @@
 package edu.millersville.uml_editor;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import javax.lang.model.util.ElementScanner6;
 
 //import org.apache.commons.io.FileUtils;
+
 //import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * 
@@ -21,14 +25,16 @@ public class Main
 //	Private Variables
 //
 ///////////////////////////////////////////////////////////
-
-		public static String jsonFor(UMLModel m) {
-            Map<String, ClassObject> classes = m.getClasses();
+	
+    private static Map<String, ClassObject> classMap = 
+			new HashMap<String, ClassObject>() {
+		@Override
+		public java.lang.String toString() {
 	    	StringBuffer s = new StringBuffer();
 	    	s.append("{");
 	    	s.append(System.lineSeparator());
 	    	boolean firstRow = true;
-	    	for (String key: classes.keySet()) {
+	    	for (String key: classMap.keySet()) {
 	    		if (firstRow) {
 	    			firstRow = false;
 
@@ -38,7 +44,7 @@ public class Main
 	    		s.append("\"" + key + "\" : ");
 	    		s.append("{");
 	    		s.append(System.lineSeparator());
-	    		s.append(classes.get(key).toString());
+	    		s.append(classMap.get(key).toString());
 	    		s.append("}");
 	    	}
 	    	s.append("\n");
@@ -46,8 +52,9 @@ public class Main
 	    	System.out.println(s.toString());
 	    	return s.toString();
 	    }
-
-	private static UMLModel model = new UMLModel();
+	};
+	private static Map<String, Relationships> relMap =
+			new HashMap<String, Relationships>();
 	private static Scanner console = new Scanner(System.in);
 
 ///////////////////////////////////////////////////////////
@@ -134,7 +141,7 @@ public class Main
                     System.out.print("Enter the new class name: ");
                     String nameAdd = console.next();
 
-                    model.createNewClass(nameAdd);
+                    createNewClass(nameAdd);
                     break;
 
                     //Asks for class name and deletes
@@ -144,7 +151,7 @@ public class Main
                     System.out.print("Enter the class to delete: ");
                     nameDel = console.next();
 
-                    model.deleteClass(nameDel);
+                    deleteClass(nameDel);
                     break;
 
                     //Asks for class name, new class name and renames
@@ -158,7 +165,7 @@ public class Main
                     System.out.print("Enter the new name for the class: ");
                     newName = console.next();
 
-                    model.renameClass(className, newName);
+                    renameClass(className, newName);
                     break;
                     
                     case 4:
@@ -212,7 +219,7 @@ public class Main
                     System.out.print("Enter the class name for the attribute: ");
                     classAdd = console.next();
                     //Checks to see if the class name exists
-                    if(!model.hasClass(classAdd))
+                    if(!classMap.containsKey(classAdd))
                     {
                         System.out.println("There is not a class with this name.");
     		            break;
@@ -220,7 +227,7 @@ public class Main
                     //If it does, prompts for attribute name and adds
                     else
                     {
-                        ClassObject classCall = model.getClassFor(classAdd);
+                        ClassObject classCall = classMap.get(classAdd);
                         System.out.print("Enter the name of the attribute to add: ");
                         attrAdd = console.next();
                         classCall.addNewAttribute(attrAdd);
@@ -234,7 +241,7 @@ public class Main
                     System.out.print("Enter the class name for the attribute: ");
                     classDel = console.next();
                     //Checks to see if the class exists
-                    if(!model.hasClass(classDel))
+                    if(!classMap.containsKey(classDel))
                     {
                         System.out.println("There is not a class with this name.");
     		            break;
@@ -242,7 +249,7 @@ public class Main
                     //If it does, ask for attribute name and delete
                     else 
                     {
-                        ClassObject classCall = model.getClassFor(classDel);
+                        ClassObject classCall = classMap.get(classDel);
                         System.out.print("Enter the name of the attribute to delete: ");
                         attrDel = console.next();
                         classCall.deleteAttribute(attrDel);
@@ -257,7 +264,7 @@ public class Main
                     System.out.print("Enter the class for the attribute: ");
                     classRen = console.next();
                     //Checks to see if the class exists
-                    if(!model.hasClass(classRen))
+                    if(!classMap.containsKey(classRen))
                     {
                         System.out.println("There is not a class with this name.");
     		            break;
@@ -265,7 +272,7 @@ public class Main
                     //If it does, ask for current and new name for attribute and renames
                     else 
                     {
-                        ClassObject classCall = model.getClassFor(classRen);
+                        ClassObject classCall = classMap.get(classRen);
                         System.out.print("Enter the current name for the attribute: ");
                         attrOld = console.next();
                         System.out.print("Enter the new name for the attribute: ");
@@ -329,12 +336,12 @@ public class Main
                     System.out.print("Enter the destination of the relationship: ");
                     destAdd = console.next();
                     //If statements that check to see if the classes entered for source and destination exist
-                    if(!model.hasClass(sourceAdd))
+                    if(!classMap.containsKey(sourceAdd))
                     {
                         System.out.println("There is not a class with the source name.");
     		            break;
                     }
-                    else if(!model.hasClass(destAdd))
+                    else if(!classMap.containsKey(destAdd))
                     {
                         System.out.println("There is not a class with the destination name.");
     		            break;
@@ -348,7 +355,7 @@ public class Main
                         System.out.print("Please enter Aggregation, Composition, Inheritance, Realiztion: ");
                         String newType = console.next();
                         if(newType.equals("Aggregation") || newType.equals("Composition") || newType.equals("Inheritance") || newType.equals("Realization"))
-                            model.createRelationship(sourceAdd, destAdd, ID, newType);
+                            createRelationship(sourceAdd, destAdd, ID, newType);
                             else
                             {
                                 System.out.println();
@@ -365,20 +372,20 @@ public class Main
                     System.out.print("Enter the ID of the relationship: ");
                     delID = console.next();
                     //Checks if ID exists
-                    if(!model.getRelationships().containsKey(delID))
+                    if(!relMap.containsKey(delID))
                     {
                         System.out.println("There is not a relationship with this ID.");
     		            break;
                     }
                     //If it does, delete relationship
-                    model.deleteRelationship(delID);
+                    deleteRelationship(delID);
                     break;
                     
                     case 3:
                     System.out.print("Enter the relationship ID: ");
                     String relID = console.next();
 
-                    if(!model.getRelationships().containsKey(relID))
+                    if(!relMap.containsKey(relID))
                     {
                         System.out.println("There is not a relationship with this ID.");
     		            break;
@@ -386,7 +393,7 @@ public class Main
                     System.out.print("Please enter: Aggregation, Composition, Inheritance, Realization: ");
                     String newType = console.next();
                     if(newType.equals("Aggregation") || newType.equals("Composition") || newType.equals("Inheritance") || newType.equals("Realization"))
-                        model.changeRelationshipType(relID, newType);
+                        changeRelationshipType(relID, newType);
                         else 
                         {
                             System.out.println();
@@ -451,7 +458,7 @@ public class Main
                     System.out.print("Enter the class name: ");
                     listAttr = console.next();
                     //Checks to see if the class exists
-                    if(!model.hasClass(listAttr))
+                    if(!classMap.containsKey(listAttr))
                     {
                         System.out.println("There is not a class with this name.");
     		            break;
@@ -462,7 +469,7 @@ public class Main
                         System.out.println();
                         System.out.println("Class Name: " + listAttr);
                         System.out.print("Attributes: ");
-                        model.getClassFor(listAttr).printAttr();
+                        classMap.get(listAttr).printAttr();
                     }
                     break;
 
@@ -488,7 +495,7 @@ public class Main
 		        System.out.println();   
             	System.out.print("Enter filepath (filepath+filename): ");
             	String filename = console.next();
-            	saveJSON(filename, model);
+            	saveJSON(filename, classMap);
             	System.out.println();
             	System.out.println("JSON file saved to: " + filename);
             	break;
@@ -553,6 +560,145 @@ public class Main
             }
         }
     }
+ 
+///////////////////////////////////////////////////////////
+//
+//	createClass
+//
+///////////////////////////////////////////////////////////
+
+    public static void createNewClass(String className) 
+    {
+        //Checks if the class already exists
+    	if (classMap.containsKey(className))
+    	{
+    		System.out.println("There is already a class with that name.");
+    		return;
+    	}
+    	classMap.put(className, new ClassObject(className));
+	    
+	    System.out.println();
+        System.out.print("The class has been added!");
+        System.out.println();
+    }
+  
+///////////////////////////////////////////////////////////
+//
+//	renameClass
+//
+///////////////////////////////////////////////////////////
+  
+    public static void renameClass(String name, String newName)
+    {
+        //Checks if class exists, doesn't exists or if the name is a duplicate
+       	if (classMap.containsKey(newName))
+    	{
+    		System.out.println("There is a class with the new name.");
+    		return;
+    	}
+        if(!classMap.containsKey(name))
+        {
+           System.out.println("There is not an existing class with the name: " + name + ".");
+    		return; 
+        }
+        //Rename class but putting into map with new name and removing the old name
+        classMap.put(newName, classMap.get(name));
+        classMap.remove(name);
+	    
+	    System.out.println();
+        System.out.print("The class has been renamed!");
+        System.out.println();
+    }
+  
+///////////////////////////////////////////////////////////
+//
+//	deleteClass
+//
+///////////////////////////////////////////////////////////
+
+    public static void deleteClass(String name)
+    {
+        //Checks if class exists
+        if (!classMap.containsKey(name))
+    	{
+    		System.out.println("There is not a class with that name.");
+    		return;
+    	}
+        //Deletes attributes and the deletes the class
+        classMap.get(name).deleteAttributes();
+        classMap.remove(name);
+	    
+	    System.out.println();
+        System.out.print("The class has been deleted!");
+        System.out.println();
+    }
+
+//////////////////////////////////////////////////////////
+//
+//	createRelationship
+//
+///////////////////////////////////////////////////////////
+
+    public static void createRelationship(String class1, String class2, String ID, String newType)
+    {
+        //Checks to make sure the relationship is not already created
+        if(relMap.containsKey(ID))
+        {
+            System.out.println();
+            System.out.println("This relationship already exists");
+            return;
+        }
+        //Create temp classes to be able to create relationship
+        ClassObject source = classMap.get(class1);
+        ClassObject destination = classMap.get(class2);
+        relMap.put(ID, new Relationships(source, destination, ID, newType)); 
+	    
+	    System.out.println();
+        System.out.print("The relationship has been added!");
+        System.out.println();
+    }
+
+//////////////////////////////////////////////////////////
+//
+//	deleteRelationship
+//
+///////////////////////////////////////////////////////////
+
+    public static void deleteRelationship(String ID)
+    {
+        //Checks to see if relationship exists
+        if (!relMap.containsKey(ID))
+        {
+            System.out.println("There is not a relationship with that ID.");
+            return;
+        }
+        relMap.remove(ID); 
+        
+        System.out.println();
+        System.out.print("The relationship has been deleted!");
+        System.out.println();
+    }
+
+//////////////////////////////////////////////////////////
+//
+//	changeRelationshipType
+//
+///////////////////////////////////////////////////////////
+
+    public static void changeRelationshipType(String ID, String newType)
+    {
+        if(newType.equals(relMap.get(ID).relType()))
+        {
+            System.out.println();
+            System.out.println("There is already the type of the relationship.");
+            return;
+        }
+        relMap.get(ID).changeType(newType);
+
+        System.out.println();
+        System.out.print("The relationship type has been changed!");
+        System.out.println();
+    }
     
 ///////////////////////////////////////////////////////////
 //
@@ -564,12 +710,12 @@ public class Main
     {
         System.out.println("Class Name: " + className);  
         System.out.print("Attributes: ");
-        model.getClassFor(className).printAttr();
+        classMap.get(className).printAttr();
     }
 
     public static void printClasses() 
     {
-        for (String key : model.getClasses().keySet()) 
+        for (String key : classMap.keySet()) 
     	{
             printClass(key);
     	}
@@ -583,10 +729,10 @@ public class Main
 
 	public static void listRelationships()	
     {
-		for (String key : model.getRelationships().keySet())
+		for (String key : relMap.keySet())
 		{
 			System.out.print(key + ": ");
-			System.out.println(model.getRelationships().get(key).sourceName() + ", " + model.getRelationships().get(key).destinationName());
+			System.out.println(relMap.get(key).sourceName() + ", " + relMap.get(key).destinationName());
 		}
 	}
 	
@@ -594,14 +740,14 @@ public class Main
 //
 //	saveJSON(String, Map<String, Class>)
 //
-//	function that creates and saves model.getClasses() to a JSON file using 
-//	a prompted file name and the model.getClasses().
+//	function that creates and saves classMap to a JSON file using 
+//	a prompted file name and the classMap.
 //
 ///////////////////////////////////////////////////////////
 
-    public static void saveJSON(String name, UMLModel model) throws IOException{
+    public static void saveJSON(String name, Map<String, ClassObject> map) throws IOException{
     	//converts map into JSON object
-    	String s = jsonFor(model);
+    	String s = map.toString();
     	// writing map to JSON file
     	try {
     		FileWriter file = new FileWriter(name);
@@ -622,13 +768,12 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
     
-
     /*public static Map<String, Class> loadJSON(String filepath) throws IOException, FileNotFoundException {
         // added JAR file
     	String file = FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);    	
     	ObjectMapper objectMapper = new ObjectMapper();
     	Map<String, Class> newObj = objectMapper.readValue(file, HashMap.class);
-    	model.getClasses() = newObj;
+    	classMap = newObj;
     	return newObj;
     }*/
 }

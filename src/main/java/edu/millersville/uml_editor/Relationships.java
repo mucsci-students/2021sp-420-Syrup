@@ -1,6 +1,9 @@
 package edu.millersville.uml_editor;
 import java.util.*;
 
+
+import java.util.*;
+
 public class Relationships {
 
 	private ClassObject source;
