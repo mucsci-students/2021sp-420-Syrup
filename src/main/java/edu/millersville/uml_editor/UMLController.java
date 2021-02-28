@@ -184,7 +184,10 @@ public class UMLController {
         };
     }
     
-    
-    
+    public ActionListener changeTypeCall(){
+        return (ActionEvent e) -> {
+            gui.changeRelTypeAction(e);
+        };
+    }
     
 }

@@ -18,6 +18,7 @@ public class UMLGUI {
     private JPanel createRelPanel = null;
     private JPanel deleteRelPanel = null;
     private JPanel changeRelTypePanel = null;
+    private JPanel changedRelTypePanel = null;
     private JPanel createdClassPanel = null;
     private JPanel deletedClassPanel = null;
     private JPanel renamedClassPanel = null;
@@ -30,8 +31,7 @@ public class UMLGUI {
     private JTextField textBox1;
     private JTextField textBox2;
     private JTextField textBox3;
-    private JTextField textBox4;
-    
+    private JTextField textBox4;    
 
     private UMLController controller;
     private UMLModel model;
@@ -555,11 +555,13 @@ public class UMLGUI {
         JTextField IDText = new JTextField();
         IDText.addActionListener(controller.deleteRelCall());
 
-        
+        JButton backButton = new JButton("<--");
+        backButton.addActionListener(controller.getPrintPageListener());
         
         deleteRelPanel = new JPanel(new GridLayout(8, 1, 8, 8));
         deleteRelPanel.add(ID);
         deleteRelPanel.add(IDText);
+        deleteRelPanel.add(backButton);
         deleteRelPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
         changePanel(deleteRelPanel);
     }
@@ -589,21 +591,66 @@ public class UMLGUI {
         //checks to see if the panel was already created
         panelCheck(changeRelTypePanel);
 
+        
+        JLabel ID = new JLabel("Enter ID:");
+        ID.setFont(new Font("Serif", Font.BOLD, 16));
+        
         JLabel type = new JLabel("Enter New Type:");
         type.setFont(new Font("Serif", Font.BOLD, 16));
-        JLabel ID = new JLabel("Enter ID:");
-        type.setFont(new Font("Serif", Font.BOLD, 16));
 
-        JTextField typeText = new JTextField();
-        JTextField IDText = new JTextField();
+        textBox1 = new JTextField();
+        textBox2 = new JTextField();
+        
+        JButton changeButton = new JButton("Change");
+        changeButton.addActionListener(controller.changeTypeCall());
+        
+        JButton backButton = new JButton("<--");
+        backButton.addActionListener(controller.getPrintPageListener());
         
        changeRelTypePanel = new JPanel(new GridLayout(8, 1, 8, 8));
-       changeRelTypePanel.add(type);
-       changeRelTypePanel.add(typeText);
        changeRelTypePanel.add(ID);
-       changeRelTypePanel.add(IDText);
+       changeRelTypePanel.add(textBox1);
+       
+       changeRelTypePanel.add(type);
+       changeRelTypePanel.add(textBox2);
+       
+       changeRelTypePanel.add(changeButton);
+       changeRelTypePanel.add(backButton);
+       
        changeRelTypePanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
        changePanel(changeRelTypePanel);
+    }
+    
+    // changed Relationship Action 
+    public void changeRelTypeAction(ActionEvent e)
+    {
+    	String ID = textBox1.getText();
+    	String type = textBox2.getText();
+    	
+    	if (!model.hasRelID(ID))
+    		noIDPanel();
+    	else if (!type.equals("A") && !type.equals("C") && !type.equals("I") && !type.equals("R"))
+    		notTypePanel();
+    	else
+    	{
+    		model.changeRelationshipType(ID, type);
+			changedRelTypePanel();
+    	}
+    }
+    
+    // Changed Type Panel
+    public void changedRelTypePanel(){
+        panelCheck(changedRelTypePanel);
+        JLabel label = new JLabel("The type has been changed!");
+        changedRelTypePanel = new JPanel(new GridLayout(8, 1, 8, 8));
+
+        JButton backButton = new JButton ("<--");
+        backButton.addActionListener(controller.getClassPageListener());
+
+        changedRelTypePanel.add(label);
+        changedRelTypePanel.add(backButton);
+        changedRelTypePanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(changedRelTypePanel);
     }
 
     //////////////////////////////////////////////////////////
