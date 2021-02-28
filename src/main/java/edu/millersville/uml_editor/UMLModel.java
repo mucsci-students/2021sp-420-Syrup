@@ -28,6 +28,10 @@ public class UMLModel {
     public ClassObject getClassFor(String className) {
         return classMap.get(className);
     }
+    
+    public boolean hasRelID(String ID) {
+    	return relMap.containsKey(ID);
+    }
 
     ///////////////////////////////////////////////////////////
     //
