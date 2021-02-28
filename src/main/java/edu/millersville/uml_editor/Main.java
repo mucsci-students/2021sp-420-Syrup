@@ -20,11 +20,18 @@ import javax.lang.model.util.ElementScanner6;
 public class Main 
 {
 
+
 ///////////////////////////////////////////////////////////
 //
 //	Private Variables
 //
 ///////////////////////////////////////////////////////////
+    private static UMLController controller;
+    private static UMLModel model;
+    public Main(UMLModel m) {
+        this.model = m;
+        this.controller = null;
+    }
 	
     private static Map<String, ClassObject> classMap = 
 			new HashMap<String, ClassObject>() {
@@ -141,7 +148,8 @@ public class Main
                     System.out.print("Enter the new class name: ");
                     String nameAdd = console.next();
 
-                    createNewClass(nameAdd);
+
+                    createNewClassCLI(nameAdd);
                     break;
 
                     //Asks for class name and deletes
@@ -567,7 +575,7 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
 
-    public static void createNewClass(String className) 
+    public static void createNewClassCLI(String className) 
     {
         //Checks if the class already exists
     	if (classMap.containsKey(className))

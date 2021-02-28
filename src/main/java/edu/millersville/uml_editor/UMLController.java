@@ -29,6 +29,7 @@ public class UMLController {
             }
             
         };
+        
     }
     public ActionListener getHelp(){
         return(ActionEvent e) -> {
@@ -136,7 +137,7 @@ public class UMLController {
         return (ActionEvent e) -> {
             String className = e.getActionCommand();
             if(!model.hasClass(className)){
-                model.createNewClass(className);
+                model.createNewClassGUI(className);
                 gui.createdClassPanel();
             }
             else{
@@ -150,7 +151,7 @@ public class UMLController {
         return (ActionEvent e) -> {
             String className = e.getActionCommand();
             if(model.hasClass(className)){
-                model.deleteClass(className);
+                model.deleteClassGUI(className);
                 gui.deletedClassPanel();
             }
             else{
@@ -175,7 +176,7 @@ public class UMLController {
         return (ActionEvent e) -> {
         	String ID = e.getActionCommand();
             if(model.hasRelID(ID)){
-                model.deleteRelationship(ID);
+                model.deleteRelationshipGUI(ID);
                 gui.deletedRelPanel();
             }
             else{

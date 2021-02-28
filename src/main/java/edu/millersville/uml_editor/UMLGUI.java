@@ -426,7 +426,7 @@ public class UMLGUI {
     	
     	if(model.hasClass(className) && !model.hasClass(newClassName))
     	{
-    		model.renameClass(className, newClassName);
+    		model.renameClassGUI(className, newClassName);
     		renamedClassPanel();
     	}
     }
@@ -517,7 +517,7 @@ public class UMLGUI {
     		notTypePanel();
     	else
     	{
-    		model.createRelationship(sourceClass, destClass, ID, type);
+    		model.createRelationshipGUI(sourceClass, destClass, ID, type);
 			createdRelPanel();
     	}
     	
@@ -633,7 +633,7 @@ public class UMLGUI {
     		notTypePanel();
     	else
     	{
-    		model.changeRelationshipType(ID, type);
+    		model.changeRelationshipTypeGUI(ID, type);
 			changedRelTypePanel();
     	}
     }

@@ -38,19 +38,11 @@ public class UMLModel {
     //	createNewClass
     //
     ///////////////////////////////////////////////////////////
-    public void createNewClass(String className) 
+    public void createNewClassGUI(String className) 
     {
-        //Checks if the class already exists
-    	if (hasClass(className))
-    	{
-    		System.out.println("There is already a class with that name.");
-    		return;
-    	}
+        
     	getClasses().put(className, new ClassObject(className));
 	    
-	    System.out.println();
-        System.out.print("The class has been added!");
-        System.out.println();
     }
     
     ///////////////////////////////////////////////////////////
@@ -59,26 +51,11 @@ public class UMLModel {
     //
     ///////////////////////////////////////////////////////////
   
-    public void renameClass(String name, String newName)
+    public void renameClassGUI(String name, String newName)
     {
-        //Checks if class exists, doesn't exists or if the name is a duplicate
-        if (hasClass(newName))
-        {
-            System.out.println("There is a class with the new name.");
-            return;
-        }
-        if(!hasClass(name))
-        {
-        System.out.println("There is not an existing class with the name: " + name + ".");
-            return; 
-        }
         //Rename class but putting into map with new name and removing the old name
         getClasses().put(newName, getClassFor(name));
         getClasses().remove(name);
-        
-        System.out.println();
-        System.out.print("The class has been renamed!");
-        System.out.println();
     }
 
     ///////////////////////////////////////////////////////////
@@ -87,21 +64,12 @@ public class UMLModel {
     //
     ///////////////////////////////////////////////////////////
 
-    public void deleteClass(String name)
+    public void deleteClassGUI(String name)
     {
-        //Checks if class exists
-        if (!hasClass(name))
-        {
-            System.out.println("There is not a class with that name.");
-            return;
-        }
         //Deletes attributes and the deletes the class
         getClassFor(name).deleteAttributes();
         getClasses().remove(name);
         
-        System.out.println();
-        System.out.print("The class has been deleted!");
-        System.out.println();
     }
     
     //////////////////////////////////////////////////////////
@@ -110,23 +78,12 @@ public class UMLModel {
     //
     ///////////////////////////////////////////////////////////
 
-    public void createRelationship(String class1, String class2, String ID, String newType)
+    public void createRelationshipGUI(String class1, String class2, String ID, String newType)
     {
-        //Checks to make sure the relationship is not already created
-        if(getRelationships().containsKey(ID))
-        {
-            System.out.println();
-            System.out.println("This relationship already exists");
-            return;
-        }
         //Create temp classes to be able to create relationship
         ClassObject source = getClassFor(class1);
         ClassObject destination = getClassFor(class2);
         getRelationships().put(ID, new Relationships(source, destination, ID, newType)); 
-        
-        System.out.println();
-        System.out.print("The relationship has been added!");
-        System.out.println();
     }
 
     //////////////////////////////////////////////////////////
@@ -135,19 +92,9 @@ public class UMLModel {
     //
     ///////////////////////////////////////////////////////////
 
-    public void deleteRelationship(String ID)
+    public void deleteRelationshipGUI(String ID)
     {
-        //Checks to see if relationship exists
-        if (!getRelationships().containsKey(ID))
-        {
-            System.out.println("There is not a relationship with that ID.");
-            return;
-        }
         getRelationships().remove(ID); 
-        
-        System.out.println();
-        System.out.print("The relationship has been deleted!");
-        System.out.println();
     }
 
     //////////////////////////////////////////////////////////
@@ -156,21 +103,8 @@ public class UMLModel {
     //
     ///////////////////////////////////////////////////////////
 
-    public void changeRelationshipType(String ID, String newType)
+    public void changeRelationshipTypeGUI(String ID, String newType)
     {
-        if(newType.equals(getRelationships().get(ID).relType()))
-        {
-            System.out.println();
-            System.out.println("There is already the type of the relationship.");
-            return;
-        }
         getRelationships().get(ID).changeType(newType);
-
-        System.out.println();
-        System.out.print("The relationship type has been changed!");
-        System.out.println();
     }
-    
-    
-
 }
