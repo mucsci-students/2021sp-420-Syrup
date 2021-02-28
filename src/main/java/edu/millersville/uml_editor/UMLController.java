@@ -165,6 +165,29 @@ public class UMLController {
         };
     }
     
+    public ActionListener createRelCall(){
+        return (ActionEvent e) -> {
+            gui.createRelAction(e);
+        };
+    }
     
+    public ActionListener deleteRelCall(){
+        return (ActionEvent e) -> {
+        	String ID = e.getActionCommand();
+            if(model.hasRelID(ID)){
+                model.deleteRelationship(ID);
+                gui.deletedRelPanel();
+            }
+            else{
+                gui.noIDPanel();
+            }
+        };
+    }
+    
+    public ActionListener changeTypeCall(){
+        return (ActionEvent e) -> {
+            gui.changeRelTypeAction(e);
+        };
+    }
     
 }

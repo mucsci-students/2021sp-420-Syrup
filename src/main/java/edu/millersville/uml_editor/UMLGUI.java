@@ -18,15 +18,20 @@ public class UMLGUI {
     private JPanel createRelPanel = null;
     private JPanel deleteRelPanel = null;
     private JPanel changeRelTypePanel = null;
+    private JPanel changedRelTypePanel = null;
     private JPanel createdClassPanel = null;
     private JPanel deletedClassPanel = null;
     private JPanel renamedClassPanel = null;
     private JPanel dupPanel = null;
     private JPanel notExistPanel = null;
+    private JPanel notType = null;
+    private JPanel hasID = null;
+    private JPanel noID = null;
     
-    private JTextField renameClass;
-    private JTextField newNameClass;
-    
+    private JTextField textBox1;
+    private JTextField textBox2;
+    private JTextField textBox3;
+    private JTextField textBox4;    
 
     private UMLController controller;
     private UMLModel model;
@@ -36,6 +41,12 @@ public class UMLGUI {
         this.controller = null;
     }
 
+    
+    //////////////////////////////////////////////////////////
+    //
+    //	menuPanel
+    //
+    ///////////////////////////////////////////////////////////
     public void menuPanel() {
        //checks to see if the panel was already created
        panelCheck(menuPanel);
@@ -82,6 +93,12 @@ public class UMLGUI {
         changePanel(menuPanel);
     }
 
+    //////////////////////////////////////////////////////////
+    //
+    //	classPanel
+    //
+    ///////////////////////////////////////////////////////////
+    
     public void classPanel() {
         //checks to see if the panel was already created
         panelCheck(classPanel);
@@ -119,7 +136,13 @@ public class UMLGUI {
         changePanel(classPanel);
     }
 
-    public  void attrPanel() {
+    //////////////////////////////////////////////////////////
+    //
+    //	attrPanel
+    //
+    ///////////////////////////////////////////////////////////
+    
+    public void attrPanel() {
        //checks to see if the panel was already created
        panelCheck(attrPanel);
 
@@ -157,6 +180,12 @@ public class UMLGUI {
         changePanel(attrPanel);
     }
 
+    //////////////////////////////////////////////////////////
+    //
+    //	relPanel
+    //
+    ///////////////////////////////////////////////////////////
+    
     public void relPanel() {
         //checks to see if the panel was already created
         panelCheck(classPanel);
@@ -195,6 +224,12 @@ public class UMLGUI {
         changePanel(relPanel);
     }
 
+    //////////////////////////////////////////////////////////
+    //
+    //	printPanel
+    //
+    ///////////////////////////////////////////////////////////
+    
     public  void printPanel() {
         //checks to see if the panel was already created
         panelCheck(printPanel);
@@ -234,6 +269,12 @@ public class UMLGUI {
         changePanel(printPanel);
     }
 
+    //////////////////////////////////////////////////////////
+    //
+    //	changePanel
+    //
+    ///////////////////////////////////////////////////////////
+    
     public void changePanel(JPanel newPanel) {
         umlEditor.setContentPane(newPanel);
         umlEditor.validate();
@@ -250,7 +291,14 @@ public class UMLGUI {
             return;
         }
     }
+    
+    //////////////////////////////////////////////////////////
+    //
+    //	Create Class Panels
+    //
+    ///////////////////////////////////////////////////////////
 
+    // Create Panel
     public void createClassPanel(){
         //checks to see if the panel was already created
         panelCheck(createClassPanel);
@@ -274,6 +322,8 @@ public class UMLGUI {
         changePanel(createClassPanel);
 
     }
+    
+    // Created Panel
     public void createdClassPanel(){
         panelCheck(createdClassPanel);
         JLabel label = new JLabel("The class has been added!");
@@ -288,6 +338,13 @@ public class UMLGUI {
         changePanel(createdClassPanel);
     }
 
+    //////////////////////////////////////////////////////////
+    //
+    //	Delete Class Panels
+    //
+    ///////////////////////////////////////////////////////////
+    
+    // Delete Panel
     public void deleteClassPanel(){
         //checks to see if the panel was already created
         panelCheck(deleteClassPanel);
@@ -309,6 +366,7 @@ public class UMLGUI {
         changePanel(deleteClassPanel);
     }
     
+    // Deleted Panel
     public void deletedClassPanel(){
         panelCheck(deletedClassPanel);
         JLabel label = new JLabel("The class has been deleted!");
@@ -323,6 +381,13 @@ public class UMLGUI {
         changePanel(deletedClassPanel);
     }
 
+    //////////////////////////////////////////////////////////
+    //
+    //	Rename Class Panels
+    //
+    ///////////////////////////////////////////////////////////
+    
+    // Renamed Panel
     public void renameClassPanel(){
         //checks to see if the panel was already created
         panelCheck(renameClassPanel);
@@ -333,8 +398,8 @@ public class UMLGUI {
         rename.setFont(new Font("Serif", Font.BOLD, 16));
         newName.setFont(new Font("Serif", Font.BOLD, 16));
 
-        renameClass = new JTextField();
-        newNameClass = new JTextField();
+        textBox1 = new JTextField();
+        textBox2 = new JTextField();
         
         JButton renameButton = new JButton("Rename");
         renameButton.addActionListener(controller.renameClassCall());
@@ -344,19 +409,20 @@ public class UMLGUI {
         
         renameClassPanel = new JPanel(new GridLayout(8, 1, 8, 8));
         renameClassPanel.add(rename);
-        renameClassPanel.add(renameClass);
+        renameClassPanel.add(textBox1);
         renameClassPanel.add(newName);
-        renameClassPanel.add(newNameClass);
+        renameClassPanel.add(textBox2);
         renameClassPanel.add(renameButton);
         renameClassPanel.add(backButton);
         renameClassPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
         changePanel(renameClassPanel);
     }
     
+    // Renamed Action 
     public void renameActionPerformed(ActionEvent e)
     {
-    	String className = renameClass.getText();
-    	String newClassName = newNameClass.getText();
+    	String className = textBox1.getText();
+    	String newClassName = textBox2.getText();
     	
     	if(model.hasClass(className) && !model.hasClass(newClassName))
     	{
@@ -365,6 +431,7 @@ public class UMLGUI {
     	}
     }
     
+    // Renamed Panel
     public void renamedClassPanel(){
         panelCheck(renamedClassPanel);
         JLabel label = new JLabel("The class has been renamed!");
@@ -379,37 +446,105 @@ public class UMLGUI {
         changePanel(renamedClassPanel);
     }
 
+    //////////////////////////////////////////////////////////
+    //
+    //	Create Relationship Panels
+    //
+    ///////////////////////////////////////////////////////////
+    
+    // Create Panel
     public void createRelPanel(){
         //checks to see if the panel was already created
         panelCheck(createRelPanel);
-
-        JLabel type = new JLabel("Enter Type:");
-        type.setFont(new Font("Serif", Font.BOLD, 16));
+        
+        JLabel ID = new JLabel("Enter ID:");
+        ID.setFont(new Font("Serif", Font.BOLD, 16));
+        
         JLabel source = new JLabel("Enter Source:");
-        type.setFont(new Font("Serif", Font.BOLD, 16));
+        source.setFont(new Font("Serif", Font.BOLD, 16));
         JLabel dest = new JLabel("Enter Destination:");
+        dest.setFont(new Font("Serif", Font.BOLD, 16));
+        
+        JLabel type = new JLabel("Enter Type: (A, C, I, R)");
         type.setFont(new Font("Serif", Font.BOLD, 16));
-        JLabel ID = new JLabel("Enter Destination:");
-        type.setFont(new Font("Serif", Font.BOLD, 16));
+        
+        JButton createButton = new JButton("Create");
+        createButton.addActionListener(controller.createRelCall());
+        
+        JButton backButton = new JButton ("<--");
+        backButton.addActionListener(controller.getClassPageListener());
 
-        JTextField typeText = new JTextField();
-        JTextField sourceText = new JTextField();
-        JTextField destText = new JTextField();
-        JTextField IDText = new JTextField();
+        textBox1 = new JTextField();
+        textBox2 = new JTextField();
+        textBox3 = new JTextField();
+        textBox4 = new JTextField();
+        
 
         createRelPanel = new JPanel(new GridLayout(8, 1, 8, 8));
-        createRelPanel.add(type);
-        createRelPanel.add(typeText);
-        createRelPanel.add(source);
-        createRelPanel.add(sourceText);
-        createRelPanel.add(dest);
-        createRelPanel.add(destText);
+        
+        
         createRelPanel.add(ID);
-        createRelPanel.add(IDText);
+        createRelPanel.add(textBox1);
+        
+        createRelPanel.add(source);
+        createRelPanel.add(textBox2);
+        
+        createRelPanel.add(dest);
+        createRelPanel.add(textBox3);
+        
+        createRelPanel.add(type);
+        createRelPanel.add(textBox4);
+        
+        createRelPanel.add(createButton);
+        createRelPanel.add(backButton);
         createRelPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
         changePanel(createRelPanel);
     }
+    
+    // Rel Action
+    public void createRelAction(ActionEvent e)
+    {
+    	String ID = textBox1.getText();
+    	String sourceClass = textBox2.getText();
+    	String destClass = textBox3.getText();
+    	String type = textBox4.getText();
+    	
+    	if (!model.hasClass(sourceClass) || !model.hasClass(destClass))
+    		notExistPanel();
+    	else if (model.hasRelID(ID))
+    		hasIDPanel();
+    	else if (!type.equals("A") && !type.equals("C") && !type.equals("I") && !type.equals("R"))
+    		notTypePanel();
+    	else
+    	{
+    		model.createRelationship(sourceClass, destClass, ID, type);
+			createdRelPanel();
+    	}
+    	
+    }
+    
+    // Created Panel
+    public void createdRelPanel(){
+        panelCheck(renamedClassPanel);
+        JLabel label = new JLabel("The relationship has been added!");
+        renamedClassPanel = new JPanel(new GridLayout(8, 1, 8, 8));
 
+        JButton backButton = new JButton ("<--");
+        backButton.addActionListener(controller.getClassPageListener());
+
+        renamedClassPanel.add(label);
+        renamedClassPanel.add(backButton);
+        renamedClassPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(renamedClassPanel);
+    }
+
+    //////////////////////////////////////////////////////////
+    //
+    //	Delete Relationship Panels
+    //
+    ///////////////////////////////////////////////////////////
+    
+    // Delete Panel
     public void deleteRelPanel(){
         //checks to see if the panel was already created
         panelCheck(deleteRelPanel);
@@ -418,35 +553,113 @@ public class UMLGUI {
         ID.setFont(new Font("Serif", Font.BOLD, 16));
 
         JTextField IDText = new JTextField();
+        IDText.addActionListener(controller.deleteRelCall());
+
+        JButton backButton = new JButton("<--");
+        backButton.addActionListener(controller.getPrintPageListener());
         
         deleteRelPanel = new JPanel(new GridLayout(8, 1, 8, 8));
         deleteRelPanel.add(ID);
         deleteRelPanel.add(IDText);
+        deleteRelPanel.add(backButton);
         deleteRelPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
         changePanel(deleteRelPanel);
     }
+    
+    // Created Panel
+    public void deletedRelPanel(){
+        panelCheck(renamedClassPanel);
+        JLabel label = new JLabel("The relationship has been deleted!");
+        renamedClassPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+
+        JButton backButton = new JButton ("<--");
+        backButton.addActionListener(controller.getClassPageListener());
+
+        renamedClassPanel.add(label);
+        renamedClassPanel.add(backButton);
+        renamedClassPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(renamedClassPanel);
+    }
+    
+    //////////////////////////////////////////////////////////
+    //
+    //	Change Relationship Type Panels
+    //
+    ///////////////////////////////////////////////////////////
 
     public void changeRelTypePanel(){
         //checks to see if the panel was already created
         panelCheck(changeRelTypePanel);
 
+        
+        JLabel ID = new JLabel("Enter ID:");
+        ID.setFont(new Font("Serif", Font.BOLD, 16));
+        
         JLabel type = new JLabel("Enter New Type:");
         type.setFont(new Font("Serif", Font.BOLD, 16));
-        JLabel ID = new JLabel("Enter ID:");
-        type.setFont(new Font("Serif", Font.BOLD, 16));
 
-        JTextField typeText = new JTextField();
-        JTextField IDText = new JTextField();
+        textBox1 = new JTextField();
+        textBox2 = new JTextField();
+        
+        JButton changeButton = new JButton("Change");
+        changeButton.addActionListener(controller.changeTypeCall());
+        
+        JButton backButton = new JButton("<--");
+        backButton.addActionListener(controller.getPrintPageListener());
         
        changeRelTypePanel = new JPanel(new GridLayout(8, 1, 8, 8));
-       changeRelTypePanel.add(type);
-       changeRelTypePanel.add(typeText);
        changeRelTypePanel.add(ID);
-       changeRelTypePanel.add(IDText);
+       changeRelTypePanel.add(textBox1);
+       
+       changeRelTypePanel.add(type);
+       changeRelTypePanel.add(textBox2);
+       
+       changeRelTypePanel.add(changeButton);
+       changeRelTypePanel.add(backButton);
+       
        changeRelTypePanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
        changePanel(changeRelTypePanel);
     }
+    
+    // changed Relationship Action 
+    public void changeRelTypeAction(ActionEvent e)
+    {
+    	String ID = textBox1.getText();
+    	String type = textBox2.getText();
+    	
+    	if (!model.hasRelID(ID))
+    		noIDPanel();
+    	else if (!type.equals("A") && !type.equals("C") && !type.equals("I") && !type.equals("R"))
+    		notTypePanel();
+    	else
+    	{
+    		model.changeRelationshipType(ID, type);
+			changedRelTypePanel();
+    	}
+    }
+    
+    // Changed Type Panel
+    public void changedRelTypePanel(){
+        panelCheck(changedRelTypePanel);
+        JLabel label = new JLabel("The type has been changed!");
+        changedRelTypePanel = new JPanel(new GridLayout(8, 1, 8, 8));
 
+        JButton backButton = new JButton ("<--");
+        backButton.addActionListener(controller.getClassPageListener());
+
+        changedRelTypePanel.add(label);
+        changedRelTypePanel.add(backButton);
+        changedRelTypePanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(changedRelTypePanel);
+    }
+
+    //////////////////////////////////////////////////////////
+    //
+    //	Error Panels
+    //
+    ///////////////////////////////////////////////////////////
+    
+    // Duplicate Error
     public void dupPanel(){
         panelCheck(dupPanel);
         JLabel dup = new JLabel("This is a duplicate name");
@@ -462,9 +675,10 @@ public class UMLGUI {
 
     }
     
+    // Not Exist Error
     public void notExistPanel(){
         panelCheck(notExistPanel);
-        JLabel dup = new JLabel("Class does not exist");
+        JLabel dup = new JLabel("Name does not exist");
         notExistPanel = new JPanel(new GridLayout(8, 1, 8, 8));
 
         JButton backButton = new JButton ("<--");
@@ -476,6 +690,60 @@ public class UMLGUI {
         changePanel(notExistPanel);
 
     }
+    
+    // Not a Type Error
+    public void notTypePanel(){
+        panelCheck(notType);
+        JLabel type = new JLabel("This is not a type");
+        notExistPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+
+        JButton backButton = new JButton ("<--");
+        backButton.addActionListener(controller.getClassPageListener());
+
+        notExistPanel.add(type);
+        notExistPanel.add(backButton);
+        notExistPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(notExistPanel);
+
+    }
+    
+    // Has ID Error
+    public void hasIDPanel(){
+        panelCheck(hasID);
+        JLabel type = new JLabel("ID already exists");
+        notExistPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+
+        JButton backButton = new JButton ("<--");
+        backButton.addActionListener(controller.getClassPageListener());
+
+        notExistPanel.add(type);
+        notExistPanel.add(backButton);
+        notExistPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(notExistPanel);
+
+    }
+    
+    // No ID Error
+    public void noIDPanel(){
+        panelCheck(noID);
+        JLabel type = new JLabel("ID doesn't exists");
+        notExistPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+
+        JButton backButton = new JButton ("<--");
+        backButton.addActionListener(controller.getClassPageListener());
+
+        notExistPanel.add(type);
+        notExistPanel.add(backButton);
+        notExistPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(notExistPanel);
+
+    }
+    
+    //////////////////////////////////////////////////////////
+    //
+    //	Show
+    //
+    ///////////////////////////////////////////////////////////
 
     public void show() {
         
@@ -511,6 +779,12 @@ public class UMLGUI {
 
         menuPanel();
     }
+    
+    //////////////////////////////////////////////////////////
+    //
+    //	Main
+    //
+    ///////////////////////////////////////////////////////////
 
     public static void main(String[] args) {
 

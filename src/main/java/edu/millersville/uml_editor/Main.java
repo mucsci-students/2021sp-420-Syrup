@@ -352,16 +352,16 @@ public class Main
                         System.out.print("Enter an ID for the relationship: ");
                         ID = console.next();
 
-                        System.out.print("Please enter Aggregation, Composition, Inheritance, Realiztion: ");
+                        System.out.print("Please enter A, C, I, or R for the type: ");
                         String newType = console.next();
-                        if(newType.equals("Aggregation") || newType.equals("Composition") || newType.equals("Inheritance") || newType.equals("Realization"))
+                        if(newType.equals("A") || newType.equals("C") || newType.equals("I") || newType.equals("R"))
                             createRelationship(sourceAdd, destAdd, ID, newType);
-                            else
-                            {
-                                System.out.println();
-                                System.out.println("This is not a proper type");
-                                break;
-                            }
+                        else
+                        {
+                         	System.out.println();
+                        	System.out.println("This is not a proper type");
+                         	break;
+                        }
                     }
                     break;
                     
