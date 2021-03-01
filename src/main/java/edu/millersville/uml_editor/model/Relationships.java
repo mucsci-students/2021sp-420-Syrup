@@ -1,8 +1,5 @@
 package edu.millersville.uml_editor.model;
-import java.util.*;
 
-import edu.millersville.uml_editor.model.*;
-import java.util.*;
 
 public class Relationships {
 
