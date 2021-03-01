@@ -118,6 +118,7 @@ public class Model {
 				break;
 			}
 		}
+		// renames the class in its relationships
 		for(Relationships rel : relationships) {
 			if(rel.getSource().equals(originalName)) {
 				rel.setSource(newName);
@@ -126,9 +127,7 @@ public class Model {
 				rel.setDestination(newName);
 			}
 		}
-		
 		return true;
-
 	}
 	
 	
@@ -261,15 +260,223 @@ public class Model {
 		return relationships.add(new Relationships(source, destination, realRelationship));
 	}
 	
+	/**
+	 * A function that removes a relationship from the list.
+	 * @param source
+	 * 		The source class of the relationship.
+	 * @param destination
+	 * 		The destination class of the relationship.
+	 * @return
+	 * 		Returns true when the relationship has been removed.
+	 */
+	public boolean deleteRelationship(String source, String destination) {
+		if(!classes.containsKey(source) || !classes.containsKey(destination)) {
+			return false;
+		}
+		for(Relationships rel : relationships) {
+			if(rel.getSource().equals(source) && rel.getDestination().equals(destination)) {
+				return relationships.remove(rel);
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * A function that changes the relationship type.
+	 * @param source
+	 * 		The source class.
+	 * @param destination
+	 * 		The destination class.
+	 * @param newType
+	 * 		The new type of the relationship.
+	 * @return
+	 * 		Returns when the relationship type has been changed.
+	 */
+	public boolean changeRelationshipType(String source, String destination, String newType) {
+		RelType tempType = stringToRelType(newType);
+		if(!classes.containsKey(source) || !classes.containsKey(destination)) {
+			return false;
+		}
+		for(Relationships rel : relationships) {
+			if(rel.getSource().equals(source) && rel.getDestination().equals(destination)) {
+				rel.setType(tempType);
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	// Parameter Functions
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	
-	public boolean changeParametersList(String className, String methodName, ArrayList<Parameter> newParamList) {
+	/**
+	 * A function that adds a parameter to a method in a class.
+	 * @param className
+	 * 		The name of the class the method is in.
+	 * @param methodName
+	 * 		The method to add the parameter to.
+	 * @param paramName
+	 * 		The name of the parameter.
+	 * @param paramType
+	 * 		The type of the parameter.
+	 * @return
+	 * 		Returns true when the parameter has been added.
+	 */
+	public boolean addParameter(String className, String methodName, String paramName, String paramType) {
+		if(!classes.containsKey(className)) {
+			return false;
+		}
+		return classes.get(className).addParameter(methodName, paramName, paramType);
+	}
+	
+	/**
+	 * A function that removes the parameter.
+	 * @param className
+	 * 		The class the method is in.
+	 * @param methodName
+	 * 		The method that the parameter is in.
+	 * @param paramName
+	 * 		The parameter to delete.
+	 * @return
+	 * 		Returns true when the parameter is deleted.
+	 */
+	public boolean deleteParameter(String className, String methodName, String paramName) {
+		if(!classes.containsKey(className)) {
+			return false;
+		}
+		return classes.get(className).deleteParameter(methodName, paramName);
+	}
+	
+	/**
+	 * A function that renames a parameter.
+	 * @param className
+	 * 		The name of the class that stores the method.
+	 * @param methodName
+	 * 		The name of the method that holds the parameter.
+	 * @param originalParam
+	 * 		The old name of the parameter.
+	 * @param newParam
+	 * 		The new name of the parameter.
+	 * @return
+	 * 		Returns true when the parameter's name has changed.
+	 */
+	public boolean renameParameter(String className, String methodName, String originalParam, String newParam) {
+		if(!classes.containsKey(className)) {
+			return false;
+		}
+		return classes.get(className).renameParameter(methodName, originalParam, newParam);
+	}
+	
+	/**
+	 * A function that changes the parameter type.
+	 * @param className
+	 * 		The name of the class that the method is in.
+	 * @param methodName
+	 * 		The name of the method that holds the parameter.
+	 * @param param
+	 * 		The name of the parameter whose type to change.
+	 * @param newtype
+	 * 		The new type of the parameter.
+	 * @return
+	 * 		Returns true when the parameter's type has been changed.
+	 */
+	public boolean changeParameterType(String className, String methodName, String param, String newtype) {
+		if(!classes.containsKey(className)) {
+			return false;
+		}
+		return classes.get(className).changeParameterType(methodName, param, newtype);
+	}
+	
+	/**
+	 * A function that changes the parameter list of a method.
+	 * @param className
+	 * 		The name of the class that holds the method.
+	 * @param methodName
+	 * 		The name of the method that holds the parameter list.
+	 * @param newParamList
+	 * 		The new parameter list.
+	 * @return
+	 * 		Returns true when the parameter's list has been changed.
+	 */
+	public boolean changeParameterList(String className, String methodName, ArrayList<Parameter> newParamList) {
 		if(!classes.containsKey(className)) {
 			return false;
 		}
 		return classes.get(className).replaceParameterList(methodName, newParamList);
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////////////////
+	// Field Functions
+	////////////////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * A function that adds a field to a class.
+	 * @param className
+	 * 		The name of the class.
+	 * @param fieldName
+	 * 		The name of the field.
+	 * @param fieldType
+	 * 		The type of the field.
+	 * @return
+	 * 		Returns true when the field has been added.
+	 */
+	public boolean addField(String className, String fieldName, String fieldType) {
+		if(!classes.containsKey(className)) {
+			return false;
+		}
+		return classes.get(className).addField(fieldName, fieldType);
+	}
+	
+	/**
+	 * A function that removes a field.
+	 * @param className
+	 * 		The name of the class the field is in.
+	 * @param fieldName
+	 * 		The name of the field to remove.
+	 * @return
+	 * 		Returns true when the field has been removed.
+	 */
+	public boolean deleteField(String className, String fieldName) {
+		if(!classes.containsKey(className)) {
+			return false;
+		}
+		return classes.get(className).deleteField(fieldName);
+	}
+	
+	/**
+	 * A function that gives a field a new name.
+	 * @param classname
+	 * 		The name of the class.
+	 * @param fieldName
+	 * 		The old name of the field.
+	 * @param newName
+	 * 		The new name of the field.
+	 * @return
+	 * 		Returns true when the field has been renamed.
+	 */
+	public boolean renameField(String classname, String fieldName, String newName) {
+		if(!classes.containsKey(classname)) {
+			return false;
+		}
+		return classes.get(classname).renameField(fieldName, newName);
+	}
+	
+	/**
+	 * A function that changes the type of a field.
+	 * @param className
+	 * 		The name of the class.
+	 * @param fieldName
+	 * 		The name of the field.
+	 * @param newType
+	 * 		The new type of the field.
+	 * @return
+	 * 		Returns true when the field's type has been changed.
+	 */
+	public boolean changeFieldType(String className, String fieldName, String newType) {
+		if(!classes.containsKey(className)) {
+			return false;
+		}
+		return classes.get(className).changeFieldType(fieldName, newType);
 	}
 }

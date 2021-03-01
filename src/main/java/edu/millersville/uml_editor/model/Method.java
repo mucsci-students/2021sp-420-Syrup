@@ -42,7 +42,7 @@ public class Method extends Formal {
 	 */
 	public boolean addParameter(String name, String type) {
 		// check if the parameter already exists
-		if(!containsParameter(name)) {
+		if(containsParameter(name)) {
 			return false;
 		}
 		return parameters.add(new Parameter(name, type));
@@ -98,8 +98,8 @@ public class Method extends Formal {
 		for(Parameter param : parameters) {
 			if(param.getName().equals(name)) {
 				param.setType(newType);
+				return true;
 			}
-			return true;
 		}
 		return false;
 	}
@@ -142,7 +142,7 @@ public class Method extends Formal {
 	 * 		A reference to the ArrayList of parameters.
 	 */
 	public ArrayList<Parameter> getParameters(){
-		return new ArrayList<Parameter>(parameters);
+		return parameters;
 	}
 	
 	public List<String> getParameterNames(){

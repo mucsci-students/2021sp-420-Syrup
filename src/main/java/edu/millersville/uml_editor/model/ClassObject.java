@@ -106,7 +106,7 @@ public class ClassObject {
 	 * 		Returns true when the field's name is changed.
 	 */
 	public boolean renameField(String original, String newName) {
-		if(containsField(original) || newName.equals(original)) {
+		if(!containsField(original) || newName.equals(original)) {
 			return false;
 		}
 		for(Field field : fields) {
@@ -145,7 +145,7 @@ public class ClassObject {
 	 * 		Returns true when the field is deleted.
 	 */
 	public boolean deleteField(String name) {
-		if(containsField(name)) {
+		if(!containsField(name)) {
 			return false;
 		}
 		for(Field field : fields) {
