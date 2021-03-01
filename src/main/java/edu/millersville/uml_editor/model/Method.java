@@ -1,5 +1,6 @@
 package edu.millersville.uml_editor.model;
 import java.util.ArrayList;
+import java.util.List;
 /**
  * A method has a specific name, a type, and a list of parameters.
  *  
@@ -141,6 +142,28 @@ public class Method extends Formal {
 	 * 		A reference to the ArrayList of parameters.
 	 */
 	public ArrayList<Parameter> getParameters(){
-		return parameters;
+		return new ArrayList<Parameter>(parameters);
+	}
+	
+	public List<String> getParameterNames(){
+		ArrayList<String> params = new ArrayList<>();
+		for(Parameter parameter : parameters) {
+			params.add(parameter.getName());
+		}
+		return params;
+	}
+	
+	public String toString() {
+		String methodParam = "Name: " + getName() + " type: " + getType() + "(";
+		if(!parameters.isEmpty()) {
+			Parameter curr = parameters.get(0);
+			methodParam += " " + curr.toString();
+			for(int i = 1; i<parameters.size(); ++i) {
+				curr = parameters.get(i);
+				methodParam += ", " + curr.toString();
+			}
+			methodParam += " ";
+		}
+		return methodParam + ")";
 	}
 }

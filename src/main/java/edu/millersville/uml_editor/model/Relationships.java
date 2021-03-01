@@ -121,4 +121,8 @@ public class Relationships {
 	public Relationships getRelationship() {
 		return new Relationships(source, destination, type);
 	}
+	
+	public String toString() {
+		return "Source: " + this.getSource() + ", Destination: " + this.getDestination() + ", Type: " + this.getType();
+	}
 }
