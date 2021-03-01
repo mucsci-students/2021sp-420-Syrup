@@ -29,6 +29,7 @@ public class UMLController {
             }
             
         };
+        
     }
     public ActionListener getHelp(){
         return(ActionEvent e) -> {
@@ -63,8 +64,8 @@ public class UMLController {
                 case "Create a new Class":
                     gui.createClassPanel();
                     break;
-                case "Remove a Class":
-                    gui.removeClassPanel();
+                case "Delete a Class":
+                    gui.deleteClassPanel();
                     break;
                 case "Rename a Class":
                     gui.renameClassPanel();
@@ -81,7 +82,7 @@ public class UMLController {
                 case "Create a new Attribute":
                     //implementation needed
                     break;
-                case "Remove a Attribute":
+                case "Delete a Attribute":
                     //implementation needed
                     break;
                 case "Rename a Attribute":
@@ -100,8 +101,8 @@ public class UMLController {
                 case "Create a new Relationship":
                     gui.createRelPanel();
                     break;
-                case "Remove a Relationship":
-                    gui.removeRelPanel();
+                case "Delete a Relationship":
+                    gui.deleteRelPanel();
                     break;
                 case "Change a Relationship Type":
                     gui.changeRelTypePanel();
@@ -136,7 +137,7 @@ public class UMLController {
         return (ActionEvent e) -> {
             String className = e.getActionCommand();
             if(!model.hasClass(className)){
-                model.createNewClass(className);
+                model.createNewClassGUI(className);
                 gui.createdClassPanel();
             }
             else{
@@ -145,6 +146,49 @@ public class UMLController {
         };
     }
     
-
-
+    
+    public ActionListener deleteClassCall(){
+        return (ActionEvent e) -> {
+            String className = e.getActionCommand();
+            if(model.hasClass(className)){
+                model.deleteClassGUI(className);
+                gui.deletedClassPanel();
+            }
+            else{
+                gui.notExistPanel();
+            }
+        };
+    }
+    
+    public ActionListener renameClassCall(){
+        return (ActionEvent e) -> {
+            gui.renameActionPerformed(e);
+        };
+    }
+    
+    public ActionListener createRelCall(){
+        return (ActionEvent e) -> {
+            gui.createRelAction(e);
+        };
+    }
+    
+    public ActionListener deleteRelCall(){
+        return (ActionEvent e) -> {
+        	String ID = e.getActionCommand();
+            if(model.hasRelID(ID)){
+                model.deleteRelationshipGUI(ID);
+                gui.deletedRelPanel();
+            }
+            else{
+                gui.noIDPanel();
+            }
+        };
+    }
+    
+    public ActionListener changeTypeCall(){
+        return (ActionEvent e) -> {
+            gui.changeRelTypeAction(e);
+        };
+    }
+    
 }
