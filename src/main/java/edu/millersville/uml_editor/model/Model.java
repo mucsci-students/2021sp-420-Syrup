@@ -1,7 +1,6 @@
 package edu.millersville.uml_editor.model;
 
 import java.util.*;
-import edu.millersville.uml_editor.model.Relationships.RelType;
 
 /**
  * A model that represents a UML diagram. This model brings together all of the other
@@ -41,6 +40,21 @@ public class Model {
 	 */
 	public HashMap<String, ClassObject> getClasses(){
 		return classes;
+	}
+	
+	
+	public boolean hasClass(String className) {
+		if(!classes.containsKey(className)) {
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean hasRel(String relName) {
+		if(!relationships.contains(relName)) {
+			return false;
+		}
+		return true;
 	}
 	
 	/**
@@ -108,26 +122,24 @@ public class Model {
 	 * 		Returns true when the class's name has been changed and the 
 	 * 		class's name has been changed in the relationships.
 	 */
-	public boolean renameClass(String originalName, String newName) {
-		if(classes.containsKey(newName)){
-			return false;
-		}
-		for(String key : classes.keySet()) {
-			if(key.equals(originalName)) {
+	public void renameClass(String originalName, String newName) {
+		if(!classes.containsKey(newName)){
+			for(String key : classes.keySet()) {
+				if(key.equals(originalName)) {
 				classes.put(newName, classes.remove(originalName));
 				break;
+				}
+			}
+			// renames the class in its relationships
+			for(Relationships rel : relationships) {
+				if(rel.getSource().equals(originalName)) {
+					rel.setSource(newName);
+				}
+				if(rel.getDestination().equals(originalName)) {
+					rel.setDestination(newName);
+				}
 			}
 		}
-		// renames the class in its relationships
-		for(Relationships rel : relationships) {
-			if(rel.getSource().equals(originalName)) {
-				rel.setSource(newName);
-			}
-			if(rel.getDestination().equals(originalName)) {
-				rel.setDestination(newName);
-			}
-		}
-		return true;
 	}
 	
 	
@@ -245,7 +257,7 @@ public class Model {
 	 * @return
 	 * 		Returns true when the relationship has been added to its unique source and destination classes.
 	 */
-	public boolean addRelationship(String source, String destination, String relationshipType) {
+	public boolean createRelationshipGUI(String source, String destination, String relationshipType) {
 		RelType realRelationship = stringToRelType(relationshipType);
 		// if there are a source and destination class already present
 		if(!classes.containsKey(source) || !classes.containsKey(destination)) {

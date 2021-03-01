@@ -1,7 +1,9 @@
-package edu.millersville.uml_editor;
+package edu.millersville.uml_editor.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import edu.millersville.uml_editor.model.*;
+import edu.millersville.uml_editor.view.*;
 
 import javax.swing.JLabel;
 

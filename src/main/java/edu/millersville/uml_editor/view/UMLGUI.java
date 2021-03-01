@@ -1,9 +1,11 @@
-package edu.millersville.uml_editor;
+package edu.millersville.uml_editor.view;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import edu.millersville.uml_editor.model.*;
+import edu.millersville.uml_editor.controller.*;
 
 public class UMLGUI {
     private JFrame umlEditor = null;

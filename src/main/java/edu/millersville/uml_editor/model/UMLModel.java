@@ -1,7 +1,9 @@
-package edu.millersville.uml_editor;
+package edu.millersville.uml_editor.model;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import edu.millersville.uml_editor.model.*;
  
 
 public class UMLModel {
@@ -67,7 +69,7 @@ public class UMLModel {
     public void deleteClassGUI(String name)
     {
         //Deletes attributes and the deletes the class
-        getClassFor(name).deleteAttributes();
+        //getClassFor(name).deleteAttributes();
         getClasses().remove(name);
         
     }

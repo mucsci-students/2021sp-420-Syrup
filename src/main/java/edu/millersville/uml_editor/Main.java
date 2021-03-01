@@ -8,6 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import edu.millersville.uml_editor.model.*;
+import edu.millersville.uml_editor.controller.*;
+import edu.millersville.uml_editor.view.*;
+
 import javax.lang.model.util.ElementScanner6;
 
 //import org.apache.commons.io.FileUtils;
