@@ -90,6 +90,15 @@ public class UMLController {
                 case "Rename a method":
                     //implementation needed
                     break;
+                case "Add method parameter(s)":
+                    //implementation needed
+                    break;
+                case "Delete method parameter(s)":
+                    //implementation needed
+                    break;
+                case "Change method parameter(s)":
+                    //implementation needed
+                    break;
                 case "<--":
                     gui.menuPanel();
                     break;
