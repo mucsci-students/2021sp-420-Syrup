@@ -106,7 +106,7 @@ public class ClassObject {
 	 * 		Returns true when the field's name is changed.
 	 */
 	public boolean renameField(String original, String newName) {
-		if(containsField(original) || newName.equals(original)) {
+		if(!containsField(original) || newName.equals(original)) {
 			return false;
 		}
 		for(Field field : fields) {
@@ -145,7 +145,7 @@ public class ClassObject {
 	 * 		Returns true when the field is deleted.
 	 */
 	public boolean deleteField(String name) {
-		if(containsField(name)) {
+		if(!containsField(name)) {
 			return false;
 		}
 		for(Field field : fields) {
@@ -211,7 +211,7 @@ public class ClassObject {
 	 * 		Returns when the name is changed.
 	 */
 	public boolean renameMethod(String name, String newName) {
-		if(containsMethod(newName) || newName.equals(name)) {
+		if(!containsMethod(name) || newName.equals(name)) {
 			return false;
 		}
 		for(Method method : methods) {
@@ -255,8 +255,7 @@ public class ClassObject {
 				return methods.remove(method);
 			}
 		}
-		return false;
-		
+		return false;	
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////
@@ -324,6 +323,15 @@ public class ClassObject {
 		return false;
 	}
 	
+	public boolean replaceParameterList(String methodName, ArrayList<Parameter> newParamList) {
+		for(Method method : methods) {
+			if(method.getName().equals(methodName)) {
+				method.replaceParameterList(newParamList);
+			}
+		}
+		return true;
+	}
+	
 	/**
 	 * A function that deletes a parameter from a specified method.
 	 * @param methodName
@@ -340,5 +348,19 @@ public class ClassObject {
 			}
 		}
 		return false;
+	}
+	
+	public String printMethods() {
+		return " Methods: " + methods;
+	}
+	
+	public String printFields() {
+		return " Fields: " + fields + ", ";
+	}
+	
+	
+	public String toString() {
+		
+		return printFields() + printMethods();
 	}
 }

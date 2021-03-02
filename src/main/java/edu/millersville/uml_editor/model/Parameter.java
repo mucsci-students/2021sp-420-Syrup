@@ -1,4 +1,4 @@
-package model;
+package edu.millersville.uml_editor.model;
 
 /**
  * Class that creates a parameter object that has a name and a type value

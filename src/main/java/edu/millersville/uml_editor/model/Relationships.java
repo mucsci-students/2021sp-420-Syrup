@@ -1,8 +1,5 @@
-package edu.millersville.uml_editor;
-import java.util.*;
+package edu.millersville.uml_editor.model;
 
-
-import java.util.*;
 
 public class Relationships {
 
@@ -33,7 +30,8 @@ public class Relationships {
 
 	public String sourceName()
 	{
-		return source.getClassName();
+		//return source.getClassName();
+		return source.getName();
 	}
 	
 ///////////////////////////////////////////////////////////
@@ -44,7 +42,8 @@ public class Relationships {
 
 	public String destinationName()
 	{
-		return destination.getClassName();
+		//return destination.getClassName();
+		return destination.getName();
 	}
 
 ///////////////////////////////////////////////////////////
