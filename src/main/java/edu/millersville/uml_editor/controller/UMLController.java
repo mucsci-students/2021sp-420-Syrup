@@ -47,8 +47,8 @@ public class UMLController {
                 case "Class":
                     gui.classPanel();
                     break;
-                case "Attribute":
-                    gui.attrPanel();
+                case "Method":
+                    gui.methPanel();
                     break;
                 case "Relationship":
                     gui.relPanel();
@@ -78,16 +78,16 @@ public class UMLController {
             }
         };
     }
-    public ActionListener getAttrPageListener(){
+    public ActionListener getMethPageListener(){
         return(ActionEvent e) -> {
             switch(e.getActionCommand()){
-                case "Create a new Attribute":
+                case "Create a new method":
                     //implementation needed
                     break;
-                case "Delete a Attribute":
+                case "Delete a method":
                     //implementation needed
                     break;
-                case "Rename a Attribute":
+                case "Rename a method":
                     //implementation needed
                     break;
                 case "<--":

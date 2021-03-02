@@ -11,7 +11,7 @@ public class UMLGUI {
     private JFrame umlEditor = null;
     private JPanel menuPanel = null;
     private JPanel classPanel = null;
-    private JPanel attrPanel = null;
+    private JPanel methPanel = null;
     private JPanel relPanel = null;
     private JPanel printPanel = null;
     private JPanel createClassPanel = null;
@@ -55,13 +55,13 @@ public class UMLGUI {
 
         // view
         JButton classButton = new JButton("Class");
-        JButton attrButton = new JButton("Attribute");
+        JButton methButton = new JButton("Method");
         JButton relButton = new JButton("Relationship");
         JButton printButton = new JButton("Print");
 
         // register controller to view
         classButton.addActionListener(controller.getMainPageListener());
-        attrButton.addActionListener(controller.getMainPageListener());
+        methButton.addActionListener(controller.getMainPageListener());
         relButton.addActionListener(controller.getMainPageListener());
         printButton.addActionListener(controller.getMainPageListener());
 
@@ -87,7 +87,7 @@ public class UMLGUI {
         menuPanel.add(welcome);
         menuPanel.add(select);
         menuPanel.add(classButton);
-        menuPanel.add(attrButton);
+        menuPanel.add(methButton);
         menuPanel.add(relButton);
         menuPanel.add(printButton);
         menuPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
@@ -140,46 +140,46 @@ public class UMLGUI {
 
     //////////////////////////////////////////////////////////
     //
-    //	attrPanel
+    //	methPanel
     //
     ///////////////////////////////////////////////////////////
     
-    public void attrPanel() {
+    public void methPanel() {
        //checks to see if the panel was already created
-       panelCheck(attrPanel);
+       panelCheck(methPanel);
 
        //view
-        JButton createAttr = new JButton("Create a new Attribute");
-        JButton deleteAttr = new JButton("Delete a Attribute");
-        JButton renameAttr = new JButton("Rename a Attribute");
+        JButton createMeth = new JButton("Create a new method");
+        JButton deleteMeth = new JButton("Delete a method");
+        JButton renameMeth = new JButton("Rename a method");
         JButton backButton = new JButton("<--");
 
         //register controller to view
-        createAttr.addActionListener(controller.getAttrPageListener());
-        deleteAttr.addActionListener(controller.getAttrPageListener());
-        renameAttr.addActionListener(controller.getAttrPageListener());
-        backButton.addActionListener(controller.getAttrPageListener());
+        createMeth.addActionListener(controller.getMethPageListener());
+        deleteMeth.addActionListener(controller.getMethPageListener());
+        renameMeth.addActionListener(controller.getMethPageListener());
+        backButton.addActionListener(controller.getMethPageListener());
 
-        //Attribute Page
+        //Method Page
         ///////////////
         // Heading/Labels
         ///////////////
-        JLabel attrLabel = new JLabel("Attribute Functions:", SwingConstants.CENTER);
-        attrLabel.setFont(new Font("Serif", Font.BOLD, 20));
+        JLabel methLabel = new JLabel("Method Functions:", SwingConstants.CENTER);
+        methLabel.setFont(new Font("Serif", Font.BOLD, 20));
 
-        attrLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        methLabel.setVerticalAlignment(SwingConstants.BOTTOM);
 
         ///////////////
         // Panel
         ///////////////
-        attrPanel = new JPanel(new GridLayout(8, 1, 8, 8));
-        attrPanel.add(attrLabel);
-        attrPanel.add(createAttr);
-        attrPanel.add(deleteAttr);
-        attrPanel.add(renameAttr);
-        attrPanel.add(backButton);
-        attrPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
-        changePanel(attrPanel);
+        methPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+        methPanel.add(methLabel);
+        methPanel.add(createMeth);
+        methPanel.add(deleteMeth);
+        methPanel.add(renameMeth);
+        methPanel.add(backButton);
+        methPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(methPanel);
     }
 
     //////////////////////////////////////////////////////////
@@ -238,7 +238,7 @@ public class UMLGUI {
 
         //view
         JButton printClasses = new JButton("Print Classes");
-        JButton printClassesAttr = new JButton("Print Classes and Attributes");
+        JButton printClassesMeth = new JButton("Print Classes and Attributes");
         JButton printRel = new JButton("Print Relationships");
         JButton backButton = new JButton("<--");
 
