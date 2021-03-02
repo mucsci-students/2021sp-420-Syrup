@@ -373,4 +373,14 @@ public class ClassObject {
 		}
 		return null;
 	}
+	
+	public Field getField(String name)
+	{
+		for(Field field : fields) {
+			if(field.getName().equals(name)) {
+				return field;
+			}
+		}
+		return null;
+	}
 }

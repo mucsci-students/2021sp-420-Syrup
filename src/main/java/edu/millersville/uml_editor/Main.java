@@ -363,6 +363,171 @@ public class Main
                 
                 // Case for Fields 
                 case 3:
+            
+            	int fieldNum = 0;
+
+                //Attribute menu
+                System.out.println();
+                System.out.println("1. Add a field");
+                System.out.println("2. Delete a field");
+                System.out.println("3. Rename a field");
+                System.out.println("4. Change a field type");
+                System.out.println("5. Go back to main menu");
+                System.out.println();
+                System.out.print("What would you like to do with fields? ");
+                
+                isNumber = false;
+                
+                while (!isNumber)
+                {
+                	String temp = console.next();
+                	try {
+                		fieldNum = Integer.parseInt(temp);
+                		isNumber = true;
+                	}
+                	catch (NumberFormatException ex) {
+                		System.out.println();
+                		System.out.println("This is not a number. Use a number when selecting a menu option.");
+                		System.out.println();
+                		System.out.print("Please select a menu option: ");
+                	}
+                }
+
+                //Switch statement within field menu
+                switch(fieldNum){
+                    case 1:
+                    String classAdd = "";
+                    String fieldAdd = "";
+                    String fieldType = "";
+                    System.out.println();
+                    System.out.print("Enter the class name for the field: ");
+                    classAdd = console.next();
+                    //Checks to see if the class name exists
+                    if(!classMap.containsKey(classAdd))
+                    {
+                        System.out.println("There is not a class with this name.");
+    		            break;
+                    }
+                    //If it does, prompts for attribute name and adds
+                    else
+                    {
+                        ClassObject classCall = classMap.get(classAdd);
+                        System.out.print("Enter the name of the field to add: ");
+                        fieldAdd = console.next();
+                        System.out.print("Enter the type of the field: ");
+                        fieldType = console.next();
+                        classCall.addField(fieldAdd, fieldType);
+                    }
+                    break;
+                    
+                    case 2:
+                    String classDel = "";
+                    String fieldDel = "";
+                    System.out.println();
+                    System.out.print("Enter the class name for the field: ");
+                    classDel = console.next();
+                    //Checks to see if the class exists
+                    if(!classMap.containsKey(classDel))
+                    {
+                        System.out.println("There is not a class with this name.");
+    		            break;
+                    }
+                    //If it does, ask for field name and delete
+                    else 
+                    {
+                        ClassObject classCall = classMap.get(classDel);
+                        System.out.print("Enter the name of the field to delete: ");
+                        fieldDel = console.next();
+                        
+                        Field renamefield = classCall.getField(fieldDel);
+                        if (renamefield == null)
+                        {
+                        	System.out.println("The field does not exist.");
+                        	break;
+                        }
+                        
+                        classCall.deleteField(fieldDel);
+                    }
+                    break;
+
+                    case 3: 
+                    String classRen = "";
+                    String fieldOld = "";
+                    String fieldNew = "";
+                    System.out.println();
+                    System.out.print("Enter the class for the field: ");
+                    classRen = console.next();
+                    //Checks to see if the class exists
+                    if(!classMap.containsKey(classRen))
+                    {
+                        System.out.println("There is not a class with this name.");
+    		            break;
+                    }
+                    //If it does, ask for current and new name for attribute and renames
+                    else 
+                    {
+                        ClassObject classCall = classMap.get(classRen);
+                        System.out.print("Enter the current name for the field: ");
+                        fieldOld = console.next();
+                        
+                        Field renamefield = classCall.getField(fieldOld);
+                        if (renamefield == null)
+                        {
+                        	System.out.println("The field does not exist.");
+                        	break;
+                        }
+                        
+                        System.out.print("Enter the new name for the field: ");
+                        fieldNew = console.next();
+                        classCall.renameField(fieldOld, fieldNew);
+                    }
+                    
+                    break;
+                    
+                    case 4:
+	                String className = "";
+	                String fieldName = "";
+	                String newType = "";
+	                System.out.println();
+	                System.out.print("Enter the class for the field: ");
+	                classRen = console.next();
+	                //Checks to see if the class exists
+	                if(!classMap.containsKey(classRen))
+	                {
+	                	System.out.println("There is not a class with this name.");
+	                	break;
+                    }
+                    //If it does, ask for current and new name for attribute and renames
+                    else 
+                    {
+                        ClassObject classCall = classMap.get(classRen);
+                        System.out.print("Enter the current name for the field: ");
+                        fieldName = console.next();
+
+                        Field typeField = classCall.getField(fieldName);
+                        if (typeField == null)
+                        {
+                        	System.out.println("The field does not exist.");
+                        	break;
+                        }
+                        
+                        System.out.print("Enter the new type for the field: ");
+                        newType = console.next();
+                        
+                        classCall.changeFieldType(fieldName, newType);
+                    }
+                    break;
+                    
+                    case 5:
+                    break;
+
+                    //Default case that sends user back to main menu if a number not on the menu is entered
+                    default:
+                    System.out.println();
+                    System.out.print("That is not a menu option! Please try again.");
+                    System.out.println();
+                    break;
+                }
                 
                 break;
 
