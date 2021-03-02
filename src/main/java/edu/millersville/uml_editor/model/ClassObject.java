@@ -363,4 +363,14 @@ public class ClassObject {
 		
 		return printFields() + printMethods();
 	}
+	
+	public Method getMethod(String name)
+	{
+		for(Method method : methods) {
+			if(method.getName().equals(name)) {
+				return method;
+			}
+		}
+		return null;
+	}
 }

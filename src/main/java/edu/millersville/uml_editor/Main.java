@@ -85,13 +85,14 @@ public class Main
         //Display menu
             System.out.println();
             System.out.println("1. Classes");
-            System.out.println("2. Attributes");
-            System.out.println("3. Relationships");
-            System.out.println("4. List Classes/Attributes/Relationships");
-	        System.out.println("5. Create JSON file");
-            System.out.println("6. Load from a JSON file");
-            System.out.println("7. Help");
-            System.out.println("8. Exit the program");
+            System.out.println("2. Methods");
+            System.out.println("3. Fields");
+            System.out.println("4. Relationships");
+            System.out.println("5. List Classes/Attributes/Relationships");
+	        System.out.println("6. Create JSON file");
+            System.out.println("7. Load from a JSON file");
+            System.out.println("8. Help");
+            System.out.println("9. Exit the program");
             System.out.println();
             System.out.print("Please select a menu option: ");
             
@@ -192,18 +193,19 @@ public class Main
                 }
                 break;
 
-                //Case for Attributes
+                //Case for Methods
                 case 2:
-                int attrNum = 0;
+                int methodNum = 0;
 
                 //Attribute menu
                 System.out.println();
-                System.out.println("1. Add an attribute");
-                System.out.println("2. Delete an attribute");
-                System.out.println("3. Rename an attribute");
-                System.out.println("4. Go back to main menu");
+                System.out.println("1. Add a method");
+                System.out.println("2. Delete a method");
+                System.out.println("3. Rename a method");
+                System.out.println("4. Change a method type");
+                System.out.println("5. Go back to main menu");
                 System.out.println();
-                System.out.print("What would you like to do with attributes? ");
+                System.out.print("What would you like to do with methods? ");
                 
                 isNumber = false;
                 
@@ -211,7 +213,7 @@ public class Main
                 {
                 	String temp = console.next();
                 	try {
-                		attrNum = Integer.parseInt(temp);
+                		methodNum = Integer.parseInt(temp);
                 		isNumber = true;
                 	}
                 	catch (NumberFormatException ex) {
@@ -223,12 +225,13 @@ public class Main
                 }
 
                 //Switch statement within attribute menu
-                switch(attrNum){
+                switch(methodNum){
                     case 1:
                     String classAdd = "";
-                    String attrAdd = "";
+                    String methodAdd = "";
+                    String methodType = "";
                     System.out.println();
-                    System.out.print("Enter the class name for the attribute: ");
+                    System.out.print("Enter the class name for the method: ");
                     classAdd = console.next();
                     //Checks to see if the class name exists
                     if(!classMap.containsKey(classAdd))
@@ -240,17 +243,19 @@ public class Main
                     else
                     {
                         ClassObject classCall = classMap.get(classAdd);
-                        System.out.print("Enter the name of the attribute to add: ");
-                        attrAdd = console.next();
-                        classCall.addNewAttribute(attrAdd);
+                        System.out.print("Enter the name of the method to add: ");
+                        methodAdd = console.next();
+                        System.out.print("Enter the type of the method: ");
+                        methodType = console.next();
+                        classCall.addMethod(methodAdd, methodType);
                     }
                     break;
                     
                     case 2:
                     String classDel = "";
-                    String attrDel = "";
+                    String methodDel = "";
                     System.out.println();
-                    System.out.print("Enter the class name for the attribute: ");
+                    System.out.print("Enter the class name for the method: ");
                     classDel = console.next();
                     //Checks to see if the class exists
                     if(!classMap.containsKey(classDel))
@@ -262,18 +267,26 @@ public class Main
                     else 
                     {
                         ClassObject classCall = classMap.get(classDel);
-                        System.out.print("Enter the name of the attribute to delete: ");
-                        attrDel = console.next();
-                        classCall.deleteAttribute(attrDel);
+                        System.out.print("Enter the name of the method to delete: ");
+                        methodDel = console.next();
+                        
+                        Method renameMethod = classCall.getMethod(methodDel);
+                        if (renameMethod == null)
+                        {
+                        	System.out.println("The method does not exist.");
+                        	break;
+                        }
+                        
+                        classCall.deleteMethod(methodDel);
                     }
                     break;
 
                     case 3: 
                     String classRen = "";
-                    String attrOld = "";
-                    String attrNew = "";
+                    String methodOld = "";
+                    String methodNew = "";
                     System.out.println();
-                    System.out.print("Enter the class for the attribute: ");
+                    System.out.print("Enter the class for the method: ");
                     classRen = console.next();
                     //Checks to see if the class exists
                     if(!classMap.containsKey(classRen))
@@ -285,15 +298,58 @@ public class Main
                     else 
                     {
                         ClassObject classCall = classMap.get(classRen);
-                        System.out.print("Enter the current name for the attribute: ");
-                        attrOld = console.next();
-                        System.out.print("Enter the new name for the attribute: ");
-                        attrNew = console.next();
-                        classCall.renameAttribute(attrOld, attrNew);
+                        System.out.print("Enter the current name for the method: ");
+                        methodOld = console.next();
+                        
+                        Method renameMethod = classCall.getMethod(methodOld);
+                        if (renameMethod == null)
+                        {
+                        	System.out.println("The method does not exist.");
+                        	break;
+                        }
+                        
+                        System.out.print("Enter the new name for the method: ");
+                        methodNew = console.next();
+                        classCall.renameMethod(methodOld, methodNew);
                     }
+                    
                     break;
                     
                     case 4:
+	                String className = "";
+	                String methodName = "";
+	                String newType = "";
+	                System.out.println();
+	                System.out.print("Enter the class for the method: ");
+	                classRen = console.next();
+	                //Checks to see if the class exists
+	                if(!classMap.containsKey(classRen))
+	                {
+	                	System.out.println("There is not a class with this name.");
+	                	break;
+                    }
+                    //If it does, ask for current and new name for attribute and renames
+                    else 
+                    {
+                        ClassObject classCall = classMap.get(classRen);
+                        System.out.print("Enter the current name for the method: ");
+                        methodName = console.next();
+
+                        Method typeMethod = classCall.getMethod(methodName);
+                        if (typeMethod == null)
+                        {
+                        	System.out.println("The method does not exist.");
+                        	break;
+                        }
+                        
+                        System.out.print("Enter the new type for the method: ");
+                        newType = console.next();
+                        
+                        classCall.changeMethodType(methodName, newType);
+                    }
+                    break;
+                    
+                    case 5:
                     break;
 
                     //Default case that sends user back to main menu if a number not on the menu is entered
@@ -304,9 +360,14 @@ public class Main
                     break;
                 }
                 break;
+                
+                // Case for Fields 
+                case 3:
+                
+                break;
 
                 //Case for Relationships
-                case 3:
+                case 4:
                 int relNum = 0;
 
                 //Relationship menu
@@ -426,7 +487,7 @@ public class Main
                 break;
 
                 //Case to list data
-                case 4:
+                case 5:
                 int listNum = 0;
 
                 //List menu
@@ -503,7 +564,7 @@ public class Main
                 break;
 		
                 //Save JSON case
-		        case 5:
+		        case 6:
 		        System.out.println();   
             	System.out.print("Enter filepath (filepath+filename): ");
             	String filename = console.next();
@@ -513,7 +574,7 @@ public class Main
             	break;
 			    
                 //Load JSON case
-		        case 6:
+		        case 7:
 		        System.out.println();        
               	System.out.println("Enter filepath (filepath+filename) of file to open: ");
             	String filepath = console.next();
@@ -527,7 +588,7 @@ public class Main
                 break;
                 
                 //Case that displays help instructions
-                case 7:
+                case 8:
                 System.out.println();
                 System.out.println("The menu options accept numbers only. Any words while selecting a menu option will have you try again.");
                 System.out.println();
@@ -559,7 +620,7 @@ public class Main
                 break;
 
                 //Case that exists the program
-                case 8:
+                case 9:
                 loop = false;
                 break;
 
