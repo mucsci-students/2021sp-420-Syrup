@@ -122,7 +122,7 @@ public class UMLController {
                 case "Print Classes":
                     //implementation needed
                     break;
-                case "Print Classes and Attributes":
+                case "Print Classes and Methods":
                     //implementation needed
                     break;
                 case "Print Relationships":

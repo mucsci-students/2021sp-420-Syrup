@@ -152,12 +152,18 @@ public class UMLGUI {
         JButton createMeth = new JButton("Create a new method");
         JButton deleteMeth = new JButton("Delete a method");
         JButton renameMeth = new JButton("Rename a method");
+        JButton addParam = new JButton("Add method parameter(s)");
+        JButton delParam = new JButton("Delete method parameter(s)");
+        JButton changeParam = new JButton("Change method parameter(s)");
         JButton backButton = new JButton("<--");
 
         //register controller to view
         createMeth.addActionListener(controller.getMethPageListener());
         deleteMeth.addActionListener(controller.getMethPageListener());
         renameMeth.addActionListener(controller.getMethPageListener());
+        addParam.addActionListener(controller.getMethPageListener());
+        delParam.addActionListener(controller.getMethPageListener());
+        changeParam.addActionListener(controller.getMethPageListener());
         backButton.addActionListener(controller.getMethPageListener());
 
         //Method Page
@@ -177,10 +183,15 @@ public class UMLGUI {
         methPanel.add(createMeth);
         methPanel.add(deleteMeth);
         methPanel.add(renameMeth);
+        methPanel.add(addParam);
+        methPanel.add(delParam);
+        methPanel.add(changeParam);
         methPanel.add(backButton);
         methPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
         changePanel(methPanel);
     }
+
+
 
     //////////////////////////////////////////////////////////
     //
@@ -238,13 +249,13 @@ public class UMLGUI {
 
         //view
         JButton printClasses = new JButton("Print Classes");
-        JButton printClassesMeth = new JButton("Print Classes and Attributes");
+        JButton printClassesMeth = new JButton("Print Classes and Methods");
         JButton printRel = new JButton("Print Relationships");
         JButton backButton = new JButton("<--");
 
         //register the controller to view
         printClasses.addActionListener(controller.getPrintPageListener());
-        printClassesAttr.addActionListener(controller.getPrintPageListener());
+        printClassesMeth.addActionListener(controller.getPrintPageListener());
         printRel.addActionListener(controller.getPrintPageListener());
         backButton.addActionListener(controller.getPrintPageListener());
 
@@ -264,7 +275,7 @@ public class UMLGUI {
         printPanel = new JPanel(new GridLayout(8, 1, 8, 8));
         printPanel.add(printLabel);
         printPanel.add(printClasses);
-        printPanel.add(printClassesAttr);
+        printPanel.add(printClassesMeth);
         printPanel.add(printRel);
         printPanel.add(backButton);
         printPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
