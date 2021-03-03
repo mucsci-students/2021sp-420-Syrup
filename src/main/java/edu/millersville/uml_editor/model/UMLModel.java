@@ -7,15 +7,21 @@ import java.util.Map;
 public class UMLModel {
     private Map<String, ClassObject> classMap;
     private Map<String, Relationships> relMap;
+	private Map<String, Field> fieldMap;
     
     public UMLModel() {
 		classMap = new HashMap<String, ClassObject>();
 		relMap = new HashMap<String, Relationships>();
+		fieldMap = new HashMap<String, Field>();
     }
 
     public  Map<String, ClassObject> getClasses() {
         return classMap;
     }
+
+	public Map<String, Field> getFields() {
+		return fieldMap;
+	}
 
     public Map<String, Relationships> getRelationships() {
         return relMap;

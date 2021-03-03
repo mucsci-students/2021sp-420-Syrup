@@ -18,6 +18,7 @@ public class UMLGUI {
     private JPanel createClassPanel = null;
     private JPanel deleteClassPanel = null;
     private JPanel renameClassPanel = null;
+    private JPanel createFieldPanel = null;
     private JPanel createRelPanel = null;
     private JPanel deleteRelPanel = null;
     private JPanel changeRelTypePanel = null;
@@ -235,6 +236,96 @@ public class UMLGUI {
          fieldPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
          changePanel(fieldPanel);
      }
+
+     //////////////////////////////////////////////////////////
+     //
+     //  createFieldPanel
+     //
+     //////////////////////////////////////////////////////////
+
+     // Create Panel
+    public void createFieldPanel(){
+        //checks to see if the panel was already created
+        panelCheck(createFieldPanel);
+        
+        JLabel className = new JLabel("Enter name of class to add field to:");
+        className.setFont(new Font("Serif", Font.BOLD, 16));
+        
+        JLabel name = new JLabel("Enter field name:");
+        name.setFont(new Font("Serif", Font.BOLD, 16));
+        
+        JLabel type = new JLabel("Enter field type (int, String, etc):");
+        type.setFont(new Font("Serif", Font.BOLD, 16));
+        
+        JButton createButton = new JButton("Create");
+        createButton.addActionListener(controller.createFieldCall());
+        
+        JButton backButton = new JButton ("<--");
+        backButton.addActionListener(controller.getClassPageListener());
+
+        textBox1 = new JTextField();
+        textBox2 = new JTextField();
+        textBox3 = new JTextField();
+        textBox4 = new JTextField();
+        
+
+        createFieldPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+        
+        
+        createFieldPanel.add(ID);
+        createFieldPanel.add(textBox1);
+        
+        createFieldPanel.add(source);
+        createFieldPanel.add(textBox2);
+        
+        createFieldPanel.add(dest);
+        createFieldPanel.add(textBox3);
+        
+        createFieldPanel.add(type);
+        createFieldPanel.add(textBox4);
+        
+        createFieldPanel.add(createButton);
+        createFieldPanel.add(backButton);
+        createFieldPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(createFieldPanel);
+    }
+    
+    // Field Action
+    public void createFieldAction(ActionEvent e)
+    {
+    	String ID = textBox1.getText();
+    	String sourceClass = textBox2.getText();
+    	String destClass = textBox3.getText();
+    	String type = textBox4.getText();
+    	
+    	if (!model.hasClass(sourceClass) || !model.hasClass(destClass))
+    		notExistPanel();
+    	else if (model.hasFieldID(ID))
+    		hasIDPanel();
+    	else if (!type.equals("A") && !type.equals("C") && !type.equals("I") && !type.equals("R"))
+    		notTypePanel();
+    	else
+    	{
+    		model.createFieldationshipGUI(sourceClass, destClass, ID, type);
+			createdFieldPanel();
+    	}
+    	
+    }
+    
+    // Created Panel
+    public void createdFieldPanel(){
+        panelCheck(renamedClassPanel);
+        JLabel label = new JLabel("The Fieldationship has been added!");
+        renamedClassPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+
+        JButton backButton = new JButton ("<--");
+        backButton.addActionListener(controller.getClassPageListener());
+
+        renamedClassPanel.add(label);
+        renamedClassPanel.add(backButton);
+        renamedClassPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(renamedClassPanel);
+    }
 
 
     //////////////////////////////////////////////////////////

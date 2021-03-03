@@ -195,6 +195,32 @@ public class UMLController {
             gui.renameActionPerformed(e);
         };
     }
+
+    public ActionListener createFieldCall(){
+        return (ActionEvent e) -> {
+            String fieldName = e.getActionCommand();
+            if(model.hasField(fieldName)){
+                model.createField(fieldName);
+                gui.createdFieldPanel();
+            }
+            else{
+                gui.notExistPanel();
+            }
+        };
+    }
+
+    public ActionListener deleteFieldCall(){
+        return (ActionEvent e) -> {
+            String fieldName = e.getActionCommand();
+            if(model.hasField(fieldName)){
+                model.deleteField(fieldName);
+                gui.deletedFieldPanel();
+            }
+            else{
+                gui.notExistPanel();
+            }
+        };
+    }
     
     public ActionListener createRelCall(){
         return (ActionEvent e) -> {
