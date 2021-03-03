@@ -265,24 +265,19 @@ public class UMLGUI {
 
         textBox1 = new JTextField();
         textBox2 = new JTextField();
-        textBox3 = new JTextField();
-        textBox4 = new JTextField();
-        
+        textBox3 = new JTextField();       
 
+        
         createFieldPanel = new JPanel(new GridLayout(8, 1, 8, 8));
-        
-        
-        createFieldPanel.add(ID);
+
+        createFieldPanel.add(className);
         createFieldPanel.add(textBox1);
         
-        createFieldPanel.add(source);
+        createFieldPanel.add(name);
         createFieldPanel.add(textBox2);
         
-        createFieldPanel.add(dest);
-        createFieldPanel.add(textBox3);
-        
         createFieldPanel.add(type);
-        createFieldPanel.add(textBox4);
+        createFieldPanel.add(textBox3);
         
         createFieldPanel.add(createButton);
         createFieldPanel.add(backButton);
@@ -293,14 +288,14 @@ public class UMLGUI {
     // Field Action
     public void createFieldAction(ActionEvent e)
     {
-    	String ID = textBox1.getText();
-    	String sourceClass = textBox2.getText();
-    	String destClass = textBox3.getText();
-    	String type = textBox4.getText();
+    	String className = textBox1.getText();
+    	String name = textBox2.getText();
+    	String type = textBox3.getText();
+
     	
-    	if (!model.hasClass(sourceClass) || !model.hasClass(destClass))
+    	if (!model.hasClass(className))
     		notExistPanel();
-    	else if (model.hasFieldID(ID))
+    	else if (model.getClassFor(className).containsField(name))
     		hasIDPanel();
     	else if (!type.equals("A") && !type.equals("C") && !type.equals("I") && !type.equals("R"))
     		notTypePanel();
@@ -954,6 +949,19 @@ public class UMLGUI {
 
     private void setController(UMLController c) {
         this.controller = c;
+    }
+
+    private boolean isValidVariableType(String type) {
+        String[] validTypes = {
+            "String", "int", "float", "char", "boolean", 
+        };
+        
+        for(int i = 0; i < validTypes.length; i++) {
+            if(type == validTypes[i])
+                return true;
+            else
+                return false;
+        }
     }
 
 }

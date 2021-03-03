@@ -7,12 +7,10 @@ import java.util.Map;
 public class UMLModel {
     private Map<String, ClassObject> classMap;
     private Map<String, Relationships> relMap;
-	private Map<String, Field> fieldMap;
     
     public UMLModel() {
 		classMap = new HashMap<String, ClassObject>();
 		relMap = new HashMap<String, Relationships>();
-		fieldMap = new HashMap<String, Field>();
     }
 
     public  Map<String, ClassObject> getClasses() {
@@ -194,6 +192,10 @@ public class UMLModel {
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Field Functions
 	////////////////////////////////////////////////////////////////////////////////////////////
+
+	public boolean hasField(String className, String fieldName) {
+		if(classMap.)
+	}
 	
 	/**
 	 * A function that adds a field to a class.
