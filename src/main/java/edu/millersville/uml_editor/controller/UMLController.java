@@ -109,22 +109,6 @@ public class UMLController {
         };
     }
 
-    public ActionListener getFieldPageListener(){
-        return(ActionEvent e) -> {
-            switch(e.getActionCommand()){
-                case "Add a field":
-                    //implementation needed
-                    break;
-                case "Delete a field":
-                    //implementation needed
-                    break;
-                case "<--":
-                    gui.menuPanel();
-                    break;
-            }
-        };
-    }
-
     public ActionListener getRelPageListener(){
         return(ActionEvent e) -> {
             switch(e.getActionCommand()){
