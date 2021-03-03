@@ -12,6 +12,7 @@ public class UMLGUI {
     private JPanel menuPanel = null;
     private JPanel classPanel = null;
     private JPanel methPanel = null;
+    private JPanel fieldPanel = null;
     private JPanel relPanel = null;
     private JPanel printPanel = null;
     private JPanel createClassPanel = null;
@@ -56,12 +57,14 @@ public class UMLGUI {
         // view
         JButton classButton = new JButton("Class");
         JButton methButton = new JButton("Method");
+        JButton fieldButton = new JButton("Field");
         JButton relButton = new JButton("Relationship");
         JButton printButton = new JButton("Print");
 
         // register controller to view
         classButton.addActionListener(controller.getMainPageListener());
         methButton.addActionListener(controller.getMainPageListener());
+        fieldButton.addActionListener(controller.getMainPageListener());
         relButton.addActionListener(controller.getMainPageListener());
         printButton.addActionListener(controller.getMainPageListener());
 
@@ -88,6 +91,7 @@ public class UMLGUI {
         menuPanel.add(select);
         menuPanel.add(classButton);
         menuPanel.add(methButton);
+        menuPanel.add(fieldButton);
         menuPanel.add(relButton);
         menuPanel.add(printButton);
         menuPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
@@ -191,6 +195,46 @@ public class UMLGUI {
         changePanel(methPanel);
     }
 
+    //////////////////////////////////////////////////////////
+    //
+    //	fieldPanel
+    //
+    ///////////////////////////////////////////////////////////
+    
+    public void fieldPanel() {
+        //checks to see if the panel was already created
+        panelCheck(fieldPanel);
+ 
+        //view
+         JButton createField = new JButton("Add a field");
+         JButton deleteField = new JButton("Delete a field");
+         JButton backButton = new JButton("<--");
+ 
+         //register controller to view
+         createField.addActionListener(controller.getFieldPageListener());
+         deleteField.addActionListener(controller.getFieldPageListener());
+         backButton.addActionListener(controller.getFieldPageListener());
+ 
+         //Method Page
+         ///////////////
+         // Heading/Labels
+         ///////////////
+         JLabel fieldLabel = new JLabel("Field Functions:", SwingConstants.CENTER);
+         fieldLabel.setFont(new Font("Serif", Font.BOLD, 20));
+ 
+         fieldLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+ 
+         ///////////////
+         // Panel
+         ///////////////
+         fieldPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+         fieldPanel.add(fieldLabel);
+         fieldPanel.add(createField);
+         fieldPanel.add(deleteField);
+         fieldPanel.add(backButton);
+         fieldPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+         changePanel(fieldPanel);
+     }
 
 
     //////////////////////////////////////////////////////////

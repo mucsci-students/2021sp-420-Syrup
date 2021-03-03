@@ -50,6 +50,9 @@ public class UMLController {
                 case "Method":
                     gui.methPanel();
                     break;
+                case "Field":
+                    gui.fieldPanel();
+                    break;
                 case "Relationship":
                     gui.relPanel();
                     break;
@@ -97,6 +100,22 @@ public class UMLController {
                     //implementation needed
                     break;
                 case "Change method parameter(s)":
+                    //implementation needed
+                    break;
+                case "<--":
+                    gui.menuPanel();
+                    break;
+            }
+        };
+    }
+
+    public ActionListener getFieldPageListener(){
+        return(ActionEvent e) -> {
+            switch(e.getActionCommand()){
+                case "Add a field":
+                    //implementation needed
+                    break;
+                case "Delete a field":
                     //implementation needed
                     break;
                 case "<--":
