@@ -47,8 +47,11 @@ public class UMLController {
                 case "Class":
                     gui.classPanel();
                     break;
-                case "Attribute":
-                    gui.attrPanel();
+                case "Method":
+                    gui.methPanel();
+                    break;
+                case "Field":
+                    gui.fieldPanel();
                     break;
                 case "Relationship":
                     gui.relPanel();
@@ -78,18 +81,52 @@ public class UMLController {
             }
         };
     }
-    public ActionListener getAttrPageListener(){
+    
+    
+    
+    public ActionListener getMethPageListener(){
         return(ActionEvent e) -> {
             switch(e.getActionCommand()){
-                case "Create a new Attribute":
+                case "Create a new method":
                     //implementation needed
                     break;
-                case "Delete a Attribute":
+                case "Delete a method":
                     //implementation needed
                     break;
-                case "Rename a Attribute":
+                case "Rename a method":
                     //implementation needed
                     break;
+                case "Add method parameter(s)":
+                    //implementation needed
+                    break;
+                case "Delete method parameter(s)":
+                    //implementation needed
+                    break;
+                case "Change method parameter(s)":
+                    //implementation needed
+                    break;
+                case "<--":
+                    gui.menuPanel();
+                    break;
+            }
+        };
+    }
+    
+    public ActionListener getFieldPageListener(){
+        return(ActionEvent e) -> {
+            switch(e.getActionCommand()){
+                case "Add a field":
+                    gui.createFieldPanel();
+                    break;
+                case "Delete a field":
+                	gui.deleteFieldPanel();
+                    break;
+                case "Rename a field":
+                    gui.renameFieldPanel();
+                    break;
+                case "Change the type of a field":
+                	//
+                	break;
                 case "<--":
                     gui.menuPanel();
                     break;
@@ -122,7 +159,7 @@ public class UMLController {
                 case "Print Classes":
                     //implementation needed
                     break;
-                case "Print Classes and Attributes":
+                case "Print Classes and Methods":
                     //implementation needed
                     break;
                 case "Print Relationships":
@@ -165,6 +202,24 @@ public class UMLController {
     public ActionListener renameClassCall(){
         return (ActionEvent e) -> {
             gui.renameActionPerformed(e);
+        };
+    }
+    
+    public ActionListener createFieldCall(){
+        return (ActionEvent e) -> {
+            gui.createFieldAction(e);
+        };
+    }
+    
+    public ActionListener deleteFieldCall(){
+        return (ActionEvent e) -> {
+            gui.deleteFieldAction(e);
+        };
+    }
+    
+    public ActionListener renameFieldCall(){
+        return (ActionEvent e) -> {
+            gui.renameFieldAction(e);
         };
     }
     
