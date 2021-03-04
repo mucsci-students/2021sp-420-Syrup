@@ -81,6 +81,9 @@ public class UMLController {
             }
         };
     }
+    
+    
+    
     public ActionListener getMethPageListener(){
         return(ActionEvent e) -> {
             switch(e.getActionCommand()){
@@ -102,6 +105,28 @@ public class UMLController {
                 case "Change method parameter(s)":
                     //implementation needed
                     break;
+                case "<--":
+                    gui.menuPanel();
+                    break;
+            }
+        };
+    }
+    
+    public ActionListener getFieldPageListener(){
+        return(ActionEvent e) -> {
+            switch(e.getActionCommand()){
+                case "Add a field":
+                    gui.createFieldPanel();
+                    break;
+                case "Delete a field":
+                	gui.deleteFieldPanel();
+                    break;
+                case "Rename a field":
+                    gui.renameFieldPanel();
+                    break;
+                case "Change the type of a field":
+                	//
+                	break;
                 case "<--":
                     gui.menuPanel();
                     break;
@@ -177,6 +202,24 @@ public class UMLController {
     public ActionListener renameClassCall(){
         return (ActionEvent e) -> {
             gui.renameActionPerformed(e);
+        };
+    }
+    
+    public ActionListener createFieldCall(){
+        return (ActionEvent e) -> {
+            gui.createFieldAction(e);
+        };
+    }
+    
+    public ActionListener deleteFieldCall(){
+        return (ActionEvent e) -> {
+            gui.deleteFieldAction(e);
+        };
+    }
+    
+    public ActionListener renameFieldCall(){
+        return (ActionEvent e) -> {
+            gui.renameFieldAction(e);
         };
     }
     

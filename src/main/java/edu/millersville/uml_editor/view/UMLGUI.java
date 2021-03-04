@@ -25,6 +25,14 @@ public class UMLGUI {
     private JPanel createdClassPanel = null;
     private JPanel deletedClassPanel = null;
     private JPanel renamedClassPanel = null;
+    private JPanel createFieldPanel = null;
+    private JPanel createdFieldPanel = null;
+    private JPanel deleteFieldPanel = null;
+    private JPanel deletedFieldPanel = null;
+    private JPanel renameFieldPanel = null;
+    private JPanel renamedFieldPanel = null;
+    private JPanel changeFieldTypePanel = null;
+    private JPanel changedFieldTypePanel = null;
     private JPanel dupPanel = null;
     private JPanel notExistPanel = null;
     private JPanel notType = null;
@@ -208,11 +216,15 @@ public class UMLGUI {
         //view
          JButton createField = new JButton("Add a field");
          JButton deleteField = new JButton("Delete a field");
+         JButton renameField = new JButton("Rename a field");
+         JButton typeField = new JButton("Change the type of a field");
          JButton backButton = new JButton("<--");
  
          //register controller to view
          createField.addActionListener(controller.getFieldPageListener());
          deleteField.addActionListener(controller.getFieldPageListener());
+         renameField.addActionListener(controller.getFieldPageListener());
+         typeField.addActionListener(controller.getFieldPageListener());
          backButton.addActionListener(controller.getFieldPageListener());
  
          //Method Page
@@ -231,6 +243,14 @@ public class UMLGUI {
          fieldPanel.add(fieldLabel);
          fieldPanel.add(createField);
          fieldPanel.add(deleteField);
+         fieldPanel.add(renameField);
+         
+         /*
+          * COMMENTED OUT FIELD TYPE BUITTON 
+          * ONLY FOR THIS SPRINT
+          */
+         
+         // fieldPanel.add(typeField);
          fieldPanel.add(backButton);
          fieldPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
          changePanel(fieldPanel);
@@ -502,6 +522,246 @@ public class UMLGUI {
         renamedClassPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
         changePanel(renamedClassPanel);
     }
+    
+    //////////////////////////////////////////////////////////
+    //
+    //	Create Field Panels
+    //
+    ///////////////////////////////////////////////////////////
+
+    // Create Panel
+    public void createFieldPanel(){
+        //checks to see if the panel was already created
+        panelCheck(createFieldPanel);
+
+        JLabel className = new JLabel("Enter Class:");
+        className.setFont(new Font("Serif", Font.BOLD, 16));
+        
+        JLabel fieldName = new JLabel("Enter Field Name:");
+        fieldName.setFont(new Font("Serif", Font.BOLD, 16));
+        
+        JLabel fieldType = new JLabel("Enter Field Type:");
+        fieldType.setFont(new Font("Serif", Font.BOLD, 16));
+        
+        JButton createButton = new JButton("Create");
+        createButton.addActionListener(controller.createFieldCall());
+        
+        JButton backButton = new JButton("<--");
+        backButton.addActionListener(controller.getPrintPageListener());
+        
+        textBox1 = new JTextField();
+        textBox2 = new JTextField();
+        textBox3 = new JTextField();
+
+        createFieldPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+        
+        createFieldPanel.add(className);
+        createFieldPanel.add(textBox1);
+        
+        createFieldPanel.add(fieldName);
+        createFieldPanel.add(textBox2);
+        
+        createFieldPanel.add(fieldType);
+        createFieldPanel.add(textBox3);
+        
+        createFieldPanel.add(createButton);
+        createFieldPanel.add(backButton);
+        
+        createFieldPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(createFieldPanel);
+
+    }
+    
+    public void createFieldAction(ActionEvent e)
+    {
+    	String className = textBox1.getText();
+    	String fieldName = textBox2.getText();
+    	String fieldType = textBox3.getText();
+    	
+    	if (!model.hasClass(className))
+    		notExistPanel();
+    	
+    	else if (model.hasField(className, fieldName))
+			dupPanel();
+    	else
+    	{
+    		model.addField(className, fieldName, fieldType);
+    		createdFieldPanel();
+    	}
+    	
+    }
+    
+    // Created Panel
+    public void createdFieldPanel(){
+        panelCheck(createdFieldPanel);
+        JLabel label = new JLabel("The field has been added!");
+        createdFieldPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+
+        JButton backButton = new JButton ("<--");
+        backButton.addActionListener(controller.getFieldPageListener());
+
+        createdFieldPanel.add(label);
+        createdFieldPanel.add(backButton);
+        createdFieldPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(createdFieldPanel);
+    }
+    
+	//////////////////////////////////////////////////////////
+	//
+	//	Delete Field Panels
+	//
+	///////////////////////////////////////////////////////////
+	
+	// delete Panel
+	public void deleteFieldPanel(){
+		//checks to see if the panel was already created
+		panelCheck(deleteFieldPanel);
+		
+		JLabel className = new JLabel("Enter Class:");
+		className.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel fieldName = new JLabel("Enter Field Name:");
+		fieldName.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JButton deleteButton = new JButton("Delete");
+		deleteButton.addActionListener(controller.deleteFieldCall());
+		
+		JButton backButton = new JButton("<--");
+		backButton.addActionListener(controller.getPrintPageListener());
+		
+		textBox1 = new JTextField();
+		textBox2 = new JTextField();
+		
+		deleteFieldPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		deleteFieldPanel.add(className);
+		deleteFieldPanel.add(textBox1);
+		
+		deleteFieldPanel.add(fieldName);
+		deleteFieldPanel.add(textBox2);
+		
+		deleteFieldPanel.add(deleteButton);
+		deleteFieldPanel.add(backButton);
+		
+		deleteFieldPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(deleteFieldPanel);
+		
+	}
+	
+	public void deleteFieldAction(ActionEvent e)
+	{
+		String className = textBox1.getText();
+		String fieldName = textBox2.getText();
+		
+		if (!model.hasClass(className) || !model.hasField(className, fieldName))
+			notExistPanel();
+		else
+		{
+			model.deleteField(className, fieldName);
+			deletedFieldPanel();
+		}
+		
+	}
+	
+	// deleted Panel
+	public void deletedFieldPanel(){
+		panelCheck(deletedFieldPanel);
+		JLabel label = new JLabel("The field has been deleted!");
+		deletedFieldPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		JButton backButton = new JButton ("<--");
+		backButton.addActionListener(controller.getFieldPageListener());
+		
+		deletedFieldPanel.add(label);
+		deletedFieldPanel.add(backButton);
+		deletedFieldPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(deletedFieldPanel);
+	}
+	
+	//////////////////////////////////////////////////////////
+	//
+	//	Rename Field Panels
+	//
+	///////////////////////////////////////////////////////////
+	
+	// Rename Panel
+	public void renameFieldPanel(){
+		//checks to see if the panel was already created
+		panelCheck(renameFieldPanel);
+		
+		JLabel className = new JLabel("Enter Class:");
+		className.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel fieldName = new JLabel("Enter Current Field Name:");
+		fieldName.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel newFieldName = new JLabel("Enter New Field Name:");
+		newFieldName.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JButton renameButton = new JButton("Rename");
+		renameButton.addActionListener(controller.renameFieldCall());
+		
+		JButton backButton = new JButton("<--");
+		backButton.addActionListener(controller.getPrintPageListener());
+		
+		textBox1 = new JTextField();
+		textBox2 = new JTextField();
+		textBox3 = new JTextField();
+		
+		renameFieldPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		renameFieldPanel.add(className);
+		renameFieldPanel.add(textBox1);
+		
+		renameFieldPanel.add(fieldName);
+		renameFieldPanel.add(textBox2);
+		
+		renameFieldPanel.add(newFieldName);
+		renameFieldPanel.add(textBox3);
+		
+		renameFieldPanel.add(renameButton);
+		renameFieldPanel.add(backButton);
+		
+		renameFieldPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(renameFieldPanel);
+	
+	}
+	
+	public void renameFieldAction(ActionEvent e)
+	{
+		String className = textBox1.getText();
+		String fieldName = textBox2.getText();
+		String newFieldName = textBox3.getText();
+		
+		if (!model.hasClass(className))
+			notExistPanel();
+		else if (!model.hasField(className, fieldName))
+			notExistPanel();
+		else if (model.hasField(className, newFieldName))
+			dupPanel();
+		else
+		{
+			model.renameField(className, fieldName, newFieldName);
+			renamedFieldPanel();
+		}
+	
+	}
+	
+	// Renamed Panel
+	public void renamedFieldPanel(){
+		panelCheck(renamedFieldPanel);
+		JLabel label = new JLabel("The field has been renamed!");
+		renamedFieldPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		JButton backButton = new JButton ("<--");
+		backButton.addActionListener(controller.getFieldPageListener());
+		
+		renamedFieldPanel.add(label);
+		renamedFieldPanel.add(backButton);
+		renamedFieldPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(renamedFieldPanel);
+	}
+	
 
     //////////////////////////////////////////////////////////
     //
