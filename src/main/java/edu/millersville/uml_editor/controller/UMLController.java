@@ -48,7 +48,7 @@ public class UMLController {
                     gui.classPanel();
                     break;
                 case "Method":
-                    gui.methPanel();
+                    gui.methodPanel();
                     break;
                 case "Field":
                     gui.fieldPanel();
@@ -84,27 +84,21 @@ public class UMLController {
     
     
     
-    public ActionListener getMethPageListener(){
+    public ActionListener getMethodPageListener(){
         return(ActionEvent e) -> {
             switch(e.getActionCommand()){
                 case "Create a new method":
-                    //implementation needed
+                    gui.createMethodPanel();
                     break;
                 case "Delete a method":
-                    //implementation needed
+                    gui.deleteMethodPanel();
                     break;
                 case "Rename a method":
-                    //implementation needed
+                    gui.renameMethodPanel();
                     break;
-                case "Add method parameter(s)":
-                    //implementation needed
-                    break;
-                case "Delete method parameter(s)":
-                    //implementation needed
-                    break;
-                case "Change method parameter(s)":
-                    //implementation needed
-                    break;
+                case "Parameters":
+                	// implementation needed
+                	break;
                 case "<--":
                     gui.menuPanel();
                     break;
@@ -171,6 +165,12 @@ public class UMLController {
             }
         };
     }
+    
+    //////////////////////////////////
+    //
+    //	Class Calls
+    //
+    //////////////////////////////////
 
     public ActionListener createClassCall(){
         return (ActionEvent e) -> {
@@ -204,6 +204,37 @@ public class UMLController {
             gui.renameActionPerformed(e);
         };
     }
+
+	//////////////////////////////////
+	//
+	//	Method Calls
+	//
+	//////////////////////////////////
+    
+    public ActionListener createMethodCall(){
+        return (ActionEvent e) -> {
+            gui.createMethodAction(e);
+        };
+    }
+    
+    public ActionListener deleteMethodCall(){
+        return (ActionEvent e) -> {
+            gui.deleteMethodAction(e);
+        };
+    }
+    
+    public ActionListener renameMethodCall(){
+        return (ActionEvent e) -> {
+            gui.renameMethodAction(e);
+        };
+    }
+	   
+	    
+	//////////////////////////////////
+	//
+	//	Field Calls
+	//
+	//////////////////////////////////
     
     public ActionListener createFieldCall(){
         return (ActionEvent e) -> {
@@ -222,6 +253,12 @@ public class UMLController {
             gui.renameFieldAction(e);
         };
     }
+	    
+	//////////////////////////////////
+	//
+	//	Relationship Calls
+	//
+	//////////////////////////////////
     
     public ActionListener createRelCall(){
         return (ActionEvent e) -> {

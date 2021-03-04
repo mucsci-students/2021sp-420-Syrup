@@ -25,6 +25,13 @@ public class UMLModel {
         return classMap.containsKey(className);
     }
     
+    public boolean hasMethod(String className, String methodName) {
+    	Method methodObject = classMap.get(className).getMethod(methodName);
+    	if (methodObject == null)
+    		return false;
+    	return true;
+    }
+    
     public boolean hasField(String className, String fieldName) {
     	Field FieldObject = classMap.get(className).getField(fieldName);
     	if (FieldObject == null)
