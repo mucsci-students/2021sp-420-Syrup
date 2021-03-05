@@ -10,21 +10,25 @@ import edu.millersville.uml_editor.controller.*;
 public class UMLGUI {
     private JFrame umlEditor = null;
     private JPanel menuPanel = null;
+    
     private JPanel classPanel = null;
-    private JPanel methPanel = null;
+    private JPanel methodPanel = null;
     private JPanel fieldPanel = null;
     private JPanel relPanel = null;
     private JPanel printPanel = null;
+    
     private JPanel createClassPanel = null;
     private JPanel deleteClassPanel = null;
     private JPanel renameClassPanel = null;
+    private JPanel createdClassPanel = null;
+    private JPanel deletedClassPanel = null;
+    private JPanel renamedClassPanel = null;
+    
     private JPanel createRelPanel = null;
     private JPanel deleteRelPanel = null;
     private JPanel changeRelTypePanel = null;
     private JPanel changedRelTypePanel = null;
-    private JPanel createdClassPanel = null;
-    private JPanel deletedClassPanel = null;
-    private JPanel renamedClassPanel = null;
+    
     private JPanel createFieldPanel = null;
     private JPanel createdFieldPanel = null;
     private JPanel deleteFieldPanel = null;
@@ -33,6 +37,14 @@ public class UMLGUI {
     private JPanel renamedFieldPanel = null;
     private JPanel changeFieldTypePanel = null;
     private JPanel changedFieldTypePanel = null;
+    
+    private JPanel createMethodPanel = null;
+    private JPanel createdMethodPanel = null;
+    private JPanel deleteMethodPanel = null;
+    private JPanel deletedMethodPanel = null;
+    private JPanel renameMethodPanel = null;
+    private JPanel renamedMethodPanel = null;
+    
     private JPanel dupPanel = null;
     private JPanel notExistPanel = null;
     private JPanel notType = null;
@@ -152,55 +164,50 @@ public class UMLGUI {
 
     //////////////////////////////////////////////////////////
     //
-    //	methPanel
+    //	methodPanel
     //
     ///////////////////////////////////////////////////////////
     
-    public void methPanel() {
+    public void methodPanel() {
        //checks to see if the panel was already created
-       panelCheck(methPanel);
+       panelCheck(methodPanel);
 
        //view
-        JButton createMeth = new JButton("Create a new method");
-        JButton deleteMeth = new JButton("Delete a method");
-        JButton renameMeth = new JButton("Rename a method");
-        JButton addParam = new JButton("Add method parameter(s)");
-        JButton delParam = new JButton("Delete method parameter(s)");
-        JButton changeParam = new JButton("Change method parameter(s)");
+        JButton createMethod = new JButton("Create a new method");
+        JButton deleteMethod = new JButton("Delete a method");
+        JButton renameMethod = new JButton("Rename a method");
+        JButton paramButton = new JButton("Parameters");
         JButton backButton = new JButton("<--");
 
         //register controller to view
-        createMeth.addActionListener(controller.getMethPageListener());
-        deleteMeth.addActionListener(controller.getMethPageListener());
-        renameMeth.addActionListener(controller.getMethPageListener());
-        addParam.addActionListener(controller.getMethPageListener());
-        delParam.addActionListener(controller.getMethPageListener());
-        changeParam.addActionListener(controller.getMethPageListener());
-        backButton.addActionListener(controller.getMethPageListener());
+        createMethod.addActionListener(controller.getMethodPageListener());
+        deleteMethod.addActionListener(controller.getMethodPageListener());
+        renameMethod.addActionListener(controller.getMethodPageListener());
+        paramButton.addActionListener(controller.getMethodPageListener());
+        backButton.addActionListener(controller.getMethodPageListener());
 
         //Method Page
         ///////////////
         // Heading/Labels
         ///////////////
-        JLabel methLabel = new JLabel("Method Functions:", SwingConstants.CENTER);
-        methLabel.setFont(new Font("Serif", Font.BOLD, 20));
+        JLabel methodLabel = new JLabel("Method Functions:", SwingConstants.CENTER);
+        methodLabel.setFont(new Font("Serif", Font.BOLD, 20));
 
-        methLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        methodLabel.setVerticalAlignment(SwingConstants.BOTTOM);
 
         ///////////////
         // Panel
         ///////////////
-        methPanel = new JPanel(new GridLayout(8, 1, 8, 8));
-        methPanel.add(methLabel);
-        methPanel.add(createMeth);
-        methPanel.add(deleteMeth);
-        methPanel.add(renameMeth);
-        methPanel.add(addParam);
-        methPanel.add(delParam);
-        methPanel.add(changeParam);
-        methPanel.add(backButton);
-        methPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
-        changePanel(methPanel);
+        methodPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+        methodPanel.add(methodLabel);
+        methodPanel.add(createMethod);
+        methodPanel.add(deleteMethod);
+        methodPanel.add(renameMethod);
+        methodPanel.add(paramButton);
+        
+        methodPanel.add(backButton);
+        methodPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(methodPanel);
     }
 
     //////////////////////////////////////////////////////////
@@ -523,6 +530,246 @@ public class UMLGUI {
         changePanel(renamedClassPanel);
     }
     
+    //////////////////////////////////////////////////////////
+    //
+    //	Create Method Panels
+    //
+    ///////////////////////////////////////////////////////////
+
+    // Create Panel
+    public void createMethodPanel(){
+        //checks to see if the panel was already created
+        panelCheck(createMethodPanel);
+
+        JLabel className = new JLabel("Enter Class:");
+        className.setFont(new Font("Serif", Font.BOLD, 16));
+        
+        JLabel methodName = new JLabel("Enter Method Name:");
+        methodName.setFont(new Font("Serif", Font.BOLD, 16));
+        
+        JLabel methodType = new JLabel("Enter Method Type:");
+        methodType.setFont(new Font("Serif", Font.BOLD, 16));
+        
+        JButton createButton = new JButton("Create");
+        createButton.addActionListener(controller.createMethodCall());
+        
+        JButton backButton = new JButton("<--");
+        backButton.addActionListener(controller.getPrintPageListener());
+        
+        textBox1 = new JTextField();
+        textBox2 = new JTextField();
+        textBox3 = new JTextField();
+
+        createMethodPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+        
+        createMethodPanel.add(className);
+        createMethodPanel.add(textBox1);
+        
+        createMethodPanel.add(methodName);
+        createMethodPanel.add(textBox2);
+        
+        createMethodPanel.add(methodType);
+        createMethodPanel.add(textBox3);
+        
+        createMethodPanel.add(createButton);
+        createMethodPanel.add(backButton);
+        
+        createMethodPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(createMethodPanel);
+
+    }
+    
+    public void createMethodAction(ActionEvent e)
+    {
+    	String className = textBox1.getText();
+    	String methodName = textBox2.getText();
+    	String methodType = textBox3.getText();
+    	
+    	if (!model.hasClass(className))
+    		notExistPanel();
+    	
+    	else if (model.hasMethod(className, methodName))
+			dupPanel();
+    	else
+    	{
+    		model.addMethod(className, methodName, methodType);
+    		createdMethodPanel();
+    	}
+    	
+    }
+    
+    // Created Panel
+    public void createdMethodPanel(){
+        panelCheck(createdMethodPanel);
+        JLabel label = new JLabel("The method has been added!");
+        createdMethodPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+
+        JButton backButton = new JButton ("<--");
+        backButton.addActionListener(controller.getMethodPageListener());
+
+        createdMethodPanel.add(label);
+        createdMethodPanel.add(backButton);
+        createdMethodPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(createdMethodPanel);
+    }
+	    
+	//////////////////////////////////////////////////////////
+	//
+	//	Delete Method Panels
+	//
+	///////////////////////////////////////////////////////////
+	
+	// delete Panel
+	public void deleteMethodPanel(){
+		//checks to see if the panel was already created
+		panelCheck(deleteMethodPanel);
+		
+		JLabel className = new JLabel("Enter Class:");
+		className.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel methodName = new JLabel("Enter Method Name:");
+		methodName.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JButton deleteButton = new JButton("Delete");
+		deleteButton.addActionListener(controller.deleteMethodCall());
+		
+		JButton backButton = new JButton("<--");
+		backButton.addActionListener(controller.getPrintPageListener());
+		
+		textBox1 = new JTextField();
+		textBox2 = new JTextField();
+		
+		deleteMethodPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		deleteMethodPanel.add(className);
+		deleteMethodPanel.add(textBox1);
+		
+		deleteMethodPanel.add(methodName);
+		deleteMethodPanel.add(textBox2);
+		
+		deleteMethodPanel.add(deleteButton);
+		deleteMethodPanel.add(backButton);
+		
+		deleteMethodPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(deleteMethodPanel);
+		
+	}
+	
+	public void deleteMethodAction(ActionEvent e)
+	{
+		String className = textBox1.getText();
+		String methodName = textBox2.getText();
+		
+		if (!model.hasClass(className) || !model.hasMethod(className, methodName))
+			notExistPanel();
+		else
+		{
+			model.deleteMethod(className, methodName);
+			deletedMethodPanel();
+		}
+		
+	}
+	
+	// deleted Panel
+	public void deletedMethodPanel(){
+		panelCheck(deletedMethodPanel);
+		JLabel label = new JLabel("The method has been deleted!");
+		deletedMethodPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		JButton backButton = new JButton ("<--");
+		backButton.addActionListener(controller.getMethodPageListener());
+		
+		deletedMethodPanel.add(label);
+		deletedMethodPanel.add(backButton);
+		deletedMethodPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(deletedMethodPanel);
+	}
+	
+	//////////////////////////////////////////////////////////
+	//
+	//	Rename Method Panels
+	//
+	///////////////////////////////////////////////////////////
+	
+	// Rename Panel
+	public void renameMethodPanel(){
+		//checks to see if the panel was already created
+		panelCheck(renameMethodPanel);
+		
+		JLabel className = new JLabel("Enter Class:");
+		className.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel methodName = new JLabel("Enter Current Method Name:");
+		methodName.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel newMethodName = new JLabel("Enter New Method Name:");
+		newMethodName.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JButton renameButton = new JButton("Rename");
+		renameButton.addActionListener(controller.renameMethodCall());
+		
+		JButton backButton = new JButton("<--");
+		backButton.addActionListener(controller.getPrintPageListener());
+		
+		textBox1 = new JTextField();
+		textBox2 = new JTextField();
+		textBox3 = new JTextField();
+		
+		renameMethodPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		renameMethodPanel.add(className);
+		renameMethodPanel.add(textBox1);
+		
+		renameMethodPanel.add(methodName);
+		renameMethodPanel.add(textBox2);
+		
+		renameMethodPanel.add(newMethodName);
+		renameMethodPanel.add(textBox3);
+		
+		renameMethodPanel.add(renameButton);
+		renameMethodPanel.add(backButton);
+		
+		renameMethodPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(renameMethodPanel);
+		
+	}
+	
+	public void renameMethodAction(ActionEvent e)
+	{
+		String className = textBox1.getText();
+		String methodName = textBox2.getText();
+		String newMethodName = textBox3.getText();
+		
+		if (!model.hasClass(className))
+			notExistPanel();
+		else if (!model.hasMethod(className, methodName))
+			notExistPanel();
+		else if (model.hasMethod(className, newMethodName))
+			dupPanel();
+		else
+		{
+			model.renameMethod(className, methodName, newMethodName);
+			renamedMethodPanel();
+		}
+	
+	}
+	
+	// Renamed Panel
+	public void renamedMethodPanel(){
+		panelCheck(renamedMethodPanel);
+		JLabel label = new JLabel("The method has been renamed!");
+		renamedMethodPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		JButton backButton = new JButton ("<--");
+		backButton.addActionListener(controller.getMethodPageListener());
+		
+		renamedMethodPanel.add(label);
+		renamedMethodPanel.add(backButton);
+		renamedMethodPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(renamedMethodPanel);
+	}
+	    	
+	    
     //////////////////////////////////////////////////////////
     //
     //	Create Field Panels
