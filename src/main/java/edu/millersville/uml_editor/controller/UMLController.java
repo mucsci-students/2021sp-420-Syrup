@@ -97,7 +97,29 @@ public class UMLController {
                     gui.renameMethodPanel();
                     break;
                 case "Parameters":
-                	// implementation needed
+                	gui.paramPanel();
+                	break;
+                case "<--":
+                    gui.menuPanel();
+                    break;
+            }
+        };
+    }
+    
+    public ActionListener getParamPageListener(){
+        return(ActionEvent e) -> {
+            switch(e.getActionCommand()){
+                case "Delete a parameter":
+                	gui.deleteParamPanel();
+                    break;
+                case "Delete a parameter list":
+                	gui.deleteAllParamPanel();
+                    break;
+                case "Change a parameter":
+                	gui.changeParamPanel();
+                    break;
+                case "Change a parameter list":
+                	gui.changeParamListPanel();
                 	break;
                 case "<--":
                     gui.menuPanel();
@@ -228,7 +250,49 @@ public class UMLController {
             gui.renameMethodAction(e);
         };
     }
+	    
+	//////////////////////////////////
+	//
+	//	Parameter Calls
+	//
+	//////////////////////////////////
 	   
+    public ActionListener deleteParamCall(){
+        return (ActionEvent e) -> {
+            gui.deleteParamAction(e);
+        };
+    }
+    
+    public ActionListener deleteAllParamCall(){
+        return (ActionEvent e) -> {
+            gui.deleteAllParamAction(e);
+        };
+    }
+    
+    public ActionListener changeParamCall(){
+        return (ActionEvent e) -> {
+            gui.changeParamAction(e);
+        };
+    }
+    
+    public ActionListener changeAllParamCall(){
+        return (ActionEvent e) -> {
+            gui.changeParamListAction(e);
+        };
+    }
+    
+    public ActionListener addParamToListCall(){
+        return (ActionEvent e) -> {
+            gui.addParamHelper();
+        };
+    }
+    
+    public ActionListener doneParamCall(){
+        return (ActionEvent e) -> {
+            gui.changedParamListPanel();
+        };
+    }
+
 	    
 	//////////////////////////////////
 	//

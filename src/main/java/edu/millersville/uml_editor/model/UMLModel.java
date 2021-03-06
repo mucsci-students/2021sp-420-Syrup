@@ -316,6 +316,21 @@ public class UMLModel {
 	}
 	
 	/**
+	 * A function that removes the parameter.
+	 * @param className
+	 * 		The class the method is in.
+	 * @param methodName
+	 * 		The method that the parameter is in.
+	 * @param paramName
+	 * 		The parameter to delete.
+	 * @return
+	 * 		Returns true when the parameter is deleted.
+	 */
+	public void deleteAllParams(String className, String methodName) {
+		classMap.get(className).deleteAllParams(methodName);
+	}
+	
+	/**
 	 * A function that renames a parameter.
 	 * @param className
 	 * 		The name of the class that stores the method.

@@ -45,6 +45,14 @@ public class UMLGUI {
     private JPanel renameMethodPanel = null;
     private JPanel renamedMethodPanel = null;
     
+    private JPanel paramPanel = null;
+    private JPanel addParamPanel = null;
+    private JPanel deleteAllParamPanel = null;
+    private JPanel deleteParameterPanel = null;
+    private JPanel changeParameterPanel = null;
+    private JPanel changeParameterListPanel = null;
+    private JPanel parameterSolutionPanel = null;
+    
     private JPanel dupPanel = null;
     private JPanel notExistPanel = null;
     private JPanel notType = null;
@@ -54,7 +62,8 @@ public class UMLGUI {
     private JTextField textBox1;
     private JTextField textBox2;
     private JTextField textBox3;
-    private JTextField textBox4;    
+    private JTextField textBox4;
+    private JTextField textBox5;
 
     private UMLController controller;
     private UMLModel model;
@@ -76,14 +85,14 @@ public class UMLGUI {
 
         // view
         JButton classButton = new JButton("Class");
-        JButton methButton = new JButton("Method");
+        JButton methodButton = new JButton("Method");
         JButton fieldButton = new JButton("Field");
         JButton relButton = new JButton("Relationship");
         JButton printButton = new JButton("Print");
 
         // register controller to view
         classButton.addActionListener(controller.getMainPageListener());
-        methButton.addActionListener(controller.getMainPageListener());
+        methodButton.addActionListener(controller.getMainPageListener());
         fieldButton.addActionListener(controller.getMainPageListener());
         relButton.addActionListener(controller.getMainPageListener());
         printButton.addActionListener(controller.getMainPageListener());
@@ -110,7 +119,7 @@ public class UMLGUI {
         menuPanel.add(welcome);
         menuPanel.add(select);
         menuPanel.add(classButton);
-        menuPanel.add(methButton);
+        menuPanel.add(methodButton);
         menuPanel.add(fieldButton);
         menuPanel.add(relButton);
         menuPanel.add(printButton);
@@ -209,6 +218,54 @@ public class UMLGUI {
         methodPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
         changePanel(methodPanel);
     }
+    
+	//////////////////////////////////////////////////////////
+	//
+	//	paramPanel
+	//
+	///////////////////////////////////////////////////////////
+	
+	public void paramPanel() {
+		//checks to see if the panel was already created
+		panelCheck(paramPanel);
+		
+		//view
+		JButton deleteParam = new JButton("Delete a parameter");
+		JButton deleteAllParam = new JButton("Delete a parameter list");
+		JButton changeParam = new JButton("Change a parameter");
+		JButton changeAllParam = new JButton("Change a parameter list");
+		JButton backButton = new JButton("<--");
+		
+		//register controller to view
+		deleteParam.addActionListener(controller.getParamPageListener());
+		deleteAllParam.addActionListener(controller.getParamPageListener());
+		changeParam.addActionListener(controller.getParamPageListener());
+		changeAllParam.addActionListener(controller.getParamPageListener());
+		backButton.addActionListener(controller.getParamPageListener());
+		
+		//Parameter Page
+		///////////////
+		// Heading/Labels
+		///////////////
+		JLabel paramLabel = new JLabel("Parameter Functions:", SwingConstants.CENTER);
+		paramLabel.setFont(new Font("Serif", Font.BOLD, 20));
+		
+		paramLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		///////////////
+		// Panel
+		///////////////
+		paramPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		paramPanel.add(paramLabel);
+		paramPanel.add(deleteParam);
+		paramPanel.add(deleteAllParam);
+		paramPanel.add(changeParam);
+		paramPanel.add(changeAllParam);
+		
+		paramPanel.add(backButton);
+		paramPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(paramPanel);
+	}
 
     //////////////////////////////////////////////////////////
     //
@@ -768,8 +825,406 @@ public class UMLGUI {
 		renamedMethodPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
 		changePanel(renamedMethodPanel);
 	}
+	
+	//////////////////////////////////////////////////////////
+	//
+	//	Delete Parameter Panels
+	//
+	///////////////////////////////////////////////////////////
+	
+	// Delete Panel
+	public void deleteParamPanel(){
+		//checks to see if the panel was already created
+		panelCheck(deleteParameterPanel);
+		
+		JLabel className = new JLabel("Enter Class:");
+		className.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel methodName = new JLabel("Enter Method:");
+		methodName.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel paramName = new JLabel("Enter Parameter Name:");
+		paramName.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JButton deleteButton = new JButton("Delete");
+		deleteButton.addActionListener(controller.deleteParamCall());
+		
+		JButton backButton = new JButton ("<--");
+		backButton.addActionListener(controller.getClassPageListener());
+		
+		textBox1 = new JTextField();
+		textBox2 = new JTextField();
+		textBox3 = new JTextField();
+		
+		
+		deleteParameterPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		
+		deleteParameterPanel.add(className);
+		deleteParameterPanel.add(textBox1);
+		
+		deleteParameterPanel.add(methodName);
+		deleteParameterPanel.add(textBox2);
+		
+		deleteParameterPanel.add(paramName);
+		deleteParameterPanel.add(textBox3);
+		
+		deleteParameterPanel.add(deleteButton);
+		deleteParameterPanel.add(backButton);
+		
+		deleteParameterPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(deleteParameterPanel);
+	}
+	
+	// Parameter Action
+	public void deleteParamAction(ActionEvent e)
+	{
+		String className = textBox1.getText();
+		String methodName = textBox2.getText();
+		String paramName = textBox3.getText();
+		
+		if (!model.hasClass(className))
+			notExistPanel();
+		else if (!model.hasMethod(className, methodName))
+			notExistPanel();
+		else
+		{
+			boolean deleted = model.deleteParameter(className, methodName, paramName);
+			if (deleted)
+				deletedParamPanel();
+			else
+				notExistPanel();
+		}
+	
+	}
+	
+	// Deleted Panel
+	public void deletedParamPanel()
+	{
+		panelCheck(parameterSolutionPanel);
+		JLabel label = new JLabel("The parameter has been deleted!");
+		parameterSolutionPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		JButton backButton = new JButton ("<--");
+		backButton.addActionListener(controller.getClassPageListener());
+		
+		parameterSolutionPanel.add(label);
+		parameterSolutionPanel.add(backButton);
+		parameterSolutionPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(parameterSolutionPanel);
+	}
+		
+	//////////////////////////////////////////////////////////
+	//
+	//	Delete All Parameter Panels
+	//
+	///////////////////////////////////////////////////////////
+	
+	// Delete Panel
+	public void deleteAllParamPanel(){
+		//checks to see if the panel was already created
+		panelCheck(deleteAllParamPanel);
+		
+		JLabel className = new JLabel("Enter Class:");
+		className.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel methodName = new JLabel("Enter Method:");
+		methodName.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JButton deleteButton = new JButton("Delete All Parameters");
+		deleteButton.addActionListener(controller.deleteAllParamCall());
+		
+		JButton backButton = new JButton ("<--");
+		backButton.addActionListener(controller.getClassPageListener());
+		
+		textBox1 = new JTextField();
+		textBox2 = new JTextField();
+		
+		
+		deleteAllParamPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		
+		deleteAllParamPanel.add(className);
+		deleteAllParamPanel.add(textBox1);
+		
+		deleteAllParamPanel.add(methodName);
+		deleteAllParamPanel.add(textBox2);
+		
+		deleteAllParamPanel.add(deleteButton);
+		deleteAllParamPanel.add(backButton);
+		
+		deleteAllParamPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(deleteAllParamPanel);
+	}
+		
+	// Parameter Action
+	public void deleteAllParamAction(ActionEvent e)
+	{
+		String className = textBox1.getText();
+		String methodName = textBox2.getText();
+	
+		if (!model.hasClass(className))
+			notExistPanel();
+		else if (!model.hasMethod(className, methodName))
+			notExistPanel();
+		else
+		{
+			model.deleteAllParams(className, methodName);
+		}
+		
+	}
+		
+	// Deleted Panel
+	public void deletedAllParamPanel()
+	{
+		panelCheck(parameterSolutionPanel);
+		JLabel label = new JLabel("The parameters have been deleted!");
+		parameterSolutionPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		JButton backButton = new JButton ("<--");
+		backButton.addActionListener(controller.getClassPageListener());
+		
+		parameterSolutionPanel.add(label);
+		parameterSolutionPanel.add(backButton);
+		parameterSolutionPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(parameterSolutionPanel);
+	}
+		
+	//////////////////////////////////////////////////////////
+	//
+	//	Change Parameter Panels
+	//
+	///////////////////////////////////////////////////////////
+	
+	// Change Panel
+	public void changeParamPanel(){
+		//checks to see if the panel was already created
+		panelCheck(changeParameterPanel);
+		
+		JLabel className = new JLabel("Enter Class:");
+		className.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel methodName = new JLabel("Enter Method:");
+		methodName.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel paramName = new JLabel("Enter Parameter Name:");
+		paramName.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel newParamName = new JLabel("Enter New Parameter Name:");
+		newParamName.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel newParamType = new JLabel("Enter New Parameter Type:");
+		newParamType.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JButton changeButton = new JButton("Change");
+		changeButton.addActionListener(controller.changeParamCall());
+		
+		JButton backButton = new JButton ("<--");
+		backButton.addActionListener(controller.getClassPageListener());
+		
+		textBox1 = new JTextField();
+		textBox2 = new JTextField();
+		textBox3 = new JTextField();
+		textBox4 = new JTextField();
+		textBox5 = new JTextField();
+		
+		
+		changeParameterPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		
+		changeParameterPanel.add(className);
+		changeParameterPanel.add(textBox1);
+		
+		changeParameterPanel.add(methodName);
+		changeParameterPanel.add(textBox2);
+		
+		changeParameterPanel.add(paramName);
+		changeParameterPanel.add(textBox3);
+		
+		changeParameterPanel.add(newParamName);
+		changeParameterPanel.add(textBox4);
+
+		changeParameterPanel.add(newParamType);
+		changeParameterPanel.add(textBox5);
+		
+		changeParameterPanel.add(changeButton);
+		changeParameterPanel.add(backButton);
+		
+		changeParameterPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(changeParameterPanel);
+	}
+	
+	// Change Action
+	public void changeParamAction(ActionEvent e)
+	{
+		String className = textBox1.getText();
+		String methodName = textBox2.getText();
+		String paramName = textBox3.getText();
+		String newParameterName = textBox4.getText();
+		String newParameterType = textBox5.getText();
+		
+		if (!model.hasClass(className))
+			notExistPanel();
+		else if (!model.hasMethod(className, methodName))
+			notExistPanel();
+		else
+		{
+			boolean typeChanged = model.changeParameterType(className, methodName, paramName, newParameterType);
+			boolean renamed = model.renameParameter(className, methodName, paramName, newParameterName);
+			
+			if (renamed && typeChanged)
+				changedParamPanel();
+			
+			else if (!typeChanged)
+				notExistPanel();
+			
+			else if (!renamed)
+				dupPanel();
+			
+		}
+		
+	}
+	
+	// Changed Panel
+	public void changedParamPanel()
+	{
+		panelCheck(parameterSolutionPanel);
+		JLabel label = new JLabel("The parameter has been changed!");
+		parameterSolutionPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		JButton backButton = new JButton ("<--");
+		backButton.addActionListener(controller.getClassPageListener());
+		
+		parameterSolutionPanel.add(label);
+		parameterSolutionPanel.add(backButton);
+		parameterSolutionPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(parameterSolutionPanel);
+	}
 	    	
-	    
+	  
+	//////////////////////////////////////////////////////////
+	//
+	//	Change Parameter List Panels
+	//
+	///////////////////////////////////////////////////////////
+	
+	// Change Panel
+	public void changeParamListPanel(){
+		//checks to see if the panel was already created
+		panelCheck(changeParameterPanel);
+		
+		JLabel className = new JLabel("Enter Class:");
+		className.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel methodName = new JLabel("Enter Method:");
+		methodName.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JButton changeButton = new JButton("Change Parameter List");
+		changeButton.addActionListener(controller.changeAllParamCall());
+		
+		JButton backButton = new JButton ("<--");
+		backButton.addActionListener(controller.getClassPageListener());
+		
+		textBox1 = new JTextField();
+		textBox2 = new JTextField();		
+		
+		changeParameterPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		
+		changeParameterPanel.add(className);
+		changeParameterPanel.add(textBox1);
+		
+		changeParameterPanel.add(methodName);
+		changeParameterPanel.add(textBox2);
+		
+		changeParameterPanel.add(changeButton);
+		changeParameterPanel.add(backButton);
+		
+		changeParameterPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(changeParameterPanel);
+	}
+	
+	// Change Action
+	public void changeParamListAction(ActionEvent e)
+	{
+		String className = textBox1.getText();
+		String methodName = textBox2.getText();
+		
+		if (!model.hasClass(className))
+			notExistPanel();
+		else if (!model.hasMethod(className, methodName))
+			notExistPanel();
+		else
+		{
+			model.deleteAllParams(className, methodName);
+			addParamPanel();
+		}
+		
+	}
+	
+	public void addParamPanel()
+	{
+		panelCheck(addParamPanel);
+		JLabel paramName = new JLabel("Enter Parameter:");
+		paramName.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel paramType = new JLabel("Enter Type:");
+		paramType.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JButton addButton = new JButton("Add Parameter to List");
+		addButton.addActionListener(controller.addParamToListCall());
+		
+		JButton doneButton = new JButton("Done");
+		doneButton.addActionListener(controller.doneParamCall());
+		
+		addParamPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		textBox3 = new JTextField();
+		textBox4 = new JTextField();
+		
+		addParamPanel.add(paramName);
+		addParamPanel.add(textBox3);
+		
+		addParamPanel.add(paramType);
+		addParamPanel.add(textBox4);
+		
+		addParamPanel.add(addButton);
+		addParamPanel.add(doneButton);
+		
+		addParamPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(addParamPanel);
+	}
+	
+	// addParam helper function
+	public void addParamHelper ()
+	{
+		String className = textBox1.getText();
+		String methodName = textBox2.getText();
+		String paramName = textBox3.getText();
+		String paramType = textBox4.getText();
+		
+		model.addParameter(className, methodName, paramName, paramType);
+		
+		addParamPanel();
+	}
+	
+	// Changed Panel
+	public void changedParamListPanel()
+	{
+		panelCheck(parameterSolutionPanel);
+		JLabel label = new JLabel("The parameter list has been changed!");
+		parameterSolutionPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		JButton backButton = new JButton ("<--");
+		backButton.addActionListener(controller.getClassPageListener());
+		
+		parameterSolutionPanel.add(label);
+		parameterSolutionPanel.add(backButton);
+		parameterSolutionPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(parameterSolutionPanel);
+	}
+	    	
+	 
     //////////////////////////////////////////////////////////
     //
     //	Create Field Panels
@@ -1338,7 +1793,7 @@ public class UMLGUI {
         umlEditor = new JFrame("UML Editor");
         umlEditor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         umlEditor.setJMenuBar(menuBar);
-        umlEditor.setSize(400, 600);
+        umlEditor.setSize(500, 600);
         umlEditor.setVisible(true);
 
         menuPanel();
