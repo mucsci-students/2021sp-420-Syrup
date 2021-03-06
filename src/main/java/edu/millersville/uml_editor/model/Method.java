@@ -57,6 +57,9 @@ public class Method extends Formal {
 	 * 		True when there is a parameter with the specified name
 	 */
 	public boolean deleteParameter(String name) {
+		if(!containsParameter(name)) {
+			return false;
+		}
 		for(Parameter param : parameters) {
 			if(param.getName().equals(name)) {
 				parameters.remove(param);
@@ -69,8 +72,12 @@ public class Method extends Formal {
 	/**
 	 * A method to delete the whole ArrayList of parameters.
 	 */
-	public void deleteAllParameters() {
+	public boolean deleteAllParameters() {
+		if(parameters.isEmpty()) {
+			return false;
+		}
 		parameters.clear();
+		return true;
 	}
 	
 	/**
@@ -78,8 +85,12 @@ public class Method extends Formal {
 	 * @param newList
 	 * 		The new parameter list.
 	 */
-	public void replaceParameterList(ArrayList<Parameter> newList) {
+	public boolean replaceParameterList(ArrayList<Parameter> newList) {
+		if(parameters.isEmpty()) {
+			return false;
+		}
 		parameters = newList;
+		return true;
 	}
 	
 	/**
