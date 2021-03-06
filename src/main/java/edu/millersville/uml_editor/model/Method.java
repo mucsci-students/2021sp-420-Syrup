@@ -60,8 +60,8 @@ public class Method extends Formal {
 		for(Parameter param : parameters) {
 			if(param.getName().equals(name)) {
 				parameters.remove(param);
+				return true;
 			}
-			return true;
 		}
 		return false;
 	}

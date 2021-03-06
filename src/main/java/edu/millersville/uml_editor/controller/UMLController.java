@@ -233,9 +233,15 @@ public class UMLController {
 	//
 	//////////////////////////////////
     
-    public ActionListener createMethodCall(){
+    public ActionListener createdMethodCall(){
         return (ActionEvent e) -> {
-            gui.createMethodAction(e);
+            gui.createdMethodPanel();
+        };
+    }
+    
+    public ActionListener addParamInMethodCall(){
+        return (ActionEvent e) -> {
+            gui.addMethodHelper();
         };
     }
     

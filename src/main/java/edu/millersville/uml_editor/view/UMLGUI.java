@@ -64,6 +64,8 @@ public class UMLGUI {
     private JTextField textBox3;
     private JTextField textBox4;
     private JTextField textBox5;
+    
+    private boolean isMethod = false;
 
     private UMLController controller;
     private UMLModel model;
@@ -228,6 +230,8 @@ public class UMLGUI {
 	public void paramPanel() {
 		//checks to see if the panel was already created
 		panelCheck(paramPanel);
+		
+		isMethod = false;
 		
 		//view
 		JButton deleteParam = new JButton("Delete a parameter");
@@ -607,8 +611,8 @@ public class UMLGUI {
         JLabel methodType = new JLabel("Enter Method Type:");
         methodType.setFont(new Font("Serif", Font.BOLD, 16));
         
-        JButton createButton = new JButton("Create");
-        createButton.addActionListener(controller.createMethodCall());
+        JButton addParamsButton = new JButton("Add Parameters");
+        addParamsButton.addActionListener(controller.addParamInMethodCall());
         
         JButton backButton = new JButton("<--");
         backButton.addActionListener(controller.getPrintPageListener());
@@ -628,7 +632,7 @@ public class UMLGUI {
         createMethodPanel.add(methodType);
         createMethodPanel.add(textBox3);
         
-        createMethodPanel.add(createButton);
+        createMethodPanel.add(addParamsButton);
         createMethodPanel.add(backButton);
         
         createMethodPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
@@ -636,7 +640,7 @@ public class UMLGUI {
 
     }
     
-    public void createMethodAction(ActionEvent e)
+    public void addMethodHelper()
     {
     	String className = textBox1.getText();
     	String methodName = textBox2.getText();
@@ -650,7 +654,8 @@ public class UMLGUI {
     	else
     	{
     		model.addMethod(className, methodName, methodType);
-    		createdMethodPanel();
+    		isMethod = true;
+    		addParamPanel();
     	}
     	
     }
@@ -970,6 +975,7 @@ public class UMLGUI {
 		else
 		{
 			model.deleteAllParams(className, methodName);
+			deletedAllParamPanel();
 		}
 		
 	}
@@ -1175,18 +1181,22 @@ public class UMLGUI {
 		addButton.addActionListener(controller.addParamToListCall());
 		
 		JButton doneButton = new JButton("Done");
-		doneButton.addActionListener(controller.doneParamCall());
+		
+		if (isMethod)
+			doneButton.addActionListener(controller.createdMethodCall());
+		else
+			doneButton.addActionListener(controller.doneParamCall());
 		
 		addParamPanel = new JPanel(new GridLayout(8, 1, 8, 8));
 		
-		textBox3 = new JTextField();
 		textBox4 = new JTextField();
+		textBox5 = new JTextField();
 		
 		addParamPanel.add(paramName);
-		addParamPanel.add(textBox3);
+		addParamPanel.add(textBox4);
 		
 		addParamPanel.add(paramType);
-		addParamPanel.add(textBox4);
+		addParamPanel.add(textBox5);
 		
 		addParamPanel.add(addButton);
 		addParamPanel.add(doneButton);
@@ -1200,8 +1210,8 @@ public class UMLGUI {
 	{
 		String className = textBox1.getText();
 		String methodName = textBox2.getText();
-		String paramName = textBox3.getText();
-		String paramType = textBox4.getText();
+		String paramName = textBox4.getText();
+		String paramType = textBox5.getText();
 		
 		model.addParameter(className, methodName, paramName, paramType);
 		
