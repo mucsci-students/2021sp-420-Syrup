@@ -1,6 +1,6 @@
 # CSCI 420 (Spring 2021) Syrup UML Editor
 
-This is a command line program that allows the user to create a UML diagram in text form based off of their input. In this current UML, the user will be able to add, delete and rename classes and attributes as well as add and delete relationships between these classes. The user can also display this data in the terminal along with saving and loading in a JSON format.
+This is a GUI and command line program that allows the user to create a UML diagram in text form based off of their input. In this current UML, the user will be able to add, delete and rename classes, methods and fields as well as add and delete relationships between classes. The user has the option to run this UML in GUI or command line form.
 
 ## Requirements
 
