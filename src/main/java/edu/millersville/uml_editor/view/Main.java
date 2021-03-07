@@ -316,37 +316,7 @@ public class Main
                     break;
                     
                     case 4:
-	                String className = "";
-	                String methodName = "";
-	                String newType = "";
-	                System.out.println();
-	                System.out.print("Enter the class for the method: ");
-	                classRen = console.next();
-	                //Checks to see if the class exists
-	                if(!classMap.containsKey(classRen))
-	                {
-	                	System.out.println("There is not a class with this name.");
-	                	break;
-                    }
-                    //If it does, ask for current and new name for attribute and renames
-                    else 
-                    {
-                        ClassObject classCall = classMap.get(classRen);
-                        System.out.print("Enter the current name for the method: ");
-                        methodName = console.next();
-
-                        Method typeMethod = classCall.getMethod(methodName);
-                        if (typeMethod == null)
-                        {
-                        	System.out.println("The method does not exist.");
-                        	break;
-                        }
-                        
-                        System.out.print("Enter the new type for the method: ");
-                        newType = console.next();
-                        
-                        classCall.changeMethodType(methodName, newType);
-                    }
+	                
                     break;
                     
                     case 5:
