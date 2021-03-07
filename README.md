@@ -10,10 +10,10 @@ This is a GUI and command line program that allows the user to create a UML diag
 ## Running the program
 
 1. Download our UML [repository](https://github.com/mucsci-students/2021sp-420-Syrup/tree/develop) from Github.
-2. Download the [jackson](https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations/2.12.1) and [commons.io](https://mvnrepository.com/artifact/commons-io/commons-io/2.8.0) jar files
-3. In eclipse, go to package properties -> java build path -> add external jar files
-4. Add the `jackson` and `commons.io` jar files
-5. Run the program!
+2. Navigate to the directory the contains our project
+3. Type `mvn clean`
+4. Type `mvn package`
+5. 
 
 ## Authors
 ```
