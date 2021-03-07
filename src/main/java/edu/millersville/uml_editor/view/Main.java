@@ -1,4 +1,4 @@
-package edu.millersville.uml_editor;
+package edu.millersville.uml_editor.view;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -248,7 +248,66 @@ public class Main
                         System.out.print("Enter the type of the method: ");
                         methodType = console.next();
                         classCall.addMethod(methodAdd, methodType);
+                        
+                        System.out.print("How many parameters would you like to add? ");
+                        isNumber = false;
+                        int paramNum = 0;
+                        while (!isNumber)
+                        {
+	                        String temp = console.next();
+	                    	try {
+	                    		paramNum = Integer.parseInt(temp);
+	                    		isNumber = true;
+	                    	} catch (NumberFormatException ex) {
+	                    		System.out.println();
+	                    		System.out.println("This is not a number.");
+	                    		System.out.println();
+	                    		System.out.print("How many parameters would you like to add? ");
+	                    	}
+                        }
+                        
+                        if (paramNum < 1)
+                        {
+                        	System.out.println();
+                        	System.out.println("The method has been added!");
+                        	System.out.println();
+                        	break;
+                        }
+                        
+                        String paramName = "";
+                        String paramType = "";
+                        while (paramNum > 0)
+                        {
+                        	System.out.println();
+                        	System.out.print("Enter the parameter name: ");
+                        	paramName = console.next();
+                        	
+                        	if (!classCall.getMethod(methodAdd).containsParameter(paramName))
+                        	{
+                        		System.out.println();
+                            	System.out.print("Enter the parameter type: ");
+                            	paramType = console.next();
+                            	
+                            	classCall.getMethod(methodAdd).addParameter(paramName, paramType);
+                            	
+                            	System.out.println();
+                            	System.out.println("The parameter has been added!");
+                            	--paramNum;
+                        	}
+                        	
+                        	else
+                        	{
+                        		System.out.println();
+                            	System.out.println("The parameter already exists.");
+                        	}
+                        	
+                        }
+                    	
                     }
+                    
+                    System.out.println();
+                	System.out.println("The method has been added!");
+                	System.out.println();
                     break;
                     
                     case 2:
@@ -316,6 +375,132 @@ public class Main
                     break;
                     
                     case 4:
+                    	
+                    int paramNum = 0;
+                    	
+                	//Parameter menu
+                    System.out.println();
+                    System.out.println("1. Delete a parameter");
+                    System.out.println("2. Delete a parameter list");
+                    System.out.println("3. Change a parameter");
+                    System.out.println("4. Change a parameter list");
+                    System.out.println("5. Go back to main menu");
+                    System.out.println();
+                    System.out.print("What would you like to do with parameters? ");
+                    
+                    isNumber = false;
+                    
+                    while (!isNumber)
+                    {
+                    	String temp = console.next();
+                    	try {
+                    		paramNum = Integer.parseInt(temp);
+                    		isNumber = true;
+                    	}
+                    	catch (NumberFormatException ex) {
+                    		System.out.println();
+                    		System.out.println("This is not a number. Use a number when selecting a menu option.");
+                    		System.out.println();
+                    		System.out.print("Please select a menu option: ");
+                    	}
+                    }
+                    
+                    switch (paramNum){
+	                    case 1:
+	                    	String className = "";
+	                    	String methodName = "";
+	                    	String paramName = "";
+	                    	
+	                    	// Class Check
+	                    	System.out.println();
+	                    	System.out.print("Enter the class name: ");
+	                    	className = console.next();
+	                    	
+	                    	if(!classMap.containsKey(className))
+	                        {
+	                    		System.out.println();
+	                            System.out.println("There is not a class with this name.");
+	        		            break;
+	                        }
+	                    	
+	                    	ClassObject paramClass = classMap.get(className);
+	                    	
+	                    	// Method Check
+	                    	System.out.println();
+	                    	System.out.print("Enter the method name: ");
+	                    	methodName = console.next();
+	                    	
+	                    	if(!paramClass.containsMethod(methodName))
+	                        {
+	                    		System.out.println();
+	                            System.out.println("There is not a method with this name.");
+	        		            break;
+	                        }
+	                    	Method paramMethod = paramClass.getMethod(methodName);
+	                    	
+	                    	// Parameter Check
+	                    	System.out.println();
+	                    	System.out.print("Enter the parameter name: ");
+	                    	paramName = console.next();
+	                    	
+	                    	if(!paramMethod.containsParameter(paramName))
+	                        {
+	                    		System.out.println();
+	                            System.out.println("There is not a parameter with this name.");
+	        		            break;
+	                        }
+	                    	
+	                    	paramMethod.deleteParameter(paramName);
+	                    	
+	                    	System.out.println();
+	                    	System.out.println("The parameter has been deleted!");
+	                    	System.out.println();
+	                    	
+	                    break;
+	                    
+	                    case 2:
+	                    	
+	                    	className = "";
+	                    	methodName = "";
+	                    	
+	                    	// Class Check
+	                    	System.out.println();
+	                    	System.out.print("Enter the class name: ");
+	                    	className = console.next();
+	                    	
+	                    	if(!classMap.containsKey(className))
+	                        {
+	                    		System.out.println();
+	                            System.out.println("There is not a class with this name.");
+	        		            break;
+	                        }
+	                    	
+	                    	paramClass = classMap.get(className);
+	                    	
+	                    	// Method Check
+	                    	System.out.println();
+	                    	System.out.print("Enter the method name: ");
+	                    	methodName = console.next();
+	                    	
+	                    	if(!paramClass.containsMethod(methodName))
+	                        {
+	                    		System.out.println();
+	                            System.out.println("There is not a method with this name.");
+	        		            break;
+	                        }
+	                    	paramMethod = paramClass.getMethod(methodName);
+	                    	
+	                    	paramMethod.deleteAllParameters();
+	                    	
+	                    	System.out.println();
+	                    	System.out.println("The parameter list has been deleted!");
+	                    	System.out.println();
+	                    
+	                    break;
+                    
+                    }
+                    
+                    
 	                
                     break;
                     
@@ -677,7 +862,7 @@ public class Main
                         System.out.println();
                         System.out.println("Class Name: " + listAttr);
                         System.out.print("Attributes: ");
-                        classMap.get(listAttr).printAttr();
+                        
                     }
                     break;
 
@@ -832,11 +1017,12 @@ public class Main
     		System.out.println("There is not a class with that name.");
     		return;
     	}
-        //Deletes attributes and the deletes the class
-        classMap.get(name).deleteAttributes();
+        //Deletes the fields and methods, then deletes the class
+        classMap.get(name).deleteFields();
+        classMap.get(name).deleteMethods();
         classMap.remove(name);
-	    
-	    System.out.println();
+        
+        System.out.println();
         System.out.print("The class has been deleted!");
         System.out.println();
     }
@@ -918,7 +1104,7 @@ public class Main
     {
         System.out.println("Class Name: " + className);  
         System.out.print("Attributes: ");
-        classMap.get(className).printAttr();
+        
     }
 
     public static void printClasses() 
