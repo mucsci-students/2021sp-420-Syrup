@@ -1148,11 +1148,12 @@ public class Main
     		else
     		{
     			System.out.println("Invalid argument");
+    			return;
     		}
     	}
     	else 
     	{
-    		UMLGUI.main(null);
+    		UMLGUI.drawGUI();
     	}
     }
  

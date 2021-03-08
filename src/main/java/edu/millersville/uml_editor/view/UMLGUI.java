@@ -1350,7 +1350,7 @@ public class UMLGUI {
     //
     ///////////////////////////////////////////////////////////
 
-    public static void main(String[] args) {
+    public static void drawGUI() {
 
         try {
             // Set System L&F
