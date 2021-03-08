@@ -1,4 +1,4 @@
-package edu.millersville.uml_editor;
+package edu.millersville.uml_editor.view;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -202,7 +202,7 @@ public class Main
                 System.out.println("1. Add a method");
                 System.out.println("2. Delete a method");
                 System.out.println("3. Rename a method");
-                System.out.println("4. Change a method type");
+                System.out.println("4. Parameters");
                 System.out.println("5. Go back to main menu");
                 System.out.println();
                 System.out.print("What would you like to do with methods? ");
@@ -236,19 +236,84 @@ public class Main
                     //Checks to see if the class name exists
                     if(!classMap.containsKey(classAdd))
                     {
+                    	System.out.println();
                         System.out.println("There is not a class with this name.");
     		            break;
                     }
-                    //If it does, prompts for attribute name and adds
+                    //If it does, prompts for method name and adds
                     else
                     {
                         ClassObject classCall = classMap.get(classAdd);
                         System.out.print("Enter the name of the method to add: ");
                         methodAdd = console.next();
+                        
+                        if (classCall.containsMethod(methodAdd))
+                        {
+                        	System.out.println();
+                            System.out.println("The method already exists!");
+                            break;
+                        }
+                        
                         System.out.print("Enter the type of the method: ");
                         methodType = console.next();
                         classCall.addMethod(methodAdd, methodType);
+                        
+                        System.out.print("How many parameters would you like to add? ");
+                        isNumber = false;
+                        int paramNum = 0;
+                        while (!isNumber)
+                        {
+	                        String temp = console.next();
+	                    	try {
+	                    		paramNum = Integer.parseInt(temp);
+	                    		isNumber = true;
+	                    	} catch (NumberFormatException ex) {
+	                    		System.out.println();
+	                    		System.out.println("This is not a number.");
+	                    		System.out.println();
+	                    		System.out.print("How many parameters would you like to add? ");
+	                    	}
+                        }
+                        
+                        if (paramNum < 1)
+                        {
+                        	System.out.println();
+                        	System.out.println("The method has been added!");
+                        	break;
+                        }
+                        
+                        System.out.println();
+                        String paramName = "";
+                        String paramType = "";
+                        while (paramNum > 0)
+                        {
+                        	System.out.print("Enter the parameter name: ");
+                        	paramName = console.next();
+                        	
+                        	if (!classCall.getMethod(methodAdd).containsParameter(paramName))
+                        	{
+                            	System.out.print("Enter the parameter type: ");
+                            	paramType = console.next();
+                            	
+                            	classCall.getMethod(methodAdd).addParameter(paramName, paramType);
+                            	
+                            	System.out.println();
+                            	System.out.println("The parameter has been added!");
+                            	System.out.println();
+                            	--paramNum;
+                        	}
+                        	
+                        	else
+                        	{
+                        		System.out.println();
+                            	System.out.println("The parameter already exists.");
+                        	}
+                        	
+                        }
+                    	
                     }
+                                        
+                	System.out.println("The method has been added!");
                     break;
                     
                     case 2:
@@ -260,6 +325,7 @@ public class Main
                     //Checks to see if the class exists
                     if(!classMap.containsKey(classDel))
                     {
+                    	System.out.println();
                         System.out.println("There is not a class with this name.");
     		            break;
                     }
@@ -273,11 +339,14 @@ public class Main
                         Method renameMethod = classCall.getMethod(methodDel);
                         if (renameMethod == null)
                         {
+                        	System.out.println();
                         	System.out.println("The method does not exist.");
                         	break;
                         }
                         
                         classCall.deleteMethod(methodDel);
+                        System.out.println();
+                        System.out.println("Method has been deleted!");
                     }
                     break;
 
@@ -291,6 +360,7 @@ public class Main
                     //Checks to see if the class exists
                     if(!classMap.containsKey(classRen))
                     {
+                    	System.out.println();
                         System.out.println("There is not a class with this name.");
     		            break;
                     }
@@ -304,6 +374,7 @@ public class Main
                         Method renameMethod = classCall.getMethod(methodOld);
                         if (renameMethod == null)
                         {
+                        	System.out.println();
                         	System.out.println("The method does not exist.");
                         	break;
                         }
@@ -311,41 +382,326 @@ public class Main
                         System.out.print("Enter the new name for the method: ");
                         methodNew = console.next();
                         classCall.renameMethod(methodOld, methodNew);
+                        
+                        System.out.println();
+                        System.out.println("Method has been renamed!");
                     }
                     
                     break;
                     
                     case 4:
-	                String className = "";
-	                String methodName = "";
-	                String newType = "";
-	                System.out.println();
-	                System.out.print("Enter the class for the method: ");
-	                classRen = console.next();
-	                //Checks to see if the class exists
-	                if(!classMap.containsKey(classRen))
-	                {
-	                	System.out.println("There is not a class with this name.");
-	                	break;
-                    }
-                    //If it does, ask for current and new name for attribute and renames
-                    else 
+                    	
+                    int paramNum = 0;
+                    	
+                	//Parameter menu
+                    System.out.println();
+                    System.out.println("1. Delete a parameter");
+                    System.out.println("2. Delete a parameter list");
+                    System.out.println("3. Change a parameter");
+                    System.out.println("4. Change a parameter list");
+                    System.out.println("5. Go back to main menu");
+                    System.out.println();
+                    System.out.print("What would you like to do with parameters? ");
+                    
+                    isNumber = false;
+                    
+                    while (!isNumber)
                     {
-                        ClassObject classCall = classMap.get(classRen);
-                        System.out.print("Enter the current name for the method: ");
-                        methodName = console.next();
+                    	String temp = console.next();
+                    	try {
+                    		paramNum = Integer.parseInt(temp);
+                    		isNumber = true;
+                    	}
+                    	catch (NumberFormatException ex) {
+                    		System.out.println();
+                    		System.out.println("This is not a number. Use a number when selecting a menu option.");
+                    		System.out.println();
+                    		System.out.print("Please select a menu option: ");
+                    	}
+                    }
+                    
+                    switch (paramNum){
+                    
+                    	//////////////////////////////////////////
+                    	//
+                    	//	Delete a Parameter
+                    	// 
+                    	//////////////////////////////////////////
+                    
+	                    case 1:
+	                    	String className = "";
+	                    	String methodName = "";
+	                    	String paramName = "";
+	                    	
+	                    	// Class Check
+	                    	System.out.println();
+	                    	System.out.print("Enter the class name: ");
+	                    	className = console.next();
+	                    	
+	                    	if(!classMap.containsKey(className))
+	                        {
+	                    		System.out.println();
+	                            System.out.println("There is not a class with this name.");
+	        		            break;
+	                        }
+	                    	
+	                    	ClassObject paramClass = classMap.get(className);
+	                    	
+	                    	// Method Check
+	                    	System.out.print("Enter the method name: ");
+	                    	methodName = console.next();
+	                    	
+	                    	if(!paramClass.containsMethod(methodName))
+	                        {
+	                    		System.out.println();
+	                            System.out.println("There is not a method with this name.");
+	        		            break;
+	                        }
+	                    	Method paramMethod = paramClass.getMethod(methodName);
+	                    	
+	                    	// Parameter Check
+	                    	System.out.print("Enter the parameter name: ");
+	                    	paramName = console.next();
+	                    	
+	                    	if(!paramMethod.containsParameter(paramName))
+	                        {
+	                    		System.out.println();
+	                            System.out.println("There is not a parameter with this name.");
+	        		            break;
+	                        }
+	                    	
+	                    	paramMethod.deleteParameter(paramName);
+	                    	
+	                    	System.out.println();
+	                    	System.out.println("The parameter has been deleted!");
+	                    	
+	                    break;
+	                    
+	                    //////////////////////////////////////////
+	                    //
+				    	//	Delete all Parameter
+				    	// 
+				    	//////////////////////////////////////////
+	                    
+	                    case 2:
+	                    	
+	                    	className = "";
+	                    	methodName = "";
+	                    	
+	                    	// Class Check
+	                    	System.out.println();
+	                    	System.out.print("Enter the class name: ");
+	                    	className = console.next();
+	                    	
+	                    	if(!classMap.containsKey(className))
+	                        {
+	                    		System.out.println();
+	                            System.out.println("There is not a class with this name.");
+	        		            break;
+	                        }
+	                    	
+	                    	paramClass = classMap.get(className);
+	                    	
+	                    	// Method Check
+	                    	System.out.print("Enter the method name: ");
+	                    	methodName = console.next();
+	                    	
+	                    	if(!paramClass.containsMethod(methodName))
+	                        {
+	                    		System.out.println();
+	                            System.out.println("There is not a method with this name.");
+	        		            break;
+	                        }
+	                    	paramMethod = paramClass.getMethod(methodName);
+	                    	
+	                    	paramMethod.deleteAllParameters();
+	                    	
+	                    	System.out.println();
+	                    	System.out.println("The parameter list has been deleted!");
+	                    
+	                    break;
+	                    
+	                    //////////////////////////////////////////
+				        //
+				    	//	Change a Parameter
+				    	// 
+				    	//////////////////////////////////////////
+	                    
+	                    case 3:
+	                    	className = "";
+	                    	methodName = "";
+	                    	paramName = "";
+	                    	String newParamName = "";
+	                    	String paramType = "";
+	                    	
+	                    	// Class Check
+	                    	System.out.println();
+	                    	System.out.print("Enter the class name: ");
+	                    	className = console.next();
+	                    	
+	                    	if(!classMap.containsKey(className))
+	                        {
+	                    		System.out.println();
+	                            System.out.println("There is not a class with this name.");
+	        		            break;
+	                        }
+	                    	paramClass = classMap.get(className);
+	                    	
+	                    	// Method Check
+	                    	System.out.print("Enter the method name: ");
+	                    	methodName = console.next();
+	                    	
+	                    	if(!paramClass.containsMethod(methodName))
+	                        {
+	                    		System.out.println();
+	                            System.out.println("There is not a method with this name.");
+	        		            break;
+	                        }
+	                    	paramMethod = paramClass.getMethod(methodName);
+	                    	
+	                    	// Parameter Check
+	                    	System.out.print("Enter the parameter name: ");
+	                    	paramName = console.next();
+	                    	
+	                    	if(!paramMethod.containsParameter(paramName))
+	                        {
+	                    		System.out.println();
+	                            System.out.println("There is not a parameter with this name.");
+	        		            break;
+	                        }
+	                    	
+	                    	// Second Parameter Check
+	                    	System.out.print("Enter the new parameter name: ");
+	                    	newParamName = console.next();
+	                    	
+	                    	if(paramMethod.containsParameter(newParamName))
+	                        {
+	                    		System.out.println();
+	                            System.out.println("There is already a parameter with this name.");
+	        		            break;
+	                        }
+	                    	
+	                    	paramMethod.deleteParameter(paramName);
+	                    	System.out.print("Enter the type of the new parameter: ");
+	                    	paramType = console.next();
+	                    	
+	                    	paramMethod.addParameter(newParamName, paramType);
+	                    	System.out.println();
+	                    	System.out.println("The parameter has been changed!");
+	                    	
+                        break;
+                        
 
-                        Method typeMethod = classCall.getMethod(methodName);
-                        if (typeMethod == null)
-                        {
-                        	System.out.println("The method does not exist.");
-                        	break;
-                        }
+	                    //////////////////////////////////////////
+	                    //
+				    	//	Change all Parameter
+				    	// 
+				    	//////////////////////////////////////////
                         
-                        System.out.print("Enter the new type for the method: ");
-                        newType = console.next();
+                        case 4:
+                        	
+                            className = "";
+                            methodName = "";
+                            System.out.println();
+                            System.out.print("Enter the class name: ");
+                            className = console.next();
+                            
+                            // Class Check
+                            if(!classMap.containsKey(className))
+                            {
+                            	System.out.println();
+                                System.out.println("There is not a class with this name.");
+            		            break;
+                            }
+                            ClassObject classCall = classMap.get(className);
+                            
+                            // Method Check
+                            System.out.print("Enter the name of the method: ");
+                            methodName = console.next();
+                            
+                            if (!classCall.containsMethod(methodName))
+                            {
+                            	System.out.println();
+                                System.out.println("There is not a method with this name.");
+                                break;
+                            }
+                            
+                            classCall.getMethod(methodName).deleteAllParameters();
+                            
+                            System.out.print("How many parameters would you like to add? ");
+                            isNumber = false;
+                            paramNum = 0;
+                            while (!isNumber)
+                            {
+    	                        String temp = console.next();
+    	                    	try {
+    	                    		paramNum = Integer.parseInt(temp);
+    	                    		isNumber = true;
+    	                    	} catch (NumberFormatException ex) {
+    	                    		System.out.println();
+    	                    		System.out.println("This is not a number.");
+    	                    		System.out.println();
+    	                    		System.out.print("How many parameters would you like to add? ");
+    	                    	}
+                            }
+                            
+                            if (paramNum < 1)
+                            {
+                            	System.out.println();
+                            	System.out.println("There needs to be at least 1 parameter");
+                            	break;
+                            }
+                            
+                            System.out.println();
+                            paramName = "";
+                            paramType = "";
+                            while (paramNum > 0)
+                            {
+                            	System.out.print("Enter the parameter name: ");
+                            	paramName = console.next();
+                            	
+                            	if (!classCall.getMethod(methodName).containsParameter(paramName))
+                            	{
+                                	System.out.print("Enter the parameter type: ");
+                                	paramType = console.next();
+                                	
+                                	classCall.getMethod(methodName).addParameter(paramName, paramType);
+                                	
+                                	System.out.println();
+                                	System.out.println("The parameter has been added!");
+                                	System.out.println();
+                                	--paramNum;
+                            	}
+                            	
+                            	else
+                            	{
+                            		System.out.println();
+                                	System.out.println("The parameter already exists.");
+                            	}
+                            	
+                            }
+                            
+                            System.out.println("The parameter list has been changed!");
                         
-                        classCall.changeMethodType(methodName, newType);
+                        break;
+                        
+
+	                    //////////////////////////////////////////
+	                    //
+				    	//	Main Menu
+				    	// 
+				    	//////////////////////////////////////////
+                        
+                        case 5:
+                        break;
+
+                        //Default case that sends user back to main menu if a number not on the menu is entered
+                        default:
+                        System.out.println();
+                        System.out.print("That is not a menu option! Please try again.");
+                        System.out.println();
+                        break;
+                    
                     }
                     break;
                     
@@ -371,8 +727,7 @@ public class Main
                 System.out.println("1. Add a field");
                 System.out.println("2. Delete a field");
                 System.out.println("3. Rename a field");
-                System.out.println("4. Change a field type");
-                System.out.println("5. Go back to main menu");
+                System.out.println("4. Go back to main menu");
                 System.out.println();
                 System.out.print("What would you like to do with fields? ");
                 
@@ -405,6 +760,7 @@ public class Main
                     //Checks to see if the class name exists
                     if(!classMap.containsKey(classAdd))
                     {
+                    	System.out.println();
                         System.out.println("There is not a class with this name.");
     		            break;
                     }
@@ -414,9 +770,20 @@ public class Main
                         ClassObject classCall = classMap.get(classAdd);
                         System.out.print("Enter the name of the field to add: ");
                         fieldAdd = console.next();
+                        
+                        if (classCall.containsField(fieldAdd)) 
+                        {
+                        	System.out.println();
+                            System.out.println("The field already exists");
+                            break;
+                        }
+                        
                         System.out.print("Enter the type of the field: ");
                         fieldType = console.next();
                         classCall.addField(fieldAdd, fieldType);
+                        
+                        System.out.println();
+                        System.out.println("Field has been added!");
                     }
                     break;
                     
@@ -429,6 +796,7 @@ public class Main
                     //Checks to see if the class exists
                     if(!classMap.containsKey(classDel))
                     {
+                    	System.out.println();
                         System.out.println("There is not a class with this name.");
     		            break;
                     }
@@ -442,11 +810,15 @@ public class Main
                         Field renamefield = classCall.getField(fieldDel);
                         if (renamefield == null)
                         {
+                        	System.out.println();
                         	System.out.println("The field does not exist.");
                         	break;
                         }
                         
                         classCall.deleteField(fieldDel);
+                        
+                        System.out.println();
+                        System.out.println("Field has been deleted!");
                     }
                     break;
 
@@ -460,6 +832,7 @@ public class Main
                     //Checks to see if the class exists
                     if(!classMap.containsKey(classRen))
                     {
+                    	System.out.println();
                         System.out.println("There is not a class with this name.");
     		            break;
                     }
@@ -473,6 +846,7 @@ public class Main
                         Field renamefield = classCall.getField(fieldOld);
                         if (renamefield == null)
                         {
+                        	System.out.println();
                         	System.out.println("The field does not exist.");
                         	break;
                         }
@@ -480,45 +854,14 @@ public class Main
                         System.out.print("Enter the new name for the field: ");
                         fieldNew = console.next();
                         classCall.renameField(fieldOld, fieldNew);
+                        
+                        System.out.println();
+                        System.out.println("Field has been renamed!");
                     }
                     
                     break;
                     
                     case 4:
-	                String className = "";
-	                String fieldName = "";
-	                String newType = "";
-	                System.out.println();
-	                System.out.print("Enter the class for the field: ");
-	                classRen = console.next();
-	                //Checks to see if the class exists
-	                if(!classMap.containsKey(classRen))
-	                {
-	                	System.out.println("There is not a class with this name.");
-	                	break;
-                    }
-                    //If it does, ask for current and new name for attribute and renames
-                    else 
-                    {
-                        ClassObject classCall = classMap.get(classRen);
-                        System.out.print("Enter the current name for the field: ");
-                        fieldName = console.next();
-
-                        Field typeField = classCall.getField(fieldName);
-                        if (typeField == null)
-                        {
-                        	System.out.println("The field does not exist.");
-                        	break;
-                        }
-                        
-                        System.out.print("Enter the new type for the field: ");
-                        newType = console.next();
-                        
-                        classCall.changeFieldType(fieldName, newType);
-                    }
-                    break;
-                    
-                    case 5:
                     break;
 
                     //Default case that sends user back to main menu if a number not on the menu is entered
@@ -707,7 +1050,7 @@ public class Main
                         System.out.println();
                         System.out.println("Class Name: " + listAttr);
                         System.out.print("Attributes: ");
-                        classMap.get(listAttr).printAttr();
+                        
                     }
                     break;
 
@@ -862,11 +1205,12 @@ public class Main
     		System.out.println("There is not a class with that name.");
     		return;
     	}
-        //Deletes attributes and the deletes the class
-        classMap.get(name).deleteAttributes();
+        //Deletes the fields and methods, then deletes the class
+        classMap.get(name).deleteFields();
+        classMap.get(name).deleteMethods();
         classMap.remove(name);
-	    
-	    System.out.println();
+        
+        System.out.println();
         System.out.print("The class has been deleted!");
         System.out.println();
     }
@@ -948,7 +1292,7 @@ public class Main
     {
         System.out.println("Class Name: " + className);  
         System.out.print("Attributes: ");
-        classMap.get(className).printAttr();
+        
     }
 
     public static void printClasses() 

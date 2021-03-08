@@ -156,6 +156,24 @@ public class ClassObject {
 		return false;
 	}
 	
+	/**
+	 * A method that removes all the fields from the list.
+	 * @param name
+	 * 		The name of the field to delete.
+	 * @return
+	 * 		Returns true when the field is deleted.
+	 */
+	public boolean deleteFields() {
+		if(fields.isEmpty()) {
+			return false;
+		}
+		
+		for(Field field : fields) {
+			fields.remove(field);
+		}
+		return true;
+	}
+	
 	////////////////////////////////////////////////////////////////////////////
 	// Method Functions
 	////////////////////////////////////////////////////////////////////////////
@@ -256,6 +274,24 @@ public class ClassObject {
 			}
 		}
 		return false;	
+	}
+	
+	/**
+	 * A method that removes all the methods from the list.
+	 * @param name
+	 * 		The name of the field to delete.
+	 * @return
+	 * 		Returns true when the methods are deleted.
+	 */
+	public boolean deleteMethods() {
+		if(methods.isEmpty()) {
+			return false;
+		}
+		
+		for(Method method : methods) {
+			methods.remove(method);
+		}
+		return true;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////
