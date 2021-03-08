@@ -4,7 +4,7 @@ This is a GUI and command line program that allows the user to create a UML diag
 
 ## Requirements
 
-* Java (Eclipse)
+* Java
 * Maven
 
 ## Running the program
