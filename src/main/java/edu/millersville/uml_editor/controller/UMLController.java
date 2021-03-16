@@ -18,9 +18,14 @@ public class UMLController {
 
     public ActionListener getSaveJSON(){
         return(ActionEvent e) -> {
-            if(e.getActionCommand() == "Save"){
-                //needs implementation
-            }
+        	switch (e.getActionCommand()) {
+            case "Save":
+                gui.savePanel();
+                break;
+            case "<--":
+                gui.methodPanel();
+                break;
+        	}
         };
     }
 
@@ -420,6 +425,18 @@ public class UMLController {
 					gui.menuPanel();
 				break;
 			}
+		};
+	}
+	
+	//////////////////////////////////
+	//
+	//	Save Calls
+	//
+	//////////////////////////////////
+	
+	public ActionListener savePageCall(){
+		return (ActionEvent e) -> {
+			gui.saveAction();
 		};
 	}
 
