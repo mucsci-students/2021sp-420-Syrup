@@ -36,7 +36,7 @@ public class UMLController {
     public ActionListener getHelp(){
         return(ActionEvent e) -> {
             if(e.getActionCommand() == "Help"){
-                gui.helpClassPanel();
+            	gui.helpClassPanel();
             }
         };
     }
@@ -97,7 +97,29 @@ public class UMLController {
                     gui.renameMethodPanel();
                     break;
                 case "Parameters":
-                	// implementation needed
+                	gui.paramPanel();
+                	break;
+                case "<--":
+                    gui.menuPanel();
+                    break;
+            }
+        };
+    }
+    
+    public ActionListener getParamPageListener(){
+        return(ActionEvent e) -> {
+            switch(e.getActionCommand()){
+                case "Delete a parameter":
+                	gui.deleteParamPanel();
+                    break;
+                case "Delete a parameter list":
+                	gui.deleteAllParamPanel();
+                    break;
+                case "Change a parameter":
+                	gui.changeParamPanel();
+                    break;
+                case "Change a parameter list":
+                	gui.changeParamListPanel();
                 	break;
                 case "<--":
                     gui.menuPanel();
@@ -166,74 +188,6 @@ public class UMLController {
         };
     }
     
-	//////////////////////////////////
-	//
-	//	Help Listeners
-	//
-	//////////////////////////////////
-        
-    public ActionListener getClassHelpListener(){
-        return(ActionEvent e) -> {
-            switch(e.getActionCommand()){
-                case "-->":
-                    gui.helpMethodPanel();
-                    break;
-                case "<--":
-                    gui.menuPanel();
-                    break;
-            }
-        };
-    }
-    
-    public ActionListener getMethodHelpListener(){
-        return(ActionEvent e) -> {
-            switch(e.getActionCommand()){
-                case "-->":
-                    gui.helpFieldPanel();
-                    break;
-                case "<--":
-                    gui.menuPanel();
-                    break;
-            }
-        };
-    }
-    
-    public ActionListener getFieldHelpListener(){
-        return(ActionEvent e) -> {
-            switch(e.getActionCommand()){
-                case "-->":
-                    gui.helpRelPanel();
-                    break;
-                case "<--":
-                    gui.menuPanel();
-                    break;
-            }
-        };
-    }
-    
-    public ActionListener getRelHelpListener(){
-        return(ActionEvent e) -> {
-            switch(e.getActionCommand()){
-                case "-->":
-                    gui.helpPrintPanel();
-                    break;
-                case "<--":
-                    gui.menuPanel();
-                    break;
-            }
-        };
-    }
-    
-    public ActionListener getPrintHelpListener(){
-        return(ActionEvent e) -> {
-            switch(e.getActionCommand()){
-                case "<--":
-                    gui.menuPanel();
-                    break;
-            }
-        };
-    }
-    
     //////////////////////////////////
     //
     //	Class Calls
@@ -279,9 +233,15 @@ public class UMLController {
 	//
 	//////////////////////////////////
     
-    public ActionListener createMethodCall(){
+    public ActionListener createdMethodCall(){
         return (ActionEvent e) -> {
-            gui.createMethodAction(e);
+            gui.createdMethodPanel();
+        };
+    }
+    
+    public ActionListener addParamInMethodCall(){
+        return (ActionEvent e) -> {
+            gui.addMethodHelper();
         };
     }
     
@@ -296,7 +256,49 @@ public class UMLController {
             gui.renameMethodAction(e);
         };
     }
+	    
+	//////////////////////////////////
+	//
+	//	Parameter Calls
+	//
+	//////////////////////////////////
 	   
+    public ActionListener deleteParamCall(){
+        return (ActionEvent e) -> {
+            gui.deleteParamAction(e);
+        };
+    }
+    
+    public ActionListener deleteAllParamCall(){
+        return (ActionEvent e) -> {
+            gui.deleteAllParamAction(e);
+        };
+    }
+    
+    public ActionListener changeParamCall(){
+        return (ActionEvent e) -> {
+            gui.changeParamAction(e);
+        };
+    }
+    
+    public ActionListener changeAllParamCall(){
+        return (ActionEvent e) -> {
+            gui.changeParamListAction(e);
+        };
+    }
+    
+    public ActionListener addParamToListCall(){
+        return (ActionEvent e) -> {
+            gui.addParamHelper();
+        };
+    }
+    
+    public ActionListener doneParamCall(){
+        return (ActionEvent e) -> {
+            gui.changedParamListPanel();
+        };
+    }
+
 	    
 	//////////////////////////////////
 	//
@@ -353,4 +355,72 @@ public class UMLController {
         };
     }
     
+	//////////////////////////////////
+	//
+	//	Help Listeners
+	//
+	//////////////////////////////////
+	
+	public ActionListener getClassHelpListener(){
+		return(ActionEvent e) -> {
+		switch(e.getActionCommand()){
+			case "-->":
+				gui.helpMethodPanel();
+			break;
+			case "<--":
+				gui.menuPanel();
+			break;
+			}
+		};
+	}
+	
+	public ActionListener getMethodHelpListener(){
+		return(ActionEvent e) -> {
+			switch(e.getActionCommand()){
+				case "-->":
+					gui.helpFieldPanel();
+				break;
+				case "<--":
+					gui.menuPanel();
+				break;
+			}
+		};
+	}
+	
+	public ActionListener getFieldHelpListener(){
+		return(ActionEvent e) -> {
+			switch(e.getActionCommand()){
+				case "-->":
+					gui.helpRelPanel();
+				break;
+				case "<--":
+					gui.menuPanel();
+				break;
+			}
+		};
+	}
+	
+	public ActionListener getRelHelpListener(){
+		return(ActionEvent e) -> {
+			switch(e.getActionCommand()){
+				case "-->":
+					gui.helpPrintPanel();
+				break;
+				case "<--":
+					gui.menuPanel();
+				break;
+			}
+		};
+	}
+	
+	public ActionListener getPrintHelpListener(){
+		return(ActionEvent e) -> {
+			switch(e.getActionCommand()){
+				case "<--":
+					gui.menuPanel();
+				break;
+			}
+		};
+	}
+
 }

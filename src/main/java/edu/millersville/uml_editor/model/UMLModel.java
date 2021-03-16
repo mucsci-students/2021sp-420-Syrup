@@ -372,4 +372,19 @@ public class UMLModel {
 		}
 		return classMap.get(className).replaceParameterList(methodName, newParamList);
 	}
+	
+	/**
+     * A function that removes the parameter.
+     * @param className
+     *         The class the method is in.
+     * @param methodName
+     *         The method that the parameter is in.
+     * @param paramName
+     *         The parameter to delete.
+     * @return
+     *         Returns true when the parameter is deleted.
+     */
+    public void deleteAllParams(String className, String methodName) {
+        classMap.get(className).deleteAllParams(methodName);
+    }
 }
