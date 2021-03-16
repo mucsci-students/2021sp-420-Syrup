@@ -3,6 +3,8 @@ package edu.millersville.uml_editor.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class UMLModel {
     private Map<String, ClassObject> classMap;
@@ -387,4 +389,74 @@ public class UMLModel {
     public void deleteAllParams(String className, String methodName) {
         classMap.get(className).deleteAllParams(methodName);
     }
+    
+	///////////////////////////////////////////////////////////
+	//
+	//	saveJSON(String, Map<String, Class>)
+	//
+	//	function that creates and saves classMap to a JSON file using 
+	//		a prompted file name and the classMap.
+	//
+	///////////////////////////////////////////////////////////
+	
+	public void saveJSON(String name) throws IOException {
+		
+		String fileText = "";
+		// writing map to JSON file
+		FileWriter file = new FileWriter(name);
+		
+		String fieldString = "";
+		String methodString = "";
+		
+		fileText += "{\n";
+		for (String key : classMap.keySet())
+		{
+			fileText = fileText + key + ": [\n";
+			
+			fieldString = classMap.get(key).printFields();
+			fieldString = fieldString.replace("[", "{\n");
+			fieldString = fieldString.replace("]", "\n}\n");
+			fieldString = fieldString.replace(",", ",\n");
+			fieldString = fieldString.replace("Name: ", "");
+			fieldString = fieldString.replace("Type: ", "");
+			
+			fileText += fieldString;
+			
+			methodString = classMap.get(key).printMethods();
+			methodString = methodString.replace("[", "{\n");
+			methodString = methodString.replace("]", "}\n");
+			methodString = methodString.replace(",", ",\n");
+			methodString = methodString.replace("(", "(\n");
+			methodString = methodString.replace(")", "\n)\n");
+			methodString = methodString.replace(";", ",\n");
+			methodString = methodString.replace("Name: ", "");
+			methodString = methodString.replace("Type: ", "");
+			
+			fileText += methodString;
+			
+			fileText += "]\n";
+		}
+		fileText += "}";
+		
+		file.write(fileText);
+		file.close();
+	}
+	
+	///////////////////////////////////////////////////////////
+	//
+	//loadJSON(String, Map<String, Class>)
+	//
+	//function that loads a JSON file using 
+	//a prompted filepath.
+	//
+	///////////////////////////////////////////////////////////
+	
+	/*public static Map<String, Class> loadJSON(String filepath) throws IOException, FileNotFoundException {
+		// added JAR file
+		String file = FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);    	
+		ObjectMapper objectMapper = new ObjectMapper();
+		Map<String, Class> newObj = objectMapper.readValue(file, HashMap.class);
+		classMap = newObj;
+		return newObj;
+	}*/
 }

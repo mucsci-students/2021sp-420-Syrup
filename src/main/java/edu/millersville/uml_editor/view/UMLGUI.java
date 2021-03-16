@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import edu.millersville.uml_editor.model.*;
 import edu.millersville.uml_editor.controller.*;
+import java.io.IOException;
 
 public class UMLGUI {
     private JFrame umlEditor = null;
@@ -53,6 +54,9 @@ public class UMLGUI {
     private JPanel changeParameterListPanel = null;
     private JPanel parameterSolutionPanel = null;
     private JPanel helpPanel = null;
+    private JPanel savePanel = null;
+    
+    
     
     private JPanel dupPanel = null;
     private JPanel notExistPanel = null;
@@ -369,6 +373,89 @@ public class UMLGUI {
         relPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
         changePanel(relPanel);
     }
+    
+	//////////////////////////////////////////////////////////
+	//
+	//	savePanel
+	//
+	///////////////////////////////////////////////////////////
+	
+	public void savePanel() {
+		//checks to see if the panel was already created
+		panelCheck(savePanel);
+		
+		//view
+		JButton saveButton = new JButton("Save");
+		JButton backButton = new JButton("<--");
+		
+		//register the controller to view
+		saveButton.addActionListener(controller.savePageCall());
+		backButton.addActionListener(controller.getPrintPageListener());
+		
+		textBox1 = new JTextField();
+		
+		//Print Page
+		///////////////
+		// Heading/Labels
+		///////////////
+		JLabel saveLabel = new JLabel("Enter the name of the file:", SwingConstants.CENTER);
+		saveLabel.setFont(new Font("Serif", Font.BOLD, 20));
+		
+		saveLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		
+		///////////////
+		// Panel
+		///////////////
+		savePanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		savePanel.add(saveLabel);
+		savePanel.add(textBox1);
+		savePanel.add(saveButton);
+		savePanel.add(backButton);
+		savePanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(savePanel);
+	}
+	
+	public void saveAction()
+	{
+		String fileName = textBox1.getText();
+		try {
+			model.saveJSON(fileName);
+			fileSaved();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void fileSaved()
+	{
+		//checks to see if the panel was already created
+		panelCheck(savePanel);
+		
+		//view
+		JButton backButton = new JButton("<--");
+		
+		//register the controller to view
+		backButton.addActionListener(controller.getPrintPageListener());
+		
+		
+		//Print Page
+		///////////////
+		// Heading/Labels
+		///////////////
+		JLabel saveLabel = new JLabel("File has been saved!", SwingConstants.CENTER);
+		saveLabel.setFont(new Font("Serif", Font.BOLD, 20));
+		saveLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		///////////////
+		// Panel
+		///////////////
+		savePanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		savePanel.add(saveLabel);
+		savePanel.add(backButton);
+		savePanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(savePanel);
+	}
 
     //////////////////////////////////////////////////////////
     //
