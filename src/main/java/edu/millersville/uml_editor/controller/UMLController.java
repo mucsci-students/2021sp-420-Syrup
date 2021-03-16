@@ -36,7 +36,7 @@ public class UMLController {
     public ActionListener getHelp(){
         return(ActionEvent e) -> {
             if(e.getActionCommand() == "Help"){
-                //needs implementation
+                gui.helpClassPanel();
             }
         };
     }
@@ -159,6 +159,74 @@ public class UMLController {
                 case "Print Relationships":
                     //implementation needed
                     break;
+                case "<--":
+                    gui.menuPanel();
+                    break;
+            }
+        };
+    }
+    
+	//////////////////////////////////
+	//
+	//	Help Listeners
+	//
+	//////////////////////////////////
+        
+    public ActionListener getClassHelpListener(){
+        return(ActionEvent e) -> {
+            switch(e.getActionCommand()){
+                case "-->":
+                    gui.helpMethodPanel();
+                    break;
+                case "<--":
+                    gui.menuPanel();
+                    break;
+            }
+        };
+    }
+    
+    public ActionListener getMethodHelpListener(){
+        return(ActionEvent e) -> {
+            switch(e.getActionCommand()){
+                case "-->":
+                    gui.helpFieldPanel();
+                    break;
+                case "<--":
+                    gui.menuPanel();
+                    break;
+            }
+        };
+    }
+    
+    public ActionListener getFieldHelpListener(){
+        return(ActionEvent e) -> {
+            switch(e.getActionCommand()){
+                case "-->":
+                    gui.helpRelPanel();
+                    break;
+                case "<--":
+                    gui.menuPanel();
+                    break;
+            }
+        };
+    }
+    
+    public ActionListener getRelHelpListener(){
+        return(ActionEvent e) -> {
+            switch(e.getActionCommand()){
+                case "-->":
+                    gui.helpPrintPanel();
+                    break;
+                case "<--":
+                    gui.menuPanel();
+                    break;
+            }
+        };
+    }
+    
+    public ActionListener getPrintHelpListener(){
+        return(ActionEvent e) -> {
+            switch(e.getActionCommand()){
                 case "<--":
                     gui.menuPanel();
                     break;
