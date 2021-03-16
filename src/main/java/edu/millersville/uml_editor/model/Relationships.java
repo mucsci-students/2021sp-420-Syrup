@@ -67,4 +67,8 @@ public class Relationships {
 	{
 		return type;
 	}
+	
+	public String getID() {
+		return ID;
+	}
 }
