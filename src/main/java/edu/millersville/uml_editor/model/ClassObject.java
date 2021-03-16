@@ -419,4 +419,13 @@ public class ClassObject {
 		}
 		return null;
 	}
+	
+	public void deleteAllParams(String methodName) {
+        for(Method method : methods) {
+            if(method.getName().equals(methodName)) {
+                method.deleteAllParameters();
+                return;
+            }
+        }
+    }
 }
