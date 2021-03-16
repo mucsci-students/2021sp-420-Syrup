@@ -16,6 +16,7 @@ public class UMLGUI {
     private JPanel fieldPanel = null;
     private JPanel relPanel = null;
     private JPanel printPanel = null;
+    private JPanel helpPanel = null;
     
     private JPanel createClassPanel = null;
     private JPanel deleteClassPanel = null;
@@ -348,6 +349,250 @@ public class UMLGUI {
         printPanel.add(printClasses);
         printPanel.add(printClassesMeth);
         printPanel.add(printRel);
+        printPanel.add(backButton);
+        printPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(printPanel);
+    }
+	    
+	    
+	//////////////////////////////////////////////////////////
+	//
+	//	Help Panels
+	//
+	///////////////////////////////////////////////////////////
+    
+    public void helpClassPanel() {
+        //checks to see if the panel was already created
+        panelCheck(helpPanel);
+
+        JButton backButton = new JButton("<--");
+        JButton nextButton = new JButton("-->");
+
+        //register the controller to view
+        backButton.addActionListener(controller.getClassHelpListener());
+        nextButton.addActionListener(controller.getClassHelpListener());
+
+        //Print Page
+        ///////////////
+        // Heading/Labels
+        ///////////////
+        JLabel classHelpLabel = new JLabel("In the 'Classes' button, you'll be able to do the following: ", SwingConstants.CENTER);
+        JLabel cClassLabel = new JLabel(" -> Create a class ", SwingConstants.CENTER);
+        JLabel rClassLabel = new JLabel(" -> Rename a class", SwingConstants.CENTER);
+        JLabel dClassLabel = new JLabel(" -> Delete a class", SwingConstants.CENTER);
+        
+        classHelpLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        classHelpLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        
+        cClassLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        cClassLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        
+        rClassLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        rClassLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        
+        dClassLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        dClassLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+
+
+        ///////////////
+        // Panel
+        ///////////////
+        printPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+        printPanel.add(classHelpLabel);
+        printPanel.add(cClassLabel);
+        printPanel.add(rClassLabel);
+        printPanel.add(dClassLabel);
+        printPanel.add(backButton);
+        printPanel.add(nextButton);
+        printPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(printPanel);
+    }
+    
+    public void helpMethodPanel() {
+        //checks to see if the panel was already created
+        panelCheck(helpPanel);
+
+        JButton backButton = new JButton("<--");
+        JButton nextButton = new JButton("-->");
+
+        //register the controller to view
+        backButton.addActionListener(controller.getMethodHelpListener());
+        nextButton.addActionListener(controller.getMethodHelpListener());
+
+        //Print Page
+        ///////////////
+        // Heading/Labels
+        ///////////////
+        JLabel methodHelpLabel = new JLabel("In the 'Method' button, you'll be able to do the following:", SwingConstants.CENTER);
+        JLabel cMethodLabel = new JLabel(" -> Create a method ", SwingConstants.CENTER);
+        JLabel rMethodLabel = new JLabel(" -> Rename a method", SwingConstants.CENTER);
+        JLabel dMethodLabel = new JLabel(" -> Delete a method", SwingConstants.CENTER);
+        JLabel pMethodLabel = new JLabel(" -> Modify parameters in a method", SwingConstants.CENTER);
+        
+        methodHelpLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        methodHelpLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        
+        cMethodLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        cMethodLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        
+        rMethodLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        rMethodLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        
+        dMethodLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        dMethodLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        
+        pMethodLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        pMethodLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+
+
+        ///////////////
+        // Panel
+        ///////////////
+        printPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+        printPanel.add(methodHelpLabel);
+        printPanel.add(cMethodLabel);
+        printPanel.add(rMethodLabel);
+        printPanel.add(dMethodLabel);
+        printPanel.add(pMethodLabel);
+        printPanel.add(backButton);
+        printPanel.add(nextButton);
+        printPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(printPanel);
+    }
+    
+    public void helpFieldPanel() {
+        //checks to see if the panel was already created
+        panelCheck(helpPanel);
+
+        JButton backButton = new JButton("<--");
+        JButton nextButton = new JButton("-->");
+
+        //register the controller to view
+        backButton.addActionListener(controller.getFieldHelpListener());
+        nextButton.addActionListener(controller.getFieldHelpListener());
+
+        //Print Page
+        ///////////////
+        // Heading/Labels
+        ///////////////
+        JLabel fieldHelpLabel = new JLabel("In the 'Field' button, you'll be able to do the following:", SwingConstants.CENTER);
+        JLabel cFieldLabel = new JLabel(" -> Create a field", SwingConstants.CENTER);
+        JLabel rFieldLabel = new JLabel(" -> Rename a field", SwingConstants.CENTER);
+        JLabel dFieldLabel = new JLabel(" -> Delete a field", SwingConstants.CENTER);
+        
+        fieldHelpLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        fieldHelpLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        
+        cFieldLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        cFieldLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        
+        rFieldLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        rFieldLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        
+        dFieldLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        dFieldLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+
+
+        ///////////////
+        // Panel
+        ///////////////
+        printPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+        printPanel.add(fieldHelpLabel);
+        printPanel.add(cFieldLabel);
+        printPanel.add(rFieldLabel);
+        printPanel.add(dFieldLabel);
+        printPanel.add(backButton);
+        printPanel.add(nextButton);
+        printPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(printPanel);
+    }
+    
+    public void helpRelPanel() {
+        //checks to see if the panel was already created
+        panelCheck(helpPanel);
+
+        JButton backButton = new JButton("<--");
+        JButton nextButton = new JButton("-->");
+
+        //register the controller to view
+        backButton.addActionListener(controller.getRelHelpListener());
+        nextButton.addActionListener(controller.getRelHelpListener());
+
+        //Print Page
+        ///////////////
+        // Heading/Labels
+        ///////////////
+        JLabel relHelpLabel = new JLabel("In the 'Relationship' button, you'll be able to do the following:", SwingConstants.CENTER);
+        JLabel cRelLabel = new JLabel(" -> Create a relationship", SwingConstants.CENTER);
+        JLabel dRelLabel = new JLabel(" -> Delete a relationship", SwingConstants.CENTER);
+        JLabel tRelLabel = new JLabel(" -> Change a relationship type", SwingConstants.CENTER);
+        
+        relHelpLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        relHelpLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        
+        cRelLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        cRelLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        
+        tRelLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        tRelLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        
+        dRelLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        dRelLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+
+
+        ///////////////
+        // Panel
+        ///////////////
+        printPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+        printPanel.add(relHelpLabel);
+        printPanel.add(cRelLabel);
+        printPanel.add(dRelLabel);
+        printPanel.add(tRelLabel);
+        printPanel.add(backButton);
+        printPanel.add(nextButton);
+        printPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+        changePanel(printPanel);
+    }
+    
+    public void helpPrintPanel() {
+        //checks to see if the panel was already created
+        panelCheck(helpPanel);
+
+        JButton backButton = new JButton("<--");
+
+        //register the controller to view
+        backButton.addActionListener(controller.getPrintHelpListener());
+
+        //Print Page
+        ///////////////
+        // Heading/Labels
+        ///////////////
+        JLabel printHelpLabel = new JLabel("In the 'Print' button, you'll be able to do the following:", SwingConstants.CENTER);
+        JLabel cPrintLabel = new JLabel(" -> Print all classes with its attributes", SwingConstants.CENTER);
+        JLabel aPrintLabel = new JLabel(" -> Print a specific class with its attributes", SwingConstants.CENTER);
+        JLabel rPrintLabel = new JLabel(" -> Print the relationships", SwingConstants.CENTER);
+        
+        printHelpLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        printHelpLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        
+        cPrintLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        cPrintLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        
+        aPrintLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        aPrintLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        
+        rPrintLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        rPrintLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+
+
+        ///////////////
+        // Panel
+        ///////////////
+        printPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+        printPanel.add(printHelpLabel);
+        printPanel.add(cPrintLabel);
+        printPanel.add(aPrintLabel);
+        printPanel.add(rPrintLabel);
         printPanel.add(backButton);
         printPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
         changePanel(printPanel);
@@ -1338,7 +1583,7 @@ public class UMLGUI {
         umlEditor = new JFrame("UML Editor");
         umlEditor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         umlEditor.setJMenuBar(menuBar);
-        umlEditor.setSize(400, 600);
+        umlEditor.setSize(450, 600);
         umlEditor.setVisible(true);
 
         menuPanel();
