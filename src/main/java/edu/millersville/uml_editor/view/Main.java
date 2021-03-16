@@ -1005,7 +1005,7 @@ public class Main
 		                //List menu
 		                System.out.println();
 		                System.out.println("1. List classes");
-		                System.out.println("2. List attributes");
+		                System.out.println("2. List class attributes");
 		                System.out.println("3. List relationships");
 		                System.out.println("4. Go back to main menu");
 		                System.out.println();
@@ -1038,12 +1038,12 @@ public class Main
 		
 		                    //List a specific class with its attributes
 		                    case 2:
-		                    String listAttr = "";
+		                    String className = "";
 		                    System.out.println();
 		                    System.out.print("Enter the class name: ");
-		                    listAttr = console.next();
+		                    className = console.next();
 		                    //Checks to see if the class exists
-		                    if(!classMap.containsKey(listAttr))
+		                    if(!classMap.containsKey(className))
 		                    {
 		                        System.out.println("There is not a class with this name.");
 		    		            break;
@@ -1052,8 +1052,7 @@ public class Main
 		                    else 
 		                    {
 		                        System.out.println();
-		                        System.out.println("Class Name: " + listAttr);
-		                        System.out.print("Attributes: ");
+		                        printClass(className);
 		                        
 		                    }
 		                    break;
@@ -1305,8 +1304,25 @@ public class Main
       
     public static void printClass(String className) 
     {
-        System.out.println("Class Name: " + className);  
-        System.out.print("Attributes: ");
+        System.out.println("Class Name: " + className);
+        
+        ClassObject classObj = classMap.get(className);
+        
+        String fieldString = classObj.printFields();
+        fieldString = fieldString.replace("[", "\n  ");
+        fieldString = fieldString.replace("]", "\n");
+        fieldString = fieldString.replace(",", "\n ");
+        
+        String methodString = classObj.printMethods();
+        methodString = methodString.replace("[", "\n  ");
+        methodString = methodString.replace("]", "");
+        methodString = methodString.replace(",", "\n ");
+        methodString = methodString.replace("(", "\n  Parameters: \n    ");
+        methodString = methodString.replace(")", "");
+        methodString = methodString.replace(";", "\n   ");
+        
+        System.out.println(fieldString);
+        System.out.println(methodString);
         
     }
 
@@ -1315,6 +1331,7 @@ public class Main
         for (String key : classMap.keySet()) 
     	{
             printClass(key);
+            System.out.println();
     	}
     }
 
@@ -1326,10 +1343,11 @@ public class Main
 
 	public static void listRelationships()	
     {
+		System.out.println("ID: Type, Source, Dest");
 		for (String key : relMap.keySet())
 		{
 			System.out.print(key + ": ");
-			System.out.println(relMap.get(key).sourceName() + ", " + relMap.get(key).destinationName());
+			System.out.println(relMap.get(key).relType() + ", " + relMap.get(key).sourceName() + ", " + relMap.get(key).destinationName());
 		}
 	}
 	

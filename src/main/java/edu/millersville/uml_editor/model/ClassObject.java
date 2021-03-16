@@ -387,11 +387,11 @@ public class ClassObject {
 	}
 	
 	public String printMethods() {
-		return " Methods: " + methods;
+		return " Methods:  " + methods;
 	}
 	
 	public String printFields() {
-		return " Fields: " + fields + ", ";
+		return " Fields:  " + fields;
 	}
 	
 	

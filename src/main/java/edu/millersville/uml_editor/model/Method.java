@@ -154,16 +154,16 @@ public class Method extends Formal {
 	}
 	
 	public String toString() {
-		String methodParam = "Name: " + getName() + " type: " + getType() + "(";
+		String methodParam = "Name: " + getName() + " Type: " + getType() + " (";
 		if(!parameters.isEmpty()) {
 			Parameter curr = parameters.get(0);
-			methodParam += " " + curr.toString();
+			methodParam += curr.toString();
 			for(int i = 1; i<parameters.size(); ++i) {
 				curr = parameters.get(i);
-				methodParam += ", " + curr.toString();
+				methodParam += "; " + curr.toString();
 			}
-			methodParam += " ";
+			 methodParam += ")";
 		}
-		return methodParam + ")";
+		return methodParam;
 	}
 }

@@ -23,6 +23,6 @@ public class Parameter extends Formal {
 	 * A method that returns a string of the name and type of the parameter.
 	 */
 	public String toString() {
-		return getName() + " " + getType();
+		return "Name: " + getName() + " Type: " + getType();
 	}
 }
