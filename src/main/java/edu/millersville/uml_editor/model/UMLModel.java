@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.*;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONValue;
+import org.json.simple.parser.JSONParser;
 
 
 public class UMLModel {
@@ -24,6 +25,11 @@ public class UMLModel {
     public UMLModel() {
 		classMap = new HashMap<String, ClassObject>();
 		relMap = new HashMap<String, Relationships>();
+    }
+    
+    public UMLModel(Map<String, ClassObject> newClassMap, Map<String, Relationships> newRelMap) {
+    	classMap = newClassMap;
+    	relMap = newRelMap;
     }
     
     public void clear() {
@@ -417,44 +423,10 @@ public class UMLModel {
 	///////////////////////////////////////////////////////////
 	
 	public void saveJSON(String name) throws IOException {
-		
-		String fileText = "";
-		// writing map to JSON file
+		ObjectMapper mapper = new ObjectMapper();
+    	ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
+    	String fileText = writer.writeValueAsString(classMap);
 		FileWriter file = new FileWriter(name);
-		
-		String fieldString = "";
-		String methodString = "";
-		
-		fileText += "{\n";
-		for (String key : classMap.keySet())
-		{
-			fileText = fileText + key + ": [\n";
-			
-			fieldString = classMap.get(key).printFields();
-			fieldString = fieldString.replace("[", "{\n");
-			fieldString = fieldString.replace("]", "\n}\n");
-			fieldString = fieldString.replace(",", ",\n");
-			fieldString = fieldString.replace("Name: ", "");
-			fieldString = fieldString.replace("Type: ", "");
-			
-			fileText += fieldString;
-			
-			methodString = classMap.get(key).printMethods();
-			methodString = methodString.replace("[", "{\n");
-			methodString = methodString.replace("]", "}\n");
-			methodString = methodString.replace(",", ",\n");
-			methodString = methodString.replace("(", "(\n");
-			methodString = methodString.replace(")", "\n)\n");
-			methodString = methodString.replace(";", ",\n");
-			methodString = methodString.replace("Name: ", "");
-			methodString = methodString.replace("Type: ", "");
-			
-			fileText += methodString;
-			
-			fileText += "]\n";
-		}
-		fileText += "}";
-		
 		file.write(fileText);
 		file.close();
 	}
@@ -468,12 +440,17 @@ public class UMLModel {
 	//
 	///////////////////////////////////////////////////////////
 	
-	public Map<String, ClassObject> loadJSON(String filepath) throws IOException{
-		// added JAR file
-		String file = FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);    	
-		ObjectMapper objectMapper = new ObjectMapper();
-		Map<String, ClassObject> newObj = objectMapper.readValue(file, HashMap.class);
-		classMap = newObj;
-		return newObj;
+	public void loadJSON(String filepath) throws IOException{
+		File jsonFile = new File(filepath);
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	try {
+    		classMap.clear();
+    		String file = FileUtils.readFileToString(jsonFile, StandardCharsets.UTF_8);
+    		HashMap<String, ClassObject> newClassMap = objectMapper.readValue(file, HashMap.class);
+    		classMap = newClassMap;
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
 	}
 }

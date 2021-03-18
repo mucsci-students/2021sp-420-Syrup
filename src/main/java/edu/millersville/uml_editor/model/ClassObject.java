@@ -1,11 +1,6 @@
 package edu.millersville.uml_editor.model;
 
-import java.io.Serializable;
 import java.util.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * A class that creates a class object. The class object holds fields and methods.
@@ -14,13 +9,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  * @author TeamSyrup
  *
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class ClassObject implements Serializable{
-	@JsonProperty
+public class ClassObject {
+		
 	private String className;
-	@JsonProperty
 	private ArrayList<Field> fields;
-	@JsonProperty
 	private ArrayList<Method> methods;
 	
 	/**
@@ -36,6 +28,7 @@ public class ClassObject implements Serializable{
 		methods = new ArrayList<Method>();
 		
 	}
+	
 	
 	/**
 	 * Getter method to return the name of the class.

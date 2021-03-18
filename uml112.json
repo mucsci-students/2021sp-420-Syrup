@@ -1,0 +1,22 @@
+{
+  "classes" : {
+    "class12" : {
+      "methods" : [ ],
+      "name" : "class12",
+      "feilds" : [ ]
+    },
+    "class11" : {
+      "methods" : [ ],
+      "name" : "class11",
+      "feilds" : [ ]
+    }
+  },
+  "relationships" : {
+    "foo" : {
+      "source" : "class11",
+      "destination" : "class12",
+      "type" : "A",
+      "id" : "foo"
+    }
+  }
+}

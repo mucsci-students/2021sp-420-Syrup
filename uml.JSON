@@ -1,8 +1,39 @@
 {
-"class1": [
-{
- "Fields": "field1 int",
- "Methods": "method1 int"
-}
-]
+    "classes":[
+	{
+	    "className" : "class1",
+ 	    "fields": [
+		{
+		    "name" : "field1",
+		    "type" : "int"
+		}
+	    ],
+ 	    "methods": [
+		{
+		    "name" : "method1",
+		    "type" : "int",
+		    "parameters" : [
+			]
+		}
+	    ]
+	},
+	{
+	    "className" : "class2",
+	    "fields": [
+		{
+		    "name" : "field2",
+		    "type" : "int"
+		}
+	    ],
+	    "methods": [
+		{
+		    "name" : "method2",
+		    "type" : "int",
+		    "parameters" : [
+			]
+		}
+	    ]
+	}
+
+    ]
 }

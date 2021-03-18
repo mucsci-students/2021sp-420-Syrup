@@ -1,0 +1,22 @@
+{
+  "classes" : {
+    "class3" : {
+      "methods" : [ ],
+      "name" : "class3",
+      "feilds" : [ ]
+    },
+    "class2" : {
+      "methods" : [ ],
+      "name" : "class2",
+      "feilds" : [ ]
+    }
+  },
+  "relationships" : {
+    "help" : {
+      "source" : "class2",
+      "destination" : "class3",
+      "type" : "A",
+      "id" : "help"
+    }
+  }
+}

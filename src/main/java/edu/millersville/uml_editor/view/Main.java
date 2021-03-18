@@ -1,30 +1,24 @@
 package edu.millersville.uml_editor.view;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 import edu.millersville.uml_editor.model.*;
-import edu.millersville.uml_editor.controller.*;
 
 
-import org.json.simple.JSONObject;
-import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
+import org.apache.commons.io.FileUtils;
 import org.json.simple.parser.ParseException;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import java.io.FileReader;
-import java.util.Iterator;
 
-//import org.apache.commons.io.FileUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
-//import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  * 
  *
@@ -38,40 +32,10 @@ public class Main
 //	Private Variables
 //
 ///////////////////////////////////////////////////////////
-    private static UMLController controller;
     private static UMLModel model;
-    public Main(UMLModel m) {
-        this.model = m;
-        this.controller = null;
-    }
-	
+   
     private static Map<String, ClassObject> classMap = 
-			new HashMap<String, ClassObject>() {
-		@Override
-		public java.lang.String toString() {
-	    	StringBuffer s = new StringBuffer();
-	    	s.append("{");
-	    	s.append(System.lineSeparator());
-	    	boolean firstRow = true;
-	    	for (String key: classMap.keySet()) {
-	    		if (firstRow) {
-	    			firstRow = false;
-
-	    		} else {
-	    			s.append(",\n");
-	    		}
-	    		s.append("\"" + key + "\" : ");
-	    		s.append("{");
-	    		s.append(System.lineSeparator());
-	    		s.append(classMap.get(key).toString());
-	    		s.append("}");
-	    	}
-	    	s.append("\n");
-	    	s.append("}\n");
-	    	System.out.println(s.toString());
-	    	return s.toString();
-	    }
-	};
+			new HashMap<String, ClassObject>() {};
 	private static Map<String, Relationships> relMap =
 			new HashMap<String, Relationships>();
 	private static Scanner console = new Scanner(System.in);
@@ -1085,9 +1049,12 @@ public class Main
 		                //Save JSON case
 				        case 6:
 				        System.out.println();   
-		            	System.out.print("Enter filepath (filepath+filename): ");
+		            	System.out.print("Enter filename: ");
 		            	String filename = console.next();
-		            	saveJSON(filename, classMap);
+		            	saveJSON(filename+".json");
+		            	saveClassJSON(filename+"classes.json");
+		            	saveRelJSON(filename+"relationships.json");
+		            	
 		            	System.out.println();
 		            	System.out.println("JSON file saved to: " + filename);
 		            	break;
@@ -1095,11 +1062,13 @@ public class Main
 		                //Load JSON case
 				        case 7:
 				        System.out.println();        
-		              	System.out.println("Enter filepath (filepath+filename) of file to open: ");
+		              	System.out.println("Enter file upload: ");
 		            	String filepath = console.next();
-		            	File jsonFile = new File(filepath);
-		            	if (jsonFile.exists()) {
-		            		loadJSON(jsonFile);
+		            	File jsonClassesFile = new File(filepath+"classes.json");
+		            	File jsonRelationshipsFile = new File(filepath+"relationships.json");
+		            	if (jsonClassesFile.exists() && jsonRelationshipsFile.exists()) {
+		            		loadClassesJSON(jsonClassesFile);
+		            		loadRelationshipsJSON(jsonRelationshipsFile);
 		            	} else {
 		            		System.out.println("No such file exists. Please enter filepath again.");
 		            	}
@@ -1335,11 +1304,13 @@ public class Main
 
     public static void printClasses() 
     {
-        for (String key : classMap.keySet()) 
+       /* for (String key : classMap.keySet()) 
     	{
             printClass(key);
             System.out.println();
-    	}
+    	}*/
+        System.out.println(classMap);
+        System.out.println(relMap);
     }
 
 ///////////////////////////////////////////////////////////
@@ -1367,18 +1338,53 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
 
-    public static void saveJSON(String name, Map<String, ClassObject> map) throws IOException{
-    	//converts map into JSON object
-    	String s = map.toString();
-    	// writing map to JSON file
-    	try {
-    		FileWriter file = new FileWriter(name);
-    		file.write(s.toString());
-    		file.close();
-    	} catch (IOException e) {
-    		e.printStackTrace();
-            System.out.println("The filepath does not exist. Enter a correct filepath.");
-    	}
+	/**
+	 * Method that saves a UML model to a JSON file
+	 * @param name the JSON file
+	 * @param map stores the model
+	 * @throws IOException
+	 */
+    public static void saveJSON(String name) throws IOException{
+    	UMLModel model = new UMLModel(classMap, relMap);
+    	ObjectMapper mapper = new ObjectMapper();
+    	mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    	ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
+    	String fileText = writer.writeValueAsString(model);
+    	//String fileText = writer.writeValueAsString(classMap) + writer.writeValueAsString(relMap);
+		FileWriter file = new FileWriter(name);
+		file.write(fileText);
+		file.close();
+		
+    }
+    
+    /**
+     * Method that saves the classes to JSON file
+     * @param name the JSON file
+     * @throws IOException
+     */
+    public static void saveClassJSON(String name) throws IOException{
+    	ObjectMapper mapper = new ObjectMapper();
+    	mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    	ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
+    	String fileText = writer.writeValueAsString(classMap);
+		FileWriter file = new FileWriter(name);
+		file.write(fileText);
+		file.close();
+    }
+    
+    /**
+     * Method that saves the relationships to JSON file
+     * @param name the JSON file
+     * @throws IOException
+     */
+    public static void saveRelJSON(String name) throws IOException{
+    	ObjectMapper mapper = new ObjectMapper();
+    	mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    	ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
+    	String fileText = writer.writeValueAsString(relMap);
+		FileWriter file = new FileWriter(name);
+		file.write(fileText);
+		file.close();
     }
     
 ///////////////////////////////////////////////////////////
@@ -1390,32 +1396,42 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
     
-
-    public static void loadJSON(File filepath) throws IOException, FileNotFoundException, org.json.simple.parser.ParseException, ParseException {
-        // added JAR fil
-    	//String file = FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);    	
-    	//ObjectMapper objectMapper = new ObjectMapper();
-    	//Map<String, ClassObject> result = (Map<String, ClassObject>) objectMapper.readValue(filepath,  HashMap.class);
-    	//classMap = result;
-    	//System.out.println(classMap);
-    	//TypeFactory typeFactory = objectMapper.getTypeFactory();
-    	//MapType mapType = typeFactory.constructMapType(HashMap.class, String.class, ClassObject.class);
-    	//HashMap<String, ClassObject> map = objectMapper.readValue(filepath, mapType);
-    	JSONParser parser = new JSONParser();
+    /**
+     * Method to load in a JSON file that stores classes 
+     * @param filepath the JSON file
+     * @throws IOException
+     */
+    public static void loadClassesJSON(File filepath) throws IOException {
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
     	try {
-    		Object obj = parser.parse(new FileReader(filepath));    	
-    		JSONObject javaObj = (JSONObject) obj;
-
-    		JSONArray list = (JSONArray) javaObj.get("class1");
-    		for(Object jsonClass : list) {
-    			String name = (String)((JSONObject) jsonClass).get("name");
-    			ClassObject classObj = new ClassObject(name);
-    			classMap.put(name, classObj);
-    		}
+    		classMap.clear();
+    		String file = FileUtils.readFileToString(filepath, StandardCharsets.UTF_8);
+    		HashMap<String, ClassObject> newMap = objectMapper.readValue(file, HashMap.class);
+    		classMap = newMap;
     	}
     	catch(Exception e) {
     		e.printStackTrace();
     	}
-    }    
-
+    }   
+    
+    /**
+     * Method to load in the JSON file that stores relationships
+     * @param filepath
+     * @throws IOException
+     */
+    public static void loadRelationshipsJSON(File filepath) throws IOException {
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    	try {
+    		classMap.clear();
+    		String file = FileUtils.readFileToString(filepath, StandardCharsets.UTF_8);
+    		HashMap<String, Relationships> newMap = objectMapper.readValue(file, HashMap.class);
+    		relMap = newMap;
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    } 
+    
 }
