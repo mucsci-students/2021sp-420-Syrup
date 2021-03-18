@@ -13,23 +13,13 @@ import java.util.Scanner;
 
 import edu.millersville.uml_editor.model.*;
 import edu.millersville.uml_editor.controller.*;
-import edu.millersville.uml_editor.view.*;
 
-import javax.lang.model.util.ElementScanner6;
 
-import org.apache.commons.io.FileUtils;
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.MapType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.fasterxml.jackson.databind.util.TypeKey;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+
 
 //import org.apache.commons.io.FileUtils;
 
@@ -1376,7 +1366,7 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
     
-    public static Map<String, ClassObject> loadJSON(File filepath) throws IOException, FileNotFoundException {
+    public static void loadJSON(File filepath) throws IOException, FileNotFoundException, org.json.simple.parser.ParseException, ParseException {
         // added JAR fil
     	//String file = FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);    	
     	//ObjectMapper objectMapper = new ObjectMapper();
@@ -1386,11 +1376,20 @@ public class Main
     	//TypeFactory typeFactory = objectMapper.getTypeFactory();
     	//MapType mapType = typeFactory.constructMapType(HashMap.class, String.class, ClassObject.class);
     	//HashMap<String, ClassObject> map = objectMapper.readValue(filepath, mapType);
-    	Gson gson = new Gson();
-    	String jsonString = gson.toJson(classMap);
-    	Type type = (Type) new TypeToken<HashMap<String, ClassObject>>(){}.getType();
-        HashMap<String, ClassObject> clonedMap = gson.fromJson(jsonString, (java.lang.reflect.Type) type); 
-        System.out.println(clonedMap);
-    	return classMap;
+    	JSONParser parser = new JSONParser();
+    	try {
+    		Object obj = parser.parse(new FileReader(filepath));    	
+    		JSONObject javaObj = (JSONObject) obj;
+
+    		JSONArray list = (JSONArray) javaObj.get("class1");
+    		for(Object jsonClass : list) {
+    			String name = (String)((JSONObject) jsonClass).get("name");
+    			ClassObject classObj = new ClassObject(name);
+    			classMap.put(name, classObj);
+    		}
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
     }    
 }
