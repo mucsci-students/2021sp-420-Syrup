@@ -3,8 +3,19 @@ package edu.millersville.uml_editor.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.commons.io.FileUtils;
+import org.json.JSONObject;
+
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import com.fasterxml.jackson.databind.*;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONValue;
+
 
 public class UMLModel {
     private Map<String, ClassObject> classMap;
@@ -14,6 +25,12 @@ public class UMLModel {
 		classMap = new HashMap<String, ClassObject>();
 		relMap = new HashMap<String, Relationships>();
     }
+    
+    public void clear() {
+    	classMap.clear();
+    	relMap.clear();
+    }
+    
 
     public  Map<String, ClassObject> getClasses() {
         return classMap;
@@ -451,12 +468,12 @@ public class UMLModel {
 	//
 	///////////////////////////////////////////////////////////
 	
-	/*public static Map<String, Class> loadJSON(String filepath) throws IOException, FileNotFoundException {
+	public Map<String, ClassObject> loadJSON(String filepath) throws IOException{
 		// added JAR file
 		String file = FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);    	
 		ObjectMapper objectMapper = new ObjectMapper();
-		Map<String, Class> newObj = objectMapper.readValue(file, HashMap.class);
+		Map<String, ClassObject> newObj = objectMapper.readValue(file, HashMap.class);
 		classMap = newObj;
 		return newObj;
-	}*/
+	}
 }

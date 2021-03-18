@@ -1,9 +1,12 @@
 package edu.millersville.uml_editor.view;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -13,6 +16,20 @@ import edu.millersville.uml_editor.controller.*;
 import edu.millersville.uml_editor.view.*;
 
 import javax.lang.model.util.ElementScanner6;
+
+import org.apache.commons.io.FileUtils;
+import org.json.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.MapType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.databind.util.TypeKey;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 //import org.apache.commons.io.FileUtils;
 
@@ -38,32 +55,7 @@ public class Main
     }
 	
     private static Map<String, ClassObject> classMap = 
-			new HashMap<String, ClassObject>() {
-		@Override
-		public java.lang.String toString() {
-	    	StringBuffer s = new StringBuffer();
-	    	s.append("{");
-	    	s.append(System.lineSeparator());
-	    	boolean firstRow = true;
-	    	for (String key: classMap.keySet()) {
-	    		if (firstRow) {
-	    			firstRow = false;
-
-	    		} else {
-	    			s.append(",\n");
-	    		}
-	    		s.append("\"" + key + "\" : ");
-	    		s.append("{");
-	    		s.append(System.lineSeparator());
-	    		s.append(classMap.get(key).toString());
-	    		s.append("}");
-	    	}
-	    	s.append("\n");
-	    	s.append("}\n");
-	    	System.out.println(s.toString());
-	    	return s.toString();
-	    }
-	};
+			new HashMap<String, ClassObject>();
 	private static Map<String, Relationships> relMap =
 			new HashMap<String, Relationships>();
 	private static Scanner console = new Scanner(System.in);
@@ -74,7 +66,7 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
 	
-    public static void main(String[] args) throws IOException
+    public static void main(String[] args) throws IOException, ParseException, org.json.simple.parser.ParseException
     {
     	if (args.length > 0 )
     	{
@@ -1091,11 +1083,12 @@ public class Main
 		            	String filepath = console.next();
 		            	File jsonFile = new File(filepath);
 		            	if (jsonFile.exists()) {
-		            		//System.out.println(loadJSON(filepath));
+		            		loadJSON(jsonFile);  
 		            		System.out.println();
 		            	} else {
 		            		System.out.println("No such file exists. Please enter filepath again.");
 		            	}
+		            	System.out.println(classMap);
 		                break;
 		                
 		                //Case that displays help instructions
@@ -1383,12 +1376,21 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
     
-    /*public static Map<String, Class> loadJSON(String filepath) throws IOException, FileNotFoundException {
-        // added JAR file
-    	String file = FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);    	
-    	ObjectMapper objectMapper = new ObjectMapper();
-    	Map<String, Class> newObj = objectMapper.readValue(file, HashMap.class);
-    	classMap = newObj;
-    	return newObj;
-    }*/
+    public static Map<String, ClassObject> loadJSON(File filepath) throws IOException, FileNotFoundException {
+        // added JAR fil
+    	//String file = FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);    	
+    	//ObjectMapper objectMapper = new ObjectMapper();
+    	//Map<String, ClassObject> result = (Map<String, ClassObject>) objectMapper.readValue(filepath,  HashMap.class);
+    	//classMap = result;
+    	//System.out.println(classMap);
+    	//TypeFactory typeFactory = objectMapper.getTypeFactory();
+    	//MapType mapType = typeFactory.constructMapType(HashMap.class, String.class, ClassObject.class);
+    	//HashMap<String, ClassObject> map = objectMapper.readValue(filepath, mapType);
+    	Gson gson = new Gson();
+    	String jsonString = gson.toJson(classMap);
+    	Type type = (Type) new TypeToken<HashMap<String, ClassObject>>(){}.getType();
+        HashMap<String, ClassObject> clonedMap = gson.fromJson(jsonString, (java.lang.reflect.Type) type); 
+        System.out.println(clonedMap);
+    	return classMap;
+    }    
 }
