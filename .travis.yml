@@ -5,4 +5,5 @@ jdk:
 # Installs maven dependencies
 mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
-mvn test -B
+script:
+  mvn clean verify
