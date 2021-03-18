@@ -426,6 +426,7 @@ public class UMLModel {
 		String methodString = "";
 		
 		fileText += "{\n";
+		fileText += "classes \n";
 		for (String key : classMap.keySet())
 		{
 			fileText = fileText + key + ": [\n";
