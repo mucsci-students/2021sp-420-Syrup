@@ -1,0 +1,19 @@
+{
+class2: [
+ Fields:  {
+
+}
+ Methods:  {
+}
+]
+class1: [
+ Fields:  {
+field1 int
+}
+ Methods:  {
+method1 int (
+param1 int,
+ param2 char)
+}
+]
+}

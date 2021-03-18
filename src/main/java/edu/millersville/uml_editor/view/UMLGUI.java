@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import edu.millersville.uml_editor.model.*;
 import edu.millersville.uml_editor.controller.*;
+import java.io.IOException;
 
 public class UMLGUI {
     private JFrame umlEditor = null;
@@ -16,7 +17,6 @@ public class UMLGUI {
     private JPanel fieldPanel = null;
     private JPanel relPanel = null;
     private JPanel printPanel = null;
-    private JPanel helpPanel = null;
     
     private JPanel createClassPanel = null;
     private JPanel deleteClassPanel = null;
@@ -46,6 +46,18 @@ public class UMLGUI {
     private JPanel renameMethodPanel = null;
     private JPanel renamedMethodPanel = null;
     
+    private JPanel paramPanel = null;
+    private JPanel addParamPanel = null;
+    private JPanel deleteAllParamPanel = null;
+    private JPanel deleteParameterPanel = null;
+    private JPanel changeParameterPanel = null;
+    private JPanel changeParameterListPanel = null;
+    private JPanel parameterSolutionPanel = null;
+    private JPanel helpPanel = null;
+    private JPanel savePanel = null;
+    
+    
+    
     private JPanel dupPanel = null;
     private JPanel notExistPanel = null;
     private JPanel notType = null;
@@ -55,7 +67,10 @@ public class UMLGUI {
     private JTextField textBox1;
     private JTextField textBox2;
     private JTextField textBox3;
-    private JTextField textBox4;    
+    private JTextField textBox4;
+    private JTextField textBox5;
+    
+    private boolean isMethod = false;
 
     private UMLController controller;
     private UMLModel model;
@@ -77,14 +92,14 @@ public class UMLGUI {
 
         // view
         JButton classButton = new JButton("Class");
-        JButton methButton = new JButton("Method");
+        JButton methodButton = new JButton("Method");
         JButton fieldButton = new JButton("Field");
         JButton relButton = new JButton("Relationship");
         JButton printButton = new JButton("Print");
 
         // register controller to view
         classButton.addActionListener(controller.getMainPageListener());
-        methButton.addActionListener(controller.getMainPageListener());
+        methodButton.addActionListener(controller.getMainPageListener());
         fieldButton.addActionListener(controller.getMainPageListener());
         relButton.addActionListener(controller.getMainPageListener());
         printButton.addActionListener(controller.getMainPageListener());
@@ -111,7 +126,7 @@ public class UMLGUI {
         menuPanel.add(welcome);
         menuPanel.add(select);
         menuPanel.add(classButton);
-        menuPanel.add(methButton);
+        menuPanel.add(methodButton);
         menuPanel.add(fieldButton);
         menuPanel.add(relButton);
         menuPanel.add(printButton);
@@ -210,6 +225,56 @@ public class UMLGUI {
         methodPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
         changePanel(methodPanel);
     }
+    
+	//////////////////////////////////////////////////////////
+	//
+	//	paramPanel
+	//
+	///////////////////////////////////////////////////////////
+	
+	public void paramPanel() {
+		//checks to see if the panel was already created
+		panelCheck(paramPanel);
+		
+		isMethod = false;
+		
+		//view
+		JButton deleteParam = new JButton("Delete a parameter");
+		JButton deleteAllParam = new JButton("Delete a parameter list");
+		JButton changeParam = new JButton("Change a parameter");
+		JButton changeAllParam = new JButton("Change a parameter list");
+		JButton backButton = new JButton("<--");
+		
+		//register controller to view
+		deleteParam.addActionListener(controller.getParamPageListener());
+		deleteAllParam.addActionListener(controller.getParamPageListener());
+		changeParam.addActionListener(controller.getParamPageListener());
+		changeAllParam.addActionListener(controller.getParamPageListener());
+		backButton.addActionListener(controller.getParamPageListener());
+		
+		//Parameter Page
+		///////////////
+		// Heading/Labels
+		///////////////
+		JLabel paramLabel = new JLabel("Parameter Functions:", SwingConstants.CENTER);
+		paramLabel.setFont(new Font("Serif", Font.BOLD, 20));
+		
+		paramLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		///////////////
+		// Panel
+		///////////////
+		paramPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		paramPanel.add(paramLabel);
+		paramPanel.add(deleteParam);
+		paramPanel.add(deleteAllParam);
+		paramPanel.add(changeParam);
+		paramPanel.add(changeAllParam);
+		
+		paramPanel.add(backButton);
+		paramPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(paramPanel);
+	}
 
     //////////////////////////////////////////////////////////
     //
@@ -308,6 +373,89 @@ public class UMLGUI {
         relPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
         changePanel(relPanel);
     }
+    
+	//////////////////////////////////////////////////////////
+	//
+	//	savePanel
+	//
+	///////////////////////////////////////////////////////////
+	
+	public void savePanel() {
+		//checks to see if the panel was already created
+		panelCheck(savePanel);
+		
+		//view
+		JButton saveButton = new JButton("Save");
+		JButton backButton = new JButton("<--");
+		
+		//register the controller to view
+		saveButton.addActionListener(controller.savePageCall());
+		backButton.addActionListener(controller.getPrintPageListener());
+		
+		textBox1 = new JTextField();
+		
+		//Print Page
+		///////////////
+		// Heading/Labels
+		///////////////
+		JLabel saveLabel = new JLabel("Enter the name of the file:", SwingConstants.CENTER);
+		saveLabel.setFont(new Font("Serif", Font.BOLD, 20));
+		
+		saveLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		
+		///////////////
+		// Panel
+		///////////////
+		savePanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		savePanel.add(saveLabel);
+		savePanel.add(textBox1);
+		savePanel.add(saveButton);
+		savePanel.add(backButton);
+		savePanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(savePanel);
+	}
+	
+	public void saveAction()
+	{
+		String fileName = textBox1.getText();
+		try {
+			model.saveJSON(fileName);
+			fileSaved();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void fileSaved()
+	{
+		//checks to see if the panel was already created
+		panelCheck(savePanel);
+		
+		//view
+		JButton backButton = new JButton("<--");
+		
+		//register the controller to view
+		backButton.addActionListener(controller.getPrintPageListener());
+		
+		
+		//Print Page
+		///////////////
+		// Heading/Labels
+		///////////////
+		JLabel saveLabel = new JLabel("File has been saved!", SwingConstants.CENTER);
+		saveLabel.setFont(new Font("Serif", Font.BOLD, 20));
+		saveLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		///////////////
+		// Panel
+		///////////////
+		savePanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		savePanel.add(saveLabel);
+		savePanel.add(backButton);
+		savePanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(savePanel);
+	}
 
     //////////////////////////////////////////////////////////
     //
@@ -353,250 +501,249 @@ public class UMLGUI {
         printPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
         changePanel(printPanel);
     }
-	    
-	    
+    
 	//////////////////////////////////////////////////////////
 	//
 	//	Help Panels
 	//
 	///////////////////////////////////////////////////////////
-    
-    public void helpClassPanel() {
-        //checks to see if the panel was already created
-        panelCheck(helpPanel);
-
-        JButton backButton = new JButton("<--");
-        JButton nextButton = new JButton("-->");
-
-        //register the controller to view
-        backButton.addActionListener(controller.getClassHelpListener());
-        nextButton.addActionListener(controller.getClassHelpListener());
-
-        //Print Page
-        ///////////////
-        // Heading/Labels
-        ///////////////
-        JLabel classHelpLabel = new JLabel("In the 'Classes' button, you'll be able to do the following: ", SwingConstants.CENTER);
-        JLabel cClassLabel = new JLabel(" -> Create a class ", SwingConstants.CENTER);
-        JLabel rClassLabel = new JLabel(" -> Rename a class", SwingConstants.CENTER);
-        JLabel dClassLabel = new JLabel(" -> Delete a class", SwingConstants.CENTER);
-        
-        classHelpLabel.setFont(new Font("Serif", Font.BOLD, 14));
-        classHelpLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-        
-        cClassLabel.setFont(new Font("Serif", Font.BOLD, 14));
-        cClassLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-        
-        rClassLabel.setFont(new Font("Serif", Font.BOLD, 14));
-        rClassLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-        
-        dClassLabel.setFont(new Font("Serif", Font.BOLD, 14));
-        dClassLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-
-
-        ///////////////
-        // Panel
-        ///////////////
-        printPanel = new JPanel(new GridLayout(8, 1, 8, 8));
-        printPanel.add(classHelpLabel);
-        printPanel.add(cClassLabel);
-        printPanel.add(rClassLabel);
-        printPanel.add(dClassLabel);
-        printPanel.add(backButton);
-        printPanel.add(nextButton);
-        printPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
-        changePanel(printPanel);
-    }
-    
-    public void helpMethodPanel() {
-        //checks to see if the panel was already created
-        panelCheck(helpPanel);
-
-        JButton backButton = new JButton("<--");
-        JButton nextButton = new JButton("-->");
-
-        //register the controller to view
-        backButton.addActionListener(controller.getMethodHelpListener());
-        nextButton.addActionListener(controller.getMethodHelpListener());
-
-        //Print Page
-        ///////////////
-        // Heading/Labels
-        ///////////////
-        JLabel methodHelpLabel = new JLabel("In the 'Method' button, you'll be able to do the following:", SwingConstants.CENTER);
-        JLabel cMethodLabel = new JLabel(" -> Create a method ", SwingConstants.CENTER);
-        JLabel rMethodLabel = new JLabel(" -> Rename a method", SwingConstants.CENTER);
-        JLabel dMethodLabel = new JLabel(" -> Delete a method", SwingConstants.CENTER);
-        JLabel pMethodLabel = new JLabel(" -> Modify parameters in a method", SwingConstants.CENTER);
-        
-        methodHelpLabel.setFont(new Font("Serif", Font.BOLD, 14));
-        methodHelpLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-        
-        cMethodLabel.setFont(new Font("Serif", Font.BOLD, 14));
-        cMethodLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-        
-        rMethodLabel.setFont(new Font("Serif", Font.BOLD, 14));
-        rMethodLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-        
-        dMethodLabel.setFont(new Font("Serif", Font.BOLD, 14));
-        dMethodLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-        
-        pMethodLabel.setFont(new Font("Serif", Font.BOLD, 14));
-        pMethodLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-
-
-        ///////////////
-        // Panel
-        ///////////////
-        printPanel = new JPanel(new GridLayout(8, 1, 8, 8));
-        printPanel.add(methodHelpLabel);
-        printPanel.add(cMethodLabel);
-        printPanel.add(rMethodLabel);
-        printPanel.add(dMethodLabel);
-        printPanel.add(pMethodLabel);
-        printPanel.add(backButton);
-        printPanel.add(nextButton);
-        printPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
-        changePanel(printPanel);
-    }
-    
-    public void helpFieldPanel() {
-        //checks to see if the panel was already created
-        panelCheck(helpPanel);
-
-        JButton backButton = new JButton("<--");
-        JButton nextButton = new JButton("-->");
-
-        //register the controller to view
-        backButton.addActionListener(controller.getFieldHelpListener());
-        nextButton.addActionListener(controller.getFieldHelpListener());
-
-        //Print Page
-        ///////////////
-        // Heading/Labels
-        ///////////////
-        JLabel fieldHelpLabel = new JLabel("In the 'Field' button, you'll be able to do the following:", SwingConstants.CENTER);
-        JLabel cFieldLabel = new JLabel(" -> Create a field", SwingConstants.CENTER);
-        JLabel rFieldLabel = new JLabel(" -> Rename a field", SwingConstants.CENTER);
-        JLabel dFieldLabel = new JLabel(" -> Delete a field", SwingConstants.CENTER);
-        
-        fieldHelpLabel.setFont(new Font("Serif", Font.BOLD, 14));
-        fieldHelpLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-        
-        cFieldLabel.setFont(new Font("Serif", Font.BOLD, 14));
-        cFieldLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-        
-        rFieldLabel.setFont(new Font("Serif", Font.BOLD, 14));
-        rFieldLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-        
-        dFieldLabel.setFont(new Font("Serif", Font.BOLD, 14));
-        dFieldLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-
-
-        ///////////////
-        // Panel
-        ///////////////
-        printPanel = new JPanel(new GridLayout(8, 1, 8, 8));
-        printPanel.add(fieldHelpLabel);
-        printPanel.add(cFieldLabel);
-        printPanel.add(rFieldLabel);
-        printPanel.add(dFieldLabel);
-        printPanel.add(backButton);
-        printPanel.add(nextButton);
-        printPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
-        changePanel(printPanel);
-    }
-    
-    public void helpRelPanel() {
-        //checks to see if the panel was already created
-        panelCheck(helpPanel);
-
-        JButton backButton = new JButton("<--");
-        JButton nextButton = new JButton("-->");
-
-        //register the controller to view
-        backButton.addActionListener(controller.getRelHelpListener());
-        nextButton.addActionListener(controller.getRelHelpListener());
-
-        //Print Page
-        ///////////////
-        // Heading/Labels
-        ///////////////
-        JLabel relHelpLabel = new JLabel("In the 'Relationship' button, you'll be able to do the following:", SwingConstants.CENTER);
-        JLabel cRelLabel = new JLabel(" -> Create a relationship", SwingConstants.CENTER);
-        JLabel dRelLabel = new JLabel(" -> Delete a relationship", SwingConstants.CENTER);
-        JLabel tRelLabel = new JLabel(" -> Change a relationship type", SwingConstants.CENTER);
-        
-        relHelpLabel.setFont(new Font("Serif", Font.BOLD, 14));
-        relHelpLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-        
-        cRelLabel.setFont(new Font("Serif", Font.BOLD, 14));
-        cRelLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-        
-        tRelLabel.setFont(new Font("Serif", Font.BOLD, 14));
-        tRelLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-        
-        dRelLabel.setFont(new Font("Serif", Font.BOLD, 14));
-        dRelLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-
-
-        ///////////////
-        // Panel
-        ///////////////
-        printPanel = new JPanel(new GridLayout(8, 1, 8, 8));
-        printPanel.add(relHelpLabel);
-        printPanel.add(cRelLabel);
-        printPanel.add(dRelLabel);
-        printPanel.add(tRelLabel);
-        printPanel.add(backButton);
-        printPanel.add(nextButton);
-        printPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
-        changePanel(printPanel);
-    }
-    
-    public void helpPrintPanel() {
-        //checks to see if the panel was already created
-        panelCheck(helpPanel);
-
-        JButton backButton = new JButton("<--");
-
-        //register the controller to view
-        backButton.addActionListener(controller.getPrintHelpListener());
-
-        //Print Page
-        ///////////////
-        // Heading/Labels
-        ///////////////
-        JLabel printHelpLabel = new JLabel("In the 'Print' button, you'll be able to do the following:", SwingConstants.CENTER);
-        JLabel cPrintLabel = new JLabel(" -> Print all classes with its attributes", SwingConstants.CENTER);
-        JLabel aPrintLabel = new JLabel(" -> Print a specific class with its attributes", SwingConstants.CENTER);
-        JLabel rPrintLabel = new JLabel(" -> Print the relationships", SwingConstants.CENTER);
-        
-        printHelpLabel.setFont(new Font("Serif", Font.BOLD, 14));
-        printHelpLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-        
-        cPrintLabel.setFont(new Font("Serif", Font.BOLD, 14));
-        cPrintLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-        
-        aPrintLabel.setFont(new Font("Serif", Font.BOLD, 14));
-        aPrintLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-        
-        rPrintLabel.setFont(new Font("Serif", Font.BOLD, 14));
-        rPrintLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-
-
-        ///////////////
-        // Panel
-        ///////////////
-        printPanel = new JPanel(new GridLayout(8, 1, 8, 8));
-        printPanel.add(printHelpLabel);
-        printPanel.add(cPrintLabel);
-        printPanel.add(aPrintLabel);
-        printPanel.add(rPrintLabel);
-        printPanel.add(backButton);
-        printPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
-        changePanel(printPanel);
-    }
+	
+	public void helpClassPanel() {
+		//checks to see if the panel was already created
+		panelCheck(helpPanel);
+		
+		JButton backButton = new JButton("<--");
+		JButton nextButton = new JButton("-->");
+		
+		//register the controller to view
+		backButton.addActionListener(controller.getClassHelpListener());
+		nextButton.addActionListener(controller.getClassHelpListener());
+		
+		//Print Page
+		///////////////
+		// Heading/Labels
+		///////////////
+		JLabel classHelpLabel = new JLabel("In the 'Classes' button, you'll be able to do the following: ", SwingConstants.CENTER);
+		JLabel cClassLabel = new JLabel(" -> Create a class ", SwingConstants.CENTER);
+		JLabel rClassLabel = new JLabel(" -> Rename a class", SwingConstants.CENTER);
+		JLabel dClassLabel = new JLabel(" -> Delete a class", SwingConstants.CENTER);
+		
+		classHelpLabel.setFont(new Font("Serif", Font.BOLD, 14));
+		classHelpLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		cClassLabel.setFont(new Font("Serif", Font.BOLD, 14));
+		cClassLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		rClassLabel.setFont(new Font("Serif", Font.BOLD, 14));
+		rClassLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		dClassLabel.setFont(new Font("Serif", Font.BOLD, 14));
+		dClassLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		
+		///////////////
+		// Panel
+		///////////////
+		printPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		printPanel.add(classHelpLabel);
+		printPanel.add(cClassLabel);
+		printPanel.add(rClassLabel);
+		printPanel.add(dClassLabel);
+		printPanel.add(backButton);
+		printPanel.add(nextButton);
+		printPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(printPanel);
+	}
+	
+	public void helpMethodPanel() {
+		//checks to see if the panel was already created
+		panelCheck(helpPanel);
+		
+		JButton backButton = new JButton("<--");
+		JButton nextButton = new JButton("-->");
+		
+		//register the controller to view
+		backButton.addActionListener(controller.getMethodHelpListener());
+		nextButton.addActionListener(controller.getMethodHelpListener());
+		
+		//Print Page
+		///////////////
+		// Heading/Labels
+		///////////////
+		JLabel methodHelpLabel = new JLabel("In the 'Method' button, you'll be able to do the following:", SwingConstants.CENTER);
+		JLabel cMethodLabel = new JLabel(" -> Create a method ", SwingConstants.CENTER);
+		JLabel rMethodLabel = new JLabel(" -> Rename a method", SwingConstants.CENTER);
+		JLabel dMethodLabel = new JLabel(" -> Delete a method", SwingConstants.CENTER);
+		JLabel pMethodLabel = new JLabel(" -> Modify parameters in a method", SwingConstants.CENTER);
+		
+		methodHelpLabel.setFont(new Font("Serif", Font.BOLD, 14));
+		methodHelpLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		cMethodLabel.setFont(new Font("Serif", Font.BOLD, 14));
+		cMethodLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		rMethodLabel.setFont(new Font("Serif", Font.BOLD, 14));
+		rMethodLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		dMethodLabel.setFont(new Font("Serif", Font.BOLD, 14));
+		dMethodLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		pMethodLabel.setFont(new Font("Serif", Font.BOLD, 14));
+		pMethodLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		
+		///////////////
+		// Panel
+		///////////////
+		printPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		printPanel.add(methodHelpLabel);
+		printPanel.add(cMethodLabel);
+		printPanel.add(rMethodLabel);
+		printPanel.add(dMethodLabel);
+		printPanel.add(pMethodLabel);
+		printPanel.add(backButton);
+		printPanel.add(nextButton);
+		printPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(printPanel);
+	}
+	
+	public void helpFieldPanel() {
+		//checks to see if the panel was already created
+		panelCheck(helpPanel);
+		
+		JButton backButton = new JButton("<--");
+		JButton nextButton = new JButton("-->");
+		
+		//register the controller to view
+		backButton.addActionListener(controller.getFieldHelpListener());
+		nextButton.addActionListener(controller.getFieldHelpListener());
+		
+		//Print Page
+		///////////////
+		// Heading/Labels
+		///////////////
+		JLabel fieldHelpLabel = new JLabel("In the 'Field' button, you'll be able to do the following:", SwingConstants.CENTER);
+		JLabel cFieldLabel = new JLabel(" -> Create a field", SwingConstants.CENTER);
+		JLabel rFieldLabel = new JLabel(" -> Rename a field", SwingConstants.CENTER);
+		JLabel dFieldLabel = new JLabel(" -> Delete a field", SwingConstants.CENTER);
+		
+		fieldHelpLabel.setFont(new Font("Serif", Font.BOLD, 14));
+		fieldHelpLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		cFieldLabel.setFont(new Font("Serif", Font.BOLD, 14));
+		cFieldLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		rFieldLabel.setFont(new Font("Serif", Font.BOLD, 14));
+		rFieldLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		dFieldLabel.setFont(new Font("Serif", Font.BOLD, 14));
+		dFieldLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		
+		///////////////
+		// Panel
+		///////////////
+		printPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		printPanel.add(fieldHelpLabel);
+		printPanel.add(cFieldLabel);
+		printPanel.add(rFieldLabel);
+		printPanel.add(dFieldLabel);
+		printPanel.add(backButton);
+		printPanel.add(nextButton);
+		printPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(printPanel);
+	}
+	
+	public void helpRelPanel() {
+		//checks to see if the panel was already created
+		panelCheck(helpPanel);
+		
+		JButton backButton = new JButton("<--");
+		JButton nextButton = new JButton("-->");
+		
+		//register the controller to view
+		backButton.addActionListener(controller.getRelHelpListener());
+		nextButton.addActionListener(controller.getRelHelpListener());
+		
+		//Print Page
+		///////////////
+		// Heading/Labels
+		///////////////
+		JLabel relHelpLabel = new JLabel("In the 'Relationship' button, you'll be able to do the following:", SwingConstants.CENTER);
+		JLabel cRelLabel = new JLabel(" -> Create a relationship", SwingConstants.CENTER);
+		JLabel dRelLabel = new JLabel(" -> Delete a relationship", SwingConstants.CENTER);
+		JLabel tRelLabel = new JLabel(" -> Change a relationship type", SwingConstants.CENTER);
+		
+		relHelpLabel.setFont(new Font("Serif", Font.BOLD, 14));
+		relHelpLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		cRelLabel.setFont(new Font("Serif", Font.BOLD, 14));
+		cRelLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		tRelLabel.setFont(new Font("Serif", Font.BOLD, 14));
+		tRelLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		dRelLabel.setFont(new Font("Serif", Font.BOLD, 14));
+		dRelLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		
+		///////////////
+		// Panel
+		///////////////
+		printPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		printPanel.add(relHelpLabel);
+		printPanel.add(cRelLabel);
+		printPanel.add(dRelLabel);
+		printPanel.add(tRelLabel);
+		printPanel.add(backButton);
+		printPanel.add(nextButton);
+		printPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(printPanel);
+	}
+	
+	public void helpPrintPanel() {
+		//checks to see if the panel was already created
+		panelCheck(helpPanel);
+		
+		JButton backButton = new JButton("<--");
+		
+		//register the controller to view
+		backButton.addActionListener(controller.getPrintHelpListener());
+		
+		//Print Page
+		///////////////
+		// Heading/Labels
+		///////////////
+		JLabel printHelpLabel = new JLabel("In the 'Print' button, you'll be able to do the following:", SwingConstants.CENTER);
+		JLabel cPrintLabel = new JLabel(" -> Print all classes with its attributes", SwingConstants.CENTER);
+		JLabel aPrintLabel = new JLabel(" -> Print a specific class with its attributes", SwingConstants.CENTER);
+		JLabel rPrintLabel = new JLabel(" -> Print the relationships", SwingConstants.CENTER);
+		
+		printHelpLabel.setFont(new Font("Serif", Font.BOLD, 14));
+		printHelpLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		cPrintLabel.setFont(new Font("Serif", Font.BOLD, 14));
+		cPrintLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		aPrintLabel.setFont(new Font("Serif", Font.BOLD, 14));
+		aPrintLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		rPrintLabel.setFont(new Font("Serif", Font.BOLD, 14));
+		rPrintLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		
+		
+		///////////////
+		// Panel
+		///////////////
+		printPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		printPanel.add(printHelpLabel);
+		printPanel.add(cPrintLabel);
+		printPanel.add(aPrintLabel);
+		printPanel.add(rPrintLabel);
+		printPanel.add(backButton);
+		printPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(printPanel);
+	}
 
     //////////////////////////////////////////////////////////
     //
@@ -795,8 +942,8 @@ public class UMLGUI {
         JLabel methodType = new JLabel("Enter Method Type:");
         methodType.setFont(new Font("Serif", Font.BOLD, 16));
         
-        JButton createButton = new JButton("Create");
-        createButton.addActionListener(controller.createMethodCall());
+        JButton addParamsButton = new JButton("Add Parameters");
+        addParamsButton.addActionListener(controller.addParamInMethodCall());
         
         JButton backButton = new JButton("<--");
         backButton.addActionListener(controller.getPrintPageListener());
@@ -816,7 +963,7 @@ public class UMLGUI {
         createMethodPanel.add(methodType);
         createMethodPanel.add(textBox3);
         
-        createMethodPanel.add(createButton);
+        createMethodPanel.add(addParamsButton);
         createMethodPanel.add(backButton);
         
         createMethodPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
@@ -824,7 +971,7 @@ public class UMLGUI {
 
     }
     
-    public void createMethodAction(ActionEvent e)
+    public void addMethodHelper()
     {
     	String className = textBox1.getText();
     	String methodName = textBox2.getText();
@@ -838,7 +985,8 @@ public class UMLGUI {
     	else
     	{
     		model.addMethod(className, methodName, methodType);
-    		createdMethodPanel();
+    		isMethod = true;
+    		addParamPanel();
     	}
     	
     }
@@ -1013,8 +1161,411 @@ public class UMLGUI {
 		renamedMethodPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
 		changePanel(renamedMethodPanel);
 	}
+	
+	//////////////////////////////////////////////////////////
+	//
+	//	Delete Parameter Panels
+	//
+	///////////////////////////////////////////////////////////
+	
+	// Delete Panel
+	public void deleteParamPanel(){
+		//checks to see if the panel was already created
+		panelCheck(deleteParameterPanel);
+		
+		JLabel className = new JLabel("Enter Class:");
+		className.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel methodName = new JLabel("Enter Method:");
+		methodName.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel paramName = new JLabel("Enter Parameter Name:");
+		paramName.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JButton deleteButton = new JButton("Delete");
+		deleteButton.addActionListener(controller.deleteParamCall());
+		
+		JButton backButton = new JButton ("<--");
+		backButton.addActionListener(controller.getClassPageListener());
+		
+		textBox1 = new JTextField();
+		textBox2 = new JTextField();
+		textBox3 = new JTextField();
+		
+		
+		deleteParameterPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		
+		deleteParameterPanel.add(className);
+		deleteParameterPanel.add(textBox1);
+		
+		deleteParameterPanel.add(methodName);
+		deleteParameterPanel.add(textBox2);
+		
+		deleteParameterPanel.add(paramName);
+		deleteParameterPanel.add(textBox3);
+		
+		deleteParameterPanel.add(deleteButton);
+		deleteParameterPanel.add(backButton);
+		
+		deleteParameterPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(deleteParameterPanel);
+	}
+	
+	// Parameter Action
+	public void deleteParamAction(ActionEvent e)
+	{
+		String className = textBox1.getText();
+		String methodName = textBox2.getText();
+		String paramName = textBox3.getText();
+		
+		if (!model.hasClass(className))
+			notExistPanel();
+		else if (!model.hasMethod(className, methodName))
+			notExistPanel();
+		else
+		{
+			boolean deleted = model.deleteParameter(className, methodName, paramName);
+			if (deleted)
+				deletedParamPanel();
+			else
+				notExistPanel();
+		}
+	
+	}
+	
+	// Deleted Panel
+	public void deletedParamPanel()
+	{
+		panelCheck(parameterSolutionPanel);
+		JLabel label = new JLabel("The parameter has been deleted!");
+		parameterSolutionPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		JButton backButton = new JButton ("<--");
+		backButton.addActionListener(controller.getClassPageListener());
+		
+		parameterSolutionPanel.add(label);
+		parameterSolutionPanel.add(backButton);
+		parameterSolutionPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(parameterSolutionPanel);
+	}
+		
+	//////////////////////////////////////////////////////////
+	//
+	//	Delete All Parameter Panels
+	//
+	///////////////////////////////////////////////////////////
+	
+	// Delete Panel
+	public void deleteAllParamPanel(){
+		//checks to see if the panel was already created
+		panelCheck(deleteAllParamPanel);
+		
+		JLabel className = new JLabel("Enter Class:");
+		className.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel methodName = new JLabel("Enter Method:");
+		methodName.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JButton deleteButton = new JButton("Delete All Parameters");
+		deleteButton.addActionListener(controller.deleteAllParamCall());
+		
+		JButton backButton = new JButton ("<--");
+		backButton.addActionListener(controller.getClassPageListener());
+		
+		textBox1 = new JTextField();
+		textBox2 = new JTextField();
+		
+		
+		deleteAllParamPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		
+		deleteAllParamPanel.add(className);
+		deleteAllParamPanel.add(textBox1);
+		
+		deleteAllParamPanel.add(methodName);
+		deleteAllParamPanel.add(textBox2);
+		
+		deleteAllParamPanel.add(deleteButton);
+		deleteAllParamPanel.add(backButton);
+		
+		deleteAllParamPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(deleteAllParamPanel);
+	}
+		
+	// Parameter Action
+	public void deleteAllParamAction(ActionEvent e)
+	{
+		String className = textBox1.getText();
+		String methodName = textBox2.getText();
+	
+		if (!model.hasClass(className))
+			notExistPanel();
+		else if (!model.hasMethod(className, methodName))
+			notExistPanel();
+		else
+		{
+			model.deleteAllParams(className, methodName);
+			deletedAllParamPanel();
+		}
+		
+	}
+		
+	// Deleted Panel
+	public void deletedAllParamPanel()
+	{
+		panelCheck(parameterSolutionPanel);
+		JLabel label = new JLabel("The parameters have been deleted!");
+		parameterSolutionPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		JButton backButton = new JButton ("<--");
+		backButton.addActionListener(controller.getClassPageListener());
+		
+		parameterSolutionPanel.add(label);
+		parameterSolutionPanel.add(backButton);
+		parameterSolutionPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(parameterSolutionPanel);
+	}
+		
+	//////////////////////////////////////////////////////////
+	//
+	//	Change Parameter Panels
+	//
+	///////////////////////////////////////////////////////////
+	
+	// Change Panel
+	public void changeParamPanel(){
+		//checks to see if the panel was already created
+		panelCheck(changeParameterPanel);
+		
+		JLabel className = new JLabel("Enter Class:");
+		className.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel methodName = new JLabel("Enter Method:");
+		methodName.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel paramName = new JLabel("Enter Parameter Name:");
+		paramName.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel newParamName = new JLabel("Enter New Parameter Name:");
+		newParamName.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel newParamType = new JLabel("Enter New Parameter Type:");
+		newParamType.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JButton changeButton = new JButton("Change");
+		changeButton.addActionListener(controller.changeParamCall());
+		
+		JButton backButton = new JButton ("<--");
+		backButton.addActionListener(controller.getClassPageListener());
+		
+		textBox1 = new JTextField();
+		textBox2 = new JTextField();
+		textBox3 = new JTextField();
+		textBox4 = new JTextField();
+		textBox5 = new JTextField();
+		
+		
+		changeParameterPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		
+		changeParameterPanel.add(className);
+		changeParameterPanel.add(textBox1);
+		
+		changeParameterPanel.add(methodName);
+		changeParameterPanel.add(textBox2);
+		
+		changeParameterPanel.add(paramName);
+		changeParameterPanel.add(textBox3);
+		
+		changeParameterPanel.add(newParamName);
+		changeParameterPanel.add(textBox4);
+
+		changeParameterPanel.add(newParamType);
+		changeParameterPanel.add(textBox5);
+		
+		changeParameterPanel.add(changeButton);
+		changeParameterPanel.add(backButton);
+		
+		changeParameterPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(changeParameterPanel);
+	}
+	
+	// Change Action
+	public void changeParamAction(ActionEvent e)
+	{
+		String className = textBox1.getText();
+		String methodName = textBox2.getText();
+		String paramName = textBox3.getText();
+		String newParameterName = textBox4.getText();
+		String newParameterType = textBox5.getText();
+		
+		if (!model.hasClass(className))
+			notExistPanel();
+		else if (!model.hasMethod(className, methodName))
+			notExistPanel();
+		else
+		{
+			boolean typeChanged = model.changeParameterType(className, methodName, paramName, newParameterType);
+			boolean renamed = model.renameParameter(className, methodName, paramName, newParameterName);
+			
+			if (renamed && typeChanged)
+				changedParamPanel();
+			
+			else if (!typeChanged)
+				notExistPanel();
+			
+			else if (!renamed)
+				dupPanel();
+			
+		}
+		
+	}
+	
+	// Changed Panel
+	public void changedParamPanel()
+	{
+		panelCheck(parameterSolutionPanel);
+		JLabel label = new JLabel("The parameter has been changed!");
+		parameterSolutionPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		JButton backButton = new JButton ("<--");
+		backButton.addActionListener(controller.getClassPageListener());
+		
+		parameterSolutionPanel.add(label);
+		parameterSolutionPanel.add(backButton);
+		parameterSolutionPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(parameterSolutionPanel);
+	}
 	    	
-	    
+	  
+	//////////////////////////////////////////////////////////
+	//
+	//	Change Parameter List Panels
+	//
+	///////////////////////////////////////////////////////////
+	
+	// Change Panel
+	public void changeParamListPanel(){
+		//checks to see if the panel was already created
+		panelCheck(changeParameterPanel);
+		
+		JLabel className = new JLabel("Enter Class:");
+		className.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel methodName = new JLabel("Enter Method:");
+		methodName.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JButton changeButton = new JButton("Change Parameter List");
+		changeButton.addActionListener(controller.changeAllParamCall());
+		
+		JButton backButton = new JButton ("<--");
+		backButton.addActionListener(controller.getClassPageListener());
+		
+		textBox1 = new JTextField();
+		textBox2 = new JTextField();		
+		
+		changeParameterPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		
+		changeParameterPanel.add(className);
+		changeParameterPanel.add(textBox1);
+		
+		changeParameterPanel.add(methodName);
+		changeParameterPanel.add(textBox2);
+		
+		changeParameterPanel.add(changeButton);
+		changeParameterPanel.add(backButton);
+		
+		changeParameterPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(changeParameterPanel);
+	}
+	
+	// Change Action
+	public void changeParamListAction(ActionEvent e)
+	{
+		String className = textBox1.getText();
+		String methodName = textBox2.getText();
+		
+		if (!model.hasClass(className))
+			notExistPanel();
+		else if (!model.hasMethod(className, methodName))
+			notExistPanel();
+		else
+		{
+			model.deleteAllParams(className, methodName);
+			addParamPanel();
+		}
+		
+	}
+	
+	public void addParamPanel()
+	{
+		panelCheck(addParamPanel);
+		JLabel paramName = new JLabel("Enter Parameter:");
+		paramName.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JLabel paramType = new JLabel("Enter Type:");
+		paramType.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		JButton addButton = new JButton("Add Parameter to List");
+		addButton.addActionListener(controller.addParamToListCall());
+		
+		JButton doneButton = new JButton("Done");
+		
+		if (isMethod)
+			doneButton.addActionListener(controller.createdMethodCall());
+		else
+			doneButton.addActionListener(controller.doneParamCall());
+		
+		addParamPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		textBox4 = new JTextField();
+		textBox5 = new JTextField();
+		
+		addParamPanel.add(paramName);
+		addParamPanel.add(textBox4);
+		
+		addParamPanel.add(paramType);
+		addParamPanel.add(textBox5);
+		
+		addParamPanel.add(addButton);
+		addParamPanel.add(doneButton);
+		
+		addParamPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(addParamPanel);
+	}
+	
+	// addParam helper function
+	public void addParamHelper ()
+	{
+		String className = textBox1.getText();
+		String methodName = textBox2.getText();
+		String paramName = textBox4.getText();
+		String paramType = textBox5.getText();
+		
+		model.addParameter(className, methodName, paramName, paramType);
+		
+		addParamPanel();
+	}
+	
+	// Changed Panel
+	public void changedParamListPanel()
+	{
+		panelCheck(parameterSolutionPanel);
+		JLabel label = new JLabel("The parameter list has been changed!");
+		parameterSolutionPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+		
+		JButton backButton = new JButton ("<--");
+		backButton.addActionListener(controller.getClassPageListener());
+		
+		parameterSolutionPanel.add(label);
+		parameterSolutionPanel.add(backButton);
+		parameterSolutionPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+		changePanel(parameterSolutionPanel);
+	}
+	    	
+	 
     //////////////////////////////////////////////////////////
     //
     //	Create Field Panels
@@ -1583,7 +2134,7 @@ public class UMLGUI {
         umlEditor = new JFrame("UML Editor");
         umlEditor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         umlEditor.setJMenuBar(menuBar);
-        umlEditor.setSize(450, 600);
+        umlEditor.setSize(500, 600);
         umlEditor.setVisible(true);
 
         menuPanel();
@@ -1591,7 +2142,7 @@ public class UMLGUI {
     
     //////////////////////////////////////////////////////////
     //
-    //	Main
+    //	drawGUI
     //
     ///////////////////////////////////////////////////////////
 
