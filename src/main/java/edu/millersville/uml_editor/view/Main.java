@@ -12,19 +12,15 @@ import edu.millersville.uml_editor.model.*;
 import edu.millersville.uml_editor.controller.*;
 
 
-<<<<<<< HEAD
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
-
-
-=======
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.json.simple.parser.ParseException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.io.FileReader;
 import java.util.Iterator;
->>>>>>> c79b2e214bbc9f1dd47e7022204c9418829b0e59
 
 //import org.apache.commons.io.FileUtils;
 
@@ -86,7 +82,7 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
 	
-    public static void main(String[] args) throws IOException
+    public static void main(String[] args) throws IOException, ParseException
     {
     	if (args.length > 0 )
     	{
@@ -1103,8 +1099,7 @@ public class Main
 		            	String filepath = console.next();
 		            	File jsonFile = new File(filepath);
 		            	if (jsonFile.exists()) {
-		            		//System.out.println(loadJSON(filepath));
-		            		System.out.println();
+		            		loadJSON(jsonFile);
 		            	} else {
 		            		System.out.println("No such file exists. Please enter filepath again.");
 		            	}
@@ -1395,7 +1390,7 @@ public class Main
 //
 ///////////////////////////////////////////////////////////
     
-<<<<<<< HEAD
+
     public static void loadJSON(File filepath) throws IOException, FileNotFoundException, org.json.simple.parser.ParseException, ParseException {
         // added JAR fil
     	//String file = FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);    	
@@ -1422,59 +1417,5 @@ public class Main
     		e.printStackTrace();
     	}
     }    
-=======
-    public static void loadJSON (File filepath) throws IOException, FileNotFoundException {
-		JSONParser parser = new JSONParser();
-		try{
-        	Object obj = parser.parse(new FileReader(filepath));
-        	JSONObject javaObj = (JSONObject) obj;
-        	JSONArray list = (JSONArray) javaObj.get("Classes");
-        	for(Object jsonClass : list) {
-        	    String name = (String)((JSONObject) jsonClass).get("name");
-         	   ClassObject classObj = new ClassObject(name);
-          	  classMap.put(name, classObj);
-       	 	}
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-    }
-	/*
-		classMap.clear();
 
-
-		JSONParser parser = new JSONParser();
-		try{
-			Object obj = parser.parse(new FileReader(filepath));
-			JSONObject jObj = (JSONObject) obj;
-			String classes = (String) jObj.get("Class");
-			String method = (String) jObj.get("Method");
-			String parameter = (String) jObj.get("Parameter");
-			String field = (String) jObj.get("Field");
-
-			JSONArray storage = (JSONArray) jObj.get("Class");
-			Iterator<Object> iter = storage.iterator();
-
-			while(iter.hasNext()){
-				
-			}
-
-			
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-		*/
-
-
-
-	/*
-		String file = FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);    	
-    	ObjectMapper objectMapper = new ObjectMapper();
-    	Map<String, Class> newObj = objectMapper.readValue(file, HashMap.class);
-    	classMap = newObj;
-    	return newObj;
-
-	*/
->>>>>>> c79b2e214bbc9f1dd47e7022204c9418829b0e59
 }
