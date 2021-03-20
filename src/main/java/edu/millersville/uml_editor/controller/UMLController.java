@@ -53,7 +53,6 @@ public class UMLController {
         return(ActionEvent e) -> {
             if(e.getActionCommand() == "Add Class"){
             	GUI.printClassBox();
-            	
             }
         };
     }

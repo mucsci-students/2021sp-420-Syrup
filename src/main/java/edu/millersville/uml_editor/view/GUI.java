@@ -87,18 +87,22 @@ public class GUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-        ////////////////////////////
+        /////////////////////////////////////
+		//
         // Frame Initialization
-        ///////////////////////////
+		//
+        /////////////////////////////////////
 		Uml_Editor = new JFrame();
 		Uml_Editor.setTitle("Uml_Editor");
 		Uml_Editor.setBounds(100, 100, 1266, 683);
 		Uml_Editor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Uml_Editor.setVisible(true);
 
-		//////////////////////////////
+		////////////////////////////////////////
+		//
         //MenuBar
-        //////////////////////////////
+		//
+        ////////////////////////////////////////
 		JMenuBar menuBar = new JMenuBar();
 		Uml_Editor.setJMenuBar(menuBar);
 		
@@ -110,9 +114,11 @@ public class GUI {
         mnNewMenu.add(mntmNewMenuItem);
         mnNewMenu.add(mntmNewMenuItem_1);
 		
-        //////////////////////
-		//Button
-		//////////////////////
+        ////////////////////////////////
+        //
+		// addClassButton
+        //
+		////////////////////////////////
 		JButton addClassButton = new JButton("Add Class");
 		addClassButton.addActionListener(controller.printClassListener());
 
@@ -134,6 +140,11 @@ public class GUI {
 	
     public static void printClassBox(){
 
+		////////////////////////////////
+    	//
+		// Create class box display
+    	//
+		////////////////////////////////
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		
@@ -165,38 +176,60 @@ public class GUI {
 		popupMenu.setLabel("Menu");
 		popupMenu.setVisible(true);
 		
-		JMenu mnNewMenu = new JMenu("Add");
-		popupMenu.add(mnNewMenu);
 		
-		JMenuItem mntmNewMenuItem = new JMenuItem("Method");
-		mnNewMenu.add(mntmNewMenuItem);
+		////////////////////////////////
+		//
+		// Popup menu: Add
+		//
+		////////////////////////////////
+		JMenu addOption = new JMenu("Add");
+		popupMenu.add(addOption);
 		
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Field");
-		mnNewMenu.add(mntmNewMenuItem_1);
+		JMenuItem addMethod = new JMenuItem("Method");
+		addOption.add(addMethod);
 		
-		JMenu mnNewMenu_1 = new JMenu("Delete");
-		popupMenu.add(mnNewMenu_1);
+		JMenuItem addField = new JMenuItem("Field");
+		addOption.add(addField);
 		
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Class");
-		mnNewMenu_1.add(mntmNewMenuItem_2);
+		////////////////////////////////
+		//
+		// Popup menu: delete
+		//
+		////////////////////////////////
+		JMenu deleteOption = new JMenu("Delete");
+		popupMenu.add(deleteOption);
 		
-		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Method");
-		mnNewMenu_1.add(mntmNewMenuItem_3);
+		JMenuItem deleteClass = new JMenuItem("Class");
+		deleteOption.add(deleteClass);
 		
-		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Field");
-		mnNewMenu_1.add(mntmNewMenuItem_4);
+		JMenuItem deleteMethod = new JMenuItem("Method");
+		deleteOption.add(deleteMethod);
 		
-		JMenu mnNewMenu_2 = new JMenu("Rename");
-		popupMenu.add(mnNewMenu_2);
+		JMenuItem deleteField = new JMenuItem("Field");
+		deleteOption.add(deleteField);
 		
-		JMenuItem mntmNewMenuItem_5 = new JMenuItem("Class");
-		mnNewMenu_2.add(mntmNewMenuItem_5);
+		////////////////////////////////
+		//
+		// Popup menu: Rename
+		//
+		////////////////////////////////
+		JMenu renameOption = new JMenu("Rename");
+		popupMenu.add(renameOption);
 		
-		JMenuItem mntmNewMenuItem_6 = new JMenuItem("Method");
-		mnNewMenu_2.add(mntmNewMenuItem_6);
+		JMenuItem renameClass = new JMenuItem("Class");
+		renameOption.add(renameClass);
 		
-		JMenuItem mntmNewMenuItem_7 = new JMenuItem("Field");
-		mnNewMenu_2.add(mntmNewMenuItem_7);
+		JMenuItem renameMethod = new JMenuItem("Method");
+		renameOption.add(renameMethod);
+		
+		JMenuItem renameField = new JMenuItem("Field");
+		renameOption.add(renameField);
+		
+		////////////////////////////////
+		//
+		// Popup menu/movement Listeners
+		//
+		////////////////////////////////
 		panel.addMouseListener(new MouseAdapter(){
 			public void mousePressed(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON3)
@@ -212,6 +245,11 @@ public class GUI {
 			}
 		});
 		
+		////////////////////////////////
+		//
+		// Default class label
+		//
+		////////////////////////////////
 		JLabel className = new JLabel();
 		className.setText("New Class");
 		className.setFont(new Font("Serif", Font.BOLD, 16));
@@ -244,6 +282,11 @@ public class GUI {
 		Uml_Editor.getContentPane().setLayout(groupLayout);
     }
     
+		////////////////////////////////
+		//
+		// Popup menu Listeners
+		//
+		////////////////////////////////
     private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
