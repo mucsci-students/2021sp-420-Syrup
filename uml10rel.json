@@ -1,0 +1,8 @@
+{
+  "CAPS" : {
+    "source" : "CLASS10",
+    "destination" : "CLASS11",
+    "type" : "A",
+    "id" : "CAPS"
+  }
+}

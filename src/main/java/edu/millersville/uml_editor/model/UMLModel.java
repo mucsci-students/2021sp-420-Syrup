@@ -423,12 +423,33 @@ public class UMLModel {
 	///////////////////////////////////////////////////////////
 	
 	public void saveJSON(String name) throws IOException {
+		UMLModel model = new UMLModel(classMap, relMap);
+		
+		ObjectMapper classMapper = new ObjectMapper();
 		ObjectMapper mapper = new ObjectMapper();
-    	ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
-    	String fileText = writer.writeValueAsString(classMap);
-		FileWriter file = new FileWriter(name);
+	  	ObjectMapper relMapper = new ObjectMapper();
+
+		
+		ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
+    	String fileText = writer.writeValueAsString(model);
+    	FileWriter file = new FileWriter(name+".json");
 		file.write(fileText);
 		file.close();
+		
+    	classMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    	ObjectWriter classWriter = classMapper.writerWithDefaultPrettyPrinter();
+    	String classFileText = classWriter.writeValueAsString(classMap);
+		FileWriter classFile = new FileWriter(name + "class.json");
+		classFile.write(classFileText);
+		classFile.close();
+		
+    	relMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    	ObjectWriter relWriter = relMapper.writerWithDefaultPrettyPrinter();
+    	String relFileText = relWriter.writeValueAsString(relMap);
+		FileWriter relFile = new FileWriter(name+"rel.json");
+		relFile.write(relFileText);
+		relFile.close();
+		
 	}
 	
 	///////////////////////////////////////////////////////////
@@ -441,16 +462,31 @@ public class UMLModel {
 	///////////////////////////////////////////////////////////
 	
 	public void loadJSON(String filepath) throws IOException{
-		File jsonFile = new File(filepath);
-    	ObjectMapper objectMapper = new ObjectMapper();
+		File jsonClassFile = new File(filepath+"class.json");
+		File jsonRelFile = new File(filepath+"rel.json");
+		ObjectMapper objectMapper = new ObjectMapper();
+    	objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
     	try {
     		classMap.clear();
-    		String file = FileUtils.readFileToString(jsonFile, StandardCharsets.UTF_8);
-    		HashMap<String, ClassObject> newClassMap = objectMapper.readValue(file, HashMap.class);
-    		classMap = newClassMap;
+    		String classFile = FileUtils.readFileToString(jsonClassFile, StandardCharsets.UTF_8);
+    		HashMap<String, ClassObject> newMap = objectMapper.readValue(classFile, HashMap.class);
+    		classMap = newMap;
     	}
     	catch(Exception e) {
     		e.printStackTrace();
     	}
+    	
+    	ObjectMapper relObjectMapper = new ObjectMapper();
+    	relObjectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    	try {
+    		classMap.clear();
+    		String relFile = FileUtils.readFileToString(jsonRelFile, StandardCharsets.UTF_8);
+    		HashMap<String, Relationships> newMap = relObjectMapper.readValue(relFile, HashMap.class);
+    		relMap = newMap;
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	
 	}
 }

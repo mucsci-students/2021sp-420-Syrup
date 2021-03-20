@@ -1350,11 +1350,9 @@ public class Main
     	mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
     	ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
     	String fileText = writer.writeValueAsString(model);
-    	//String fileText = writer.writeValueAsString(classMap) + writer.writeValueAsString(relMap);
 		FileWriter file = new FileWriter(name);
 		file.write(fileText);
 		file.close();
-		
     }
     
     /**
