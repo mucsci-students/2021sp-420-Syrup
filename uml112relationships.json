@@ -1,8 +1,0 @@
-{
-  "foo" : {
-    "source" : "class11",
-    "destination" : "class12",
-    "type" : "A",
-    "id" : "foo"
-  }
-}
