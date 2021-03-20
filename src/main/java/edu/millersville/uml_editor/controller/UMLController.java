@@ -8,15 +8,15 @@ import edu.millersville.uml_editor.view.*;
 import javax.swing.JLabel;
 
 public class UMLController {
-    private UMLGUI gui;
+    private GUI gui;
     private UMLModel model;
 
-    public UMLController(UMLModel m, UMLGUI gui) {
+    public UMLController(UMLModel m, GUI gui2) {
         this.model = m;
-        this.gui = gui;
+        this.gui = gui2;
     }
 
-    public ActionListener getSaveJSON(){
+   /* public ActionListener getSaveJSON(){
         return(ActionEvent e) -> {
         	switch (e.getActionCommand()) {
             case "Save":
@@ -48,20 +48,21 @@ public class UMLController {
             	gui.helpClassPanel();
             }
         };
-    }
-    public ActionListener addClass(){
+    }*/
+    public ActionListener printClassListener(){
         return(ActionEvent e) -> {
             if(e.getActionCommand() == "Add Class"){
-            	classBox class1 = new classBox();
-                
+            	GUI.printClassBox();
+            	
             }
         };
     }
+    
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////OLD CODE//////////////////////////////////////////////////////////
-    public ActionListener getMainPageListener() {
+   /* public ActionListener getMainPageListener() {
         return (ActionEvent e) -> {
             switch (e.getActionCommand()) {
                 case "Class":
@@ -466,5 +467,5 @@ public class UMLController {
 			gui.loadAction();
 	};
 }
-
+*/
 }

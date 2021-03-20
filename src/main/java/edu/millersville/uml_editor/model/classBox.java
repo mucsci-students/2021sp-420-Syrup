@@ -48,14 +48,6 @@ public class classBox {
 	private JFrame frmUmleditor;
 	private JTextField textField;
 
-
-	/**
-	 * Create the application.
-	 */
-	public classBox() {
-		initialize();
-	}
-
 	/**
 	 * Initialize the contents of the frame.
 	 */

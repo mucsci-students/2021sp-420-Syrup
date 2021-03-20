@@ -1159,7 +1159,7 @@ public class Main
     	}
     	else 
     	{
-    		UMLGUI.drawGUI();
+    		GUI.main(args);
     	}
     }
  

@@ -1,11 +1,16 @@
 package edu.millersville.uml_editor.view;
 import java.awt.EventQueue;
+import java.awt.Font;
 
 import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
+
 import javax.swing.JMenuItem;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -16,6 +21,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.LineBorder;
 import javax.swing.JTextPane;
 import javax.swing.JSlider;
 import java.awt.BorderLayout;
@@ -24,6 +30,7 @@ import java.awt.Canvas;
 import javax.swing.JMenuBar;
 import java.awt.Point;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.JPasswordField;
 import javax.swing.JMenu;
 import javax.swing.JButton;
@@ -34,8 +41,7 @@ import edu.millersville.uml_editor.model.*;
 import edu.millersville.uml_editor.controller.*;
 
 public class GUI {
-    private JTextField txtFieldClassName;
-	private JFrame Uml_Editor;
+	private static JFrame Uml_Editor;
     
     private UMLController controller;
     private UMLModel model;
@@ -48,18 +54,27 @@ public class GUI {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GUI window = new GUI();
-					window.Uml_Editor.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    public static void main(String[] args) {
+
+        try {
+            // Set System L&F
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } 
+        catch (Exception e) {
+        // handle exception
+        }
+
+        UMLModel model = new UMLModel();
+        GUI gui = new GUI(model);
+        UMLController controller = new UMLController(model, gui);
+        gui.setController(controller);
+        gui.initialize();
+
+    }
+
+    private void setController(UMLController c) {
+        this.controller = c;
+    }
 
 	/**
 	 * Create the application.
@@ -79,6 +94,7 @@ public class GUI {
 		Uml_Editor.setTitle("Uml_Editor");
 		Uml_Editor.setBounds(100, 100, 1266, 683);
 		Uml_Editor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Uml_Editor.setVisible(true);
 
 		//////////////////////////////
         //MenuBar
@@ -98,33 +114,151 @@ public class GUI {
 		//Button
 		//////////////////////
 		JButton addClassButton = new JButton("Add Class");
-		addClassButton.addActionListener(controller.addClass());
+		addClassButton.addActionListener(controller.printClassListener());
 
-        
-		
         GroupLayout gl_Uml_Panel = new GroupLayout(Uml_Editor.getContentPane());
 		gl_Uml_Panel.setHorizontalGroup(
 			gl_Uml_Panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_Uml_Panel.createSequentialGroup()
 					.addComponent(addClassButton, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(txtFieldClassName, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(899, Short.MAX_VALUE))
-		);
+		));
 		gl_Uml_Panel.setVerticalGroup(
 			gl_Uml_Panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_Uml_Panel.createSequentialGroup()
 					.addGroup(gl_Uml_Panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(addClassButton, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
-						.addComponent(txtFieldClassName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(578, Short.MAX_VALUE))
-		);
+		)));
 		Uml_Editor.setLayout(gl_Uml_Panel);
 	}
 	
-    public void printClassBox(){
-        classBox class1 = new classBox();
-        class1.initialize();
+    public static void printClassBox(){
+
+		JPanel panel = new JPanel();
+		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		
+		GroupLayout groupLayout = new GroupLayout(Uml_Editor.getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(163)
+							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 278, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(376, Short.MAX_VALUE))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 231, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(246, Short.MAX_VALUE))
+		);
+		JPanel FieldPanel = new JPanel();
+		FieldPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		
+		JPanel methodPanel = new JPanel();
+		methodPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		
+		JPopupMenu popupMenu = new JPopupMenu();
+		addPopup(panel, popupMenu);
+		popupMenu.setLabel("Menu");
+		popupMenu.setVisible(true);
+		
+		JMenu mnNewMenu = new JMenu("Add");
+		popupMenu.add(mnNewMenu);
+		
+		JMenuItem mntmNewMenuItem = new JMenuItem("Method");
+		mnNewMenu.add(mntmNewMenuItem);
+		
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Field");
+		mnNewMenu.add(mntmNewMenuItem_1);
+		
+		JMenu mnNewMenu_1 = new JMenu("Delete");
+		popupMenu.add(mnNewMenu_1);
+		
+		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Class");
+		mnNewMenu_1.add(mntmNewMenuItem_2);
+		
+		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Method");
+		mnNewMenu_1.add(mntmNewMenuItem_3);
+		
+		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Field");
+		mnNewMenu_1.add(mntmNewMenuItem_4);
+		
+		JMenu mnNewMenu_2 = new JMenu("Rename");
+		popupMenu.add(mnNewMenu_2);
+		
+		JMenuItem mntmNewMenuItem_5 = new JMenuItem("Class");
+		mnNewMenu_2.add(mntmNewMenuItem_5);
+		
+		JMenuItem mntmNewMenuItem_6 = new JMenuItem("Method");
+		mnNewMenu_2.add(mntmNewMenuItem_6);
+		
+		JMenuItem mntmNewMenuItem_7 = new JMenuItem("Field");
+		mnNewMenu_2.add(mntmNewMenuItem_7);
+		panel.addMouseListener(new MouseAdapter(){
+			public void mousePressed(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON3)
+					popupMenu.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
+		
+		panel.addMouseMotionListener(new MouseMotionAdapter(){
+			public void mouseDragged(MouseEvent e) {
+			    e.translatePoint(e.getComponent().getLocation().x, e.getComponent()
+			            .getLocation().y);
+			    panel.setLocation(e.getX(), e.getY());
+			}
+		});
+		
+		JLabel className = new JLabel();
+		className.setText("New Class");
+		className.setFont(new Font("Serif", Font.BOLD, 16));
+	
+		GroupLayout gl_panel = new GroupLayout(panel);
+		
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addComponent(methodPanel, GroupLayout.PREFERRED_SIZE, 275, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(91)
+							.addComponent(className, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(FieldPanel, GroupLayout.PREFERRED_SIZE, 275, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addComponent(className, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(FieldPanel, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(methodPanel, GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
+		);
+		
+		panel.setLayout(gl_panel);
+		Uml_Editor.getContentPane().setLayout(groupLayout);
     }
+    
+    private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
+	}
 }
