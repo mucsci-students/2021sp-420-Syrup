@@ -49,14 +49,35 @@ public class UMLController {
             }
         };
     }*/
+    
+	////////////////////////////////
+	//
+	// Print class box
+	//
+	////////////////////////////////
     public ActionListener printClassListener(){
         return(ActionEvent e) -> {
             if(e.getActionCommand() == "Add Class"){
-            	GUI.printClassBox();
+            	String className = "New Class";
+            	if(!model.hasClass(className)){
+            		gui.classDupFalse();
+                    model.createNewClassGUI(className);
+                    gui.printClassBox();
+            	}
+            	else
+            		gui.classDupTrue();
             }
         };
     }
     
+	////////////////////////////////
+	//
+	// Popup menu: Add
+	//
+	////////////////////////////////
+    
+
+	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////

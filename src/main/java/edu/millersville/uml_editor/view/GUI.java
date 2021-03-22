@@ -4,14 +4,18 @@ import java.awt.Font;
 
 import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 
 import javax.swing.JMenuItem;
+import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
@@ -40,8 +44,26 @@ import java.awt.GridLayout;
 import edu.millersville.uml_editor.model.*;
 import edu.millersville.uml_editor.controller.*;
 
+
 public class GUI {
-	private static JFrame Uml_Editor;
+	private JFrame Uml_Editor;
+	
+	private JLabel dup1, dup2, dup3 = null;
+	private JLabel classDupLabel = null;
+	
+	private JTextField textBox1;
+    private JTextField textBox2;
+    private JTextField textBox3;
+    private JTextField textBox4;
+    private JTextField textBox5;
+    private JTextField paramName;
+    private JTextField paramType;
+    
+    private JMenu deleteMethod;
+    private ArrayList<JButton> methodButtonList;
+    private ArrayList<JButton> fieldButtonList;
+    
+    private boolean isMethod = false;
     
     private UMLController controller;
     private UMLModel model;
@@ -80,6 +102,7 @@ public class GUI {
 	 * Create the application.
 	 */
 	public GUI() {
+		
 		initialize();
 	}
 
@@ -113,6 +136,11 @@ public class GUI {
         menuBar.add(mnNewMenu);
         mnNewMenu.add(mntmNewMenuItem);
         mnNewMenu.add(mntmNewMenuItem_1);
+        
+        classDupLabel = new JLabel("");
+		classDupLabel.setFont(new Font("Serif", Font.BOLD, 16));
+		classDupLabel.setForeground(Color.RED);
+		
 		
         ////////////////////////////////
         //
@@ -127,6 +155,7 @@ public class GUI {
 			gl_Uml_Panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_Uml_Panel.createSequentialGroup()
 					.addComponent(addClassButton, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE)
+					.addComponent(classDupLabel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 		));
 		gl_Uml_Panel.setVerticalGroup(
@@ -134,11 +163,13 @@ public class GUI {
 				.addGroup(gl_Uml_Panel.createSequentialGroup()
 					.addGroup(gl_Uml_Panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(addClassButton, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
+						.addComponent(classDupLabel, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+						
 		)));
 		Uml_Editor.setLayout(gl_Uml_Panel);
 	}
 	
-    public static void printClassBox(){
+    public void printClassBox(){
 
 		////////////////////////////////
     	//
@@ -171,11 +202,31 @@ public class GUI {
 		JPanel methodPanel = new JPanel();
 		methodPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		
+		/////////////////////
+		//
+		// Add Method Labels
+		//
+		/////////////////////
+		JLabel methodName = new JLabel("Method Name:");
+		methodName.setFont(new Font("Serif", Font.BOLD, 12));
+		
+		JLabel methodType = new JLabel("Method Type:");
+		methodType.setFont(new Font("Serif", Font.BOLD, 12));
+		
+		JLabel paramNameLabel = new JLabel("Parameter Name:");
+		paramNameLabel.setFont(new Font("Serif", Font.BOLD, 12));
+		
+		JLabel paramTypeLabel = new JLabel("Parameter Type:");
+		paramTypeLabel.setFont(new Font("Serif", Font.BOLD, 12));
+		
+		JButton paramList = new JButton("Add Parameter to List");
+		JButton done = new JButton("Done");
+		dup1 = dup();
+				
 		JPopupMenu popupMenu = new JPopupMenu();
 		addPopup(panel, popupMenu);
 		popupMenu.setLabel("Menu");
 		popupMenu.setVisible(true);
-		
 		
 		////////////////////////////////
 		//
@@ -185,27 +236,80 @@ public class GUI {
 		JMenu addOption = new JMenu("Add");
 		popupMenu.add(addOption);
 		
-		JMenuItem addMethod = new JMenuItem("Method");
+		JMenu addMethod = new JMenu("Method");
 		addOption.add(addMethod);
+		textBox1 = new JTextField();
+		textBox1.setColumns(15);
+		addMethod.add(methodName);
+		addMethod.add(textBox1);
+		addMethod.add(methodType);
+		textBox2 = new JTextField();
+		textBox2.setColumns(15);
+		addMethod.add(textBox2);
+		addMethod.add(dup1);
+		dup1.setVisible(false);
 		
-		JMenuItem addField = new JMenuItem("Field");
+		///////////////////////////
+		//
+		// Add Parameters in Method
+		//
+		///////////////////////////
+		addMethod.add(paramNameLabel);
+		paramName = new JTextField();
+		paramName.setColumns(15);
+		addMethod.add(paramName);
+		addMethod.add(paramTypeLabel);
+		paramType = new JTextField();
+		paramType.setColumns(15);
+		addMethod.add(paramType);
+		addMethod.add(paramList);
+		addMethod.add(done);
+		
+		
+		///////////////////////////
+		//
+		// Add Field
+		//
+		///////////////////////////
+		
+		JLabel fieldName = new JLabel("Field Name:");
+		fieldName.setFont(new Font("Serif", Font.BOLD, 12));
+		
+		JLabel fieldType = new JLabel("Field Type:");
+		fieldType.setFont(new Font("Serif", Font.BOLD, 12));
+		
+		dup2 = dup();
+		
+		JMenu addField = new JMenu("Field");
 		addOption.add(addField);
+		textBox3 = new JTextField();
+		textBox3.setColumns(15);
+		addField.add(fieldName);
+		addField.add(textBox3);
+		addField.add(fieldType);
+		textBox4 = new JTextField();
+		textBox4.setColumns(15);
+		addField.add(textBox4);
+		addField.add(dup2);
+		dup2.setVisible(false);
 		
 		////////////////////////////////
 		//
 		// Popup menu: delete
 		//
 		////////////////////////////////
+		
+		
 		JMenu deleteOption = new JMenu("Delete");
 		popupMenu.add(deleteOption);
 		
 		JMenuItem deleteClass = new JMenuItem("Class");
 		deleteOption.add(deleteClass);
 		
-		JMenuItem deleteMethod = new JMenuItem("Method");
+		JMenu deleteMethod = new JMenu("Method");
 		deleteOption.add(deleteMethod);
 		
-		JMenuItem deleteField = new JMenuItem("Field");
+		JMenu deleteField = new JMenu("Field");
 		deleteOption.add(deleteField);
 		
 		////////////////////////////////
@@ -216,13 +320,24 @@ public class GUI {
 		JMenu renameOption = new JMenu("Rename");
 		popupMenu.add(renameOption);
 		
-		JMenuItem renameClass = new JMenuItem("Class");
-		renameOption.add(renameClass);
+		JLabel renameClassName = new JLabel("New Class Name:");
+		renameClassName.setFont(new Font("Serif", Font.BOLD, 12));
 		
-		JMenuItem renameMethod = new JMenuItem("Method");
+		dup3 = dup();
+		
+		JMenu renameClass = new JMenu("Class");
+		renameOption.add(renameClass);
+		textBox5 = new JTextField();
+		textBox5.setColumns(15);
+		renameClass.add(renameClassName);
+		renameClass.add(textBox5);
+		renameClass.add(dup3);
+		dup3.setVisible(false);
+		
+		JMenu renameMethod = new JMenu("Method");
 		renameOption.add(renameMethod);
 		
-		JMenuItem renameField = new JMenuItem("Field");
+		JMenu renameField = new JMenu("Field");
 		renameOption.add(renameField);
 		
 		////////////////////////////////
@@ -250,8 +365,7 @@ public class GUI {
 		// Default class label
 		//
 		////////////////////////////////
-		JLabel className = new JLabel();
-		className.setText("New Class");
+		JLabel className = new JLabel("New Class");
 		className.setFont(new Font("Serif", Font.BOLD, 16));
 	
 		GroupLayout gl_panel = new GroupLayout(panel);
@@ -278,16 +392,17 @@ public class GUI {
 					.addComponent(methodPanel, GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
 		);
 		
+		panel.setVisible(true);
 		panel.setLayout(gl_panel);
 		Uml_Editor.getContentPane().setLayout(groupLayout);
     }
     
-		////////////////////////////////
-		//
-		// Popup menu Listeners
-		//
-		////////////////////////////////
-    private static void addPopup(Component component, final JPopupMenu popup) {
+	////////////////////////////////
+	//
+	// Popup menu Listeners
+	//
+	////////////////////////////////
+    private void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				if (e.isPopupTrigger()) {
@@ -303,5 +418,26 @@ public class GUI {
 				popup.show(e.getComponent(), e.getX(), e.getY());
 			}
 		});
+	}
+    
+	////////////////////////////////
+	//
+	// Duplicate helpers
+	//
+	////////////////////////////////
+    
+	public JLabel dup(){
+		JLabel dup = new JLabel("This is a duplicate!");
+		dup.setFont(new Font("Serif", Font.BOLD, 12));
+		dup.setForeground(Color.RED);	
+		return dup;
+	}
+	
+	public void classDupTrue() {
+		classDupLabel.setText("This is a duplicate name!");
+	}
+	
+	public void classDupFalse() {
+		classDupLabel.setText("");
 	}
 }
