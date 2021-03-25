@@ -51,6 +51,8 @@ public class GUI {
 	private JLabel dup1, dup2, dup3 = null;
 	private JLabel classDupLabel = null;
 	
+	private JPanel test = null;
+	
 	private JTextField textBox1;
     private JTextField textBox2;
     private JTextField textBox3;
@@ -176,7 +178,12 @@ public class GUI {
 		// Create class box display
     	//
 		////////////////////////////////
-		JPanel panel = new JPanel();
+    	
+    	classBox newClassBox = new classBox(Uml_Editor);
+    	JPanel panel = newClassBox.boxPanel();
+    	Uml_Editor.add(panel);
+    	
+		/*JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		
 		GroupLayout groupLayout = new GroupLayout(Uml_Editor.getContentPane());
@@ -196,6 +203,7 @@ public class GUI {
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 231, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(246, Short.MAX_VALUE))
 		);
+		
 		JPanel FieldPanel = new JPanel();
 		FieldPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		
@@ -331,6 +339,8 @@ public class GUI {
 		textBox5.setColumns(15);
 		renameClass.add(renameClassName);
 		renameClass.add(textBox5);
+		//textBox5.addActionListener(controller.renameClassCall());
+		
 		renameClass.add(dup3);
 		dup3.setVisible(false);
 		
@@ -365,6 +375,7 @@ public class GUI {
 		// Default class label
 		//
 		////////////////////////////////
+		
 		JLabel className = new JLabel("New Class");
 		className.setFont(new Font("Serif", Font.BOLD, 16));
 	
@@ -395,6 +406,7 @@ public class GUI {
 		panel.setVisible(true);
 		panel.setLayout(gl_panel);
 		Uml_Editor.getContentPane().setLayout(groupLayout);
+		
     }
     
 	////////////////////////////////
@@ -417,8 +429,16 @@ public class GUI {
 			private void showMenu(MouseEvent e) {
 				popup.show(e.getComponent(), e.getX(), e.getY());
 			}
-		});
+		});*/
+		
 	}
+    
+	////////////////////////////////
+	//
+	// renameClass
+	//
+	////////////////////////////////
+    
     
 	////////////////////////////////
 	//
