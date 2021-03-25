@@ -55,6 +55,7 @@ public class UMLGUI {
     private JPanel parameterSolutionPanel = null;
     private JPanel helpPanel = null;
     private JPanel savePanel = null;
+    private JPanel loadPanel = null;
     
     
     
@@ -456,7 +457,91 @@ public class UMLGUI {
 		savePanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
 		changePanel(savePanel);
 	}
+	
+	//////////////////////////////////////////////////////////
+	//
+	//	loadPanel
+	//
+	///////////////////////////////////////////////////////////
+	
+	public void loadPanel() {
+	//checks to see if the panel was already created
+	panelCheck(loadPanel);
+	
+	//view
+	JButton loadButton = new JButton("Load");
+	JButton backButton = new JButton("<--");
+	
+	//register the controller to view
+	loadButton.addActionListener(controller.loadPageCall());
+	backButton.addActionListener(controller.getPrintPageListener());
+	
+	textBox1 = new JTextField();
+	
+	//Print Page
+	///////////////
+	// Heading/Labels
+	///////////////
+	JLabel loadLabel = new JLabel("Enter the name of the file:", SwingConstants.CENTER);
+	loadLabel.setFont(new Font("Serif", Font.BOLD, 20));
+	
+	loadLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+	
+	
+	///////////////
+	// Panel
+	///////////////
+	loadPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+	loadPanel.add(loadLabel);
+	loadPanel.add(textBox1);
+	loadPanel.add(loadButton);
+	loadPanel.add(backButton);
+	loadPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+	changePanel(loadPanel);
+	}
+	
+	public void loadAction()
+	{
+	String fileName = textBox1.getText();
+	try {
+	model.loadJSON(fileName);
+	fileLoaded();
+	} catch (IOException e) {
+	e.printStackTrace();
+	}
+	}
+	
+	public void fileLoaded()
+	{
+	//checks to see if the panel was already created
+	panelCheck(loadPanel);
+	
+	//view
+	JButton backButton = new JButton("<--");
+	
+	//register the controller to view
+	backButton.addActionListener(controller.getPrintPageListener());
+	
+	
+	//Print Page
+	///////////////
+	// Heading/Labels
+	///////////////
+	JLabel loadLabel = new JLabel("File has been loaded!", SwingConstants.CENTER);
+	loadLabel.setFont(new Font("Serif", Font.BOLD, 20));
+	loadLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+	
+	///////////////
+	// Panel
+	///////////////
+	loadPanel = new JPanel(new GridLayout(8, 1, 8, 8));
+	loadPanel.add(loadLabel);
+	loadPanel.add(backButton);
+	loadPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
+	changePanel(loadPanel);
+	}
 
+	
     //////////////////////////////////////////////////////////
     //
     //	printPanel
