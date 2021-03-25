@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -13,12 +12,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import com.fasterxml.jackson.databind.*;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONValue;
-import org.json.simple.parser.JSONParser;
 
-
-public class UMLModel {
+public class UMLModel implements Model{
     private Map<String, ClassObject> classMap;
     private Map<String, Relationships> relMap;
     
@@ -413,14 +408,11 @@ public class UMLModel {
         classMap.get(className).deleteAllParams(methodName);
     }
     
-	///////////////////////////////////////////////////////////
-	//
-	//	saveJSON(String, Map<String, Class>)
-	//
-	//	function that creates and saves classMap to a JSON file using 
-	//		a prompted file name and the classMap.
-	//
-	///////////////////////////////////////////////////////////
+	/**
+	 * A method that saves this model into a JSON file.
+	 * @param name the name of the file.
+	 * @throws IOException
+	 */
 	
 	public void saveJSON(String name) throws IOException {
 		UMLModel model = new UMLModel(classMap, relMap);
@@ -452,14 +444,11 @@ public class UMLModel {
 		
 	}
 	
-	///////////////////////////////////////////////////////////
-	//
-	//loadJSON(String, Map<String, Class>)
-	//
-	//function that loads a JSON file using 
-	//a prompted filepath.
-	//
-	///////////////////////////////////////////////////////////
+	/**
+	 * A method that loads a JSON file into this object.
+	 * @param filepath the name of the file
+	 * @throws IOException
+	 */
 	
 	public void loadJSON(String filepath) throws IOException{
 		File jsonClassFile = new File(filepath+"class.json");
