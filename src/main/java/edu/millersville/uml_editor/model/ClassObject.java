@@ -77,7 +77,7 @@ public class ClassObject {
 	 * @return
 	 * 		Returns fields.
 	 */
-	public ArrayList<Field> getFeilds(){
+	public ArrayList<Field> getFields(){
 		return fields;
 	}
 	
@@ -107,7 +107,7 @@ public class ClassObject {
 	 * 		Returns true when the field's name is changed.
 	 */
 	public boolean renameField(String original, String newName) {
-		if(!containsField(original) || newName.equals(original)) {
+		if(!containsField(original) && containsMethod(newName)) {
 			return false;
 		}
 		for(Field field : fields) {
@@ -230,7 +230,7 @@ public class ClassObject {
 	 * 		Returns when the name is changed.
 	 */
 	public boolean renameMethod(String name, String newName) {
-		if(!containsMethod(name) || newName.equals(name)) {
+		if(!containsMethod(name) && containsMethod(newName)) {
 			return false;
 		}
 		for(Method method : methods) {
