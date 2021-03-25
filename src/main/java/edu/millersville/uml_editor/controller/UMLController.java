@@ -8,12 +8,14 @@ import edu.millersville.uml_editor.view.*;
 import javax.swing.JLabel;
 
 public class UMLController {
-    private GUI gui;
     private UMLModel model;
+    private classBox box;
+    private GUI gui;
 
-    public UMLController(UMLModel m, GUI gui2) {
+    public UMLController(UMLModel m, classBox newBox, GUI newGUI) {
         this.model = m;
-        this.gui = gui2;
+        this.box = newBox;
+        this.gui = newGUI;
     }
 
    /* public ActionListener getSaveJSON(){
@@ -87,6 +89,14 @@ public class UMLController {
 	// Popup menu: Rename
 	//
 	////////////////////////////////
+    
+    public ActionListener renameClassCall(){
+        return (ActionEvent e) -> {
+        	String newName = e.getActionCommand();
+        	box.renameClass(newName);
+            box.renameActionPerformed(e);
+        };
+    }
     
     
 
