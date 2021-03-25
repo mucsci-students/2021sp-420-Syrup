@@ -94,6 +94,13 @@
     <version>3.8.0</version>
     <scope>test</scope>
 </dependency>
+
+<dependency>
+    <groupId>org.jline</groupId>
+    <artifactId>jline</artifactId>
+    <version>3.19.0</version>
+</dependency>
+
     
   </dependencies>
 

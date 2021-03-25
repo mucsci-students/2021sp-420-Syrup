@@ -2249,7 +2249,7 @@ public class UMLGUI {
 
     }
 
-    private void setController(UMLController c) {
+    void setController(UMLController c) {
         this.controller = c;
     }
 
