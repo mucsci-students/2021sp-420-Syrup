@@ -3,8 +3,20 @@ package edu.millersville.uml_editor.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.commons.io.FileUtils;
+import org.json.JSONObject;
+
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import com.fasterxml.jackson.databind.*;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONValue;
+import org.json.simple.parser.JSONParser;
+
 
 public class UMLModel {
     private Map<String, ClassObject> classMap;
@@ -14,6 +26,17 @@ public class UMLModel {
 		classMap = new HashMap<String, ClassObject>();
 		relMap = new HashMap<String, Relationships>();
     }
+    
+    public UMLModel(Map<String, ClassObject> newClassMap, Map<String, Relationships> newRelMap) {
+    	classMap = newClassMap;
+    	relMap = newRelMap;
+    }
+    
+    public void clear() {
+    	classMap.clear();
+    	relMap.clear();
+    }
+    
 
     public  Map<String, ClassObject> getClasses() {
         return classMap;
@@ -400,46 +423,33 @@ public class UMLModel {
 	///////////////////////////////////////////////////////////
 	
 	public void saveJSON(String name) throws IOException {
+		UMLModel model = new UMLModel(classMap, relMap);
 		
-		String fileText = "";
-		// writing map to JSON file
-		FileWriter file = new FileWriter(name);
+		ObjectMapper classMapper = new ObjectMapper();
+		ObjectMapper mapper = new ObjectMapper();
+	  	ObjectMapper relMapper = new ObjectMapper();
+
 		
-		String fieldString = "";
-		String methodString = "";
-		
-		fileText += "{\n";
-		for (String key : classMap.keySet())
-		{
-			fileText = fileText + key + ": [\n";
-			
-			fieldString = classMap.get(key).printFields();
-			fieldString = fieldString.replace("[", "{\n");
-			fieldString = fieldString.replace("]", "\n}\n");
-			fieldString = fieldString.replace(",", ",\n");
-			fieldString = fieldString.replace("Name: ", "");
-			fieldString = fieldString.replace("Type: ", "");
-			
-			fileText += fieldString;
-			
-			methodString = classMap.get(key).printMethods();
-			methodString = methodString.replace("[", "{\n");
-			methodString = methodString.replace("]", "}\n");
-			methodString = methodString.replace(",", ",\n");
-			methodString = methodString.replace("(", "(\n");
-			methodString = methodString.replace(")", "\n)\n");
-			methodString = methodString.replace(";", ",\n");
-			methodString = methodString.replace("Name: ", "");
-			methodString = methodString.replace("Type: ", "");
-			
-			fileText += methodString;
-			
-			fileText += "]\n";
-		}
-		fileText += "}";
-		
+		ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
+    	String fileText = writer.writeValueAsString(model);
+    	FileWriter file = new FileWriter(name+".json");
 		file.write(fileText);
 		file.close();
+		
+    	classMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    	ObjectWriter classWriter = classMapper.writerWithDefaultPrettyPrinter();
+    	String classFileText = classWriter.writeValueAsString(classMap);
+		FileWriter classFile = new FileWriter(name + "class.json");
+		classFile.write(classFileText);
+		classFile.close();
+		
+    	relMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    	ObjectWriter relWriter = relMapper.writerWithDefaultPrettyPrinter();
+    	String relFileText = relWriter.writeValueAsString(relMap);
+		FileWriter relFile = new FileWriter(name+"rel.json");
+		relFile.write(relFileText);
+		relFile.close();
+		
 	}
 	
 	///////////////////////////////////////////////////////////
@@ -451,12 +461,32 @@ public class UMLModel {
 	//
 	///////////////////////////////////////////////////////////
 	
-	/*public static Map<String, Class> loadJSON(String filepath) throws IOException, FileNotFoundException {
-		// added JAR file
-		String file = FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);    	
+	public void loadJSON(String filepath) throws IOException{
+		File jsonClassFile = new File(filepath+"class.json");
+		File jsonRelFile = new File(filepath+"rel.json");
 		ObjectMapper objectMapper = new ObjectMapper();
-		Map<String, Class> newObj = objectMapper.readValue(file, HashMap.class);
-		classMap = newObj;
-		return newObj;
-	}*/
+    	objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    	try {
+    		classMap.clear();
+    		String classFile = FileUtils.readFileToString(jsonClassFile, StandardCharsets.UTF_8);
+    		HashMap<String, ClassObject> newMap = objectMapper.readValue(classFile, HashMap.class);
+    		classMap = newMap;
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	
+    	ObjectMapper relObjectMapper = new ObjectMapper();
+    	relObjectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    	try {
+    		classMap.clear();
+    		String relFile = FileUtils.readFileToString(jsonRelFile, StandardCharsets.UTF_8);
+    		HashMap<String, Relationships> newMap = relObjectMapper.readValue(relFile, HashMap.class);
+    		relMap = newMap;
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	
+	}
 }

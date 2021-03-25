@@ -30,12 +30,16 @@ public class UMLController {
     }
 
     public ActionListener getLoadJSON(){
-        return(ActionEvent e) -> {
-            if(e.getActionCommand() == "Load"){
-                //needs implementation
-            }
-            
-        };
+    	 return(ActionEvent e) -> {
+         	switch (e.getActionCommand()) {
+             case "Load":
+                 gui.loadPanel();
+                 break;
+             case "<--":
+                 gui.methodPanel();
+                 break;
+         	}
+         };
         
     }
     public ActionListener getHelp(){
@@ -439,5 +443,17 @@ public class UMLController {
 			gui.saveAction();
 		};
 	}
+	
+	//////////////////////////////////
+	//
+	//	Load Calls
+	//
+	//////////////////////////////////
+	
+	public ActionListener loadPageCall(){
+		return (ActionEvent e) -> {
+			gui.loadAction();
+	};
+}
 
 }

@@ -1,7 +1,8 @@
 package edu.millersville.uml_editor.model;
 
+import java.io.Serializable;
 
-public class Relationships {
+public class Relationships implements Serializable {
 
 	private ClassObject source;
 	private ClassObject destination;
@@ -34,6 +35,9 @@ public class Relationships {
 		return source.getName();
 	}
 	
+	public String getSource() {
+		return source.getName();
+	}
 ///////////////////////////////////////////////////////////
 //
 //	destinatinoName
@@ -46,6 +50,13 @@ public class Relationships {
 		return destination.getName();
 	}
 
+	
+	public String getDestination()
+	{
+		//return destination.getClassName();
+		return destination.getName();
+	}
+	
 ///////////////////////////////////////////////////////////
 //
 //	changeType
@@ -56,7 +67,18 @@ public class Relationships {
 	{
 		type = newType;
 	}
+	
+	public String getType()
+	{
+		//return destination.getClassName();
+		return type;
+	}
 
+	public String getID()
+	{
+		//return destination.getClassName();
+		return ID;
+	}
 ///////////////////////////////////////////////////////////
 //
 //	relType
@@ -66,5 +88,26 @@ public class Relationships {
 	public String relType()
 	{
 		return type;
+	}
+	
+	public String printID() {
+		return "Relationship ID: " + ID;
+	}
+	
+	public String printSource() {
+		return  " Relationship source: " + source.getName();
+	}
+	
+	public String printDestination() {
+		return " Relationship destination: " + destination.getName();
+	}
+	
+	public String printType() {
+		return " Relationship type: " + type;
+	}
+	
+	public String toString() {
+		return printID() + printSource() + printDestination()
+				 + printType();
 	}
 }

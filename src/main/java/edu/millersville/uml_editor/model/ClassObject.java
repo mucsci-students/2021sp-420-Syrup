@@ -10,7 +10,7 @@ import java.util.*;
  *
  */
 public class ClassObject {
-	
+		
 	private String className;
 	private ArrayList<Field> fields;
 	private ArrayList<Method> methods;
@@ -28,6 +28,7 @@ public class ClassObject {
 		methods = new ArrayList<Method>();
 		
 	}
+	
 	
 	/**
 	 * Getter method to return the name of the class.
