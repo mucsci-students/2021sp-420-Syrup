@@ -1,18 +1,8 @@
 package edu.millersville.uml_editor.model;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.io.FileUtils;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 public interface Model {
 
@@ -39,7 +29,7 @@ public interface Model {
     //	createNewClass
     //
     ///////////////////////////////////////////////////////////
-    void createNewClassGUI(String className);
+    boolean createNewClassGUI(String className);
     
     ///////////////////////////////////////////////////////////
     //
@@ -47,7 +37,7 @@ public interface Model {
     //
     ///////////////////////////////////////////////////////////
   
-    void renameClassGUI(String name, String newName);
+    boolean renameClassGUI(String name, String newName);
 
     ///////////////////////////////////////////////////////////
     //
@@ -55,7 +45,7 @@ public interface Model {
     //
     ///////////////////////////////////////////////////////////
 
-    void deleteClassGUI(String name);
+    boolean deleteClassGUI(String name);
     
     //////////////////////////////////////////////////////////
     //
@@ -63,7 +53,7 @@ public interface Model {
     //
     ///////////////////////////////////////////////////////////
 
-    void createRelationshipGUI(String class1, String class2, String ID, String newType);
+    boolean createRelationshipGUI(String class1, String class2, String ID, String newType);
 
     //////////////////////////////////////////////////////////
     //
@@ -71,7 +61,7 @@ public interface Model {
     //
     ///////////////////////////////////////////////////////////
 
-    void deleteRelationshipGUI(String ID);
+    boolean deleteRelationshipGUI(String ID);
 
     //////////////////////////////////////////////////////////
     //

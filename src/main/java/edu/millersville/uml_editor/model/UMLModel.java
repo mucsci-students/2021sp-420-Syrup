@@ -72,11 +72,13 @@ public class UMLModel implements Model{
     //	createNewClass
     //
     ///////////////////////////////////////////////////////////
-    public void createNewClassGUI(String className) 
+    public boolean createNewClassGUI(String className) 
     {
-        
-    	getClasses().put(className, new ClassObject(className));
-	    
+    	if(!classMap.containsKey(className)) {
+    		classMap.put(className, new ClassObject(className));
+    		return true;
+    	}
+    	return false;
     }
     
     ///////////////////////////////////////////////////////////
@@ -85,11 +87,16 @@ public class UMLModel implements Model{
     //
     ///////////////////////////////////////////////////////////
   
-    public void renameClassGUI(String name, String newName)
+    public boolean renameClassGUI(String name, String newName)
     {
         //Rename class but putting into map with new name and removing the old name
-        getClasses().put(newName, getClassFor(name));
-        getClasses().remove(name);
+    	if(!classMap.containsKey(newName)) {
+    		getClasses().put(newName, getClassFor(name));
+    		getClasses().remove(name);
+    		return true;
+    	}
+    	return false;
+        
     }
 
     ///////////////////////////////////////////////////////////
@@ -98,11 +105,14 @@ public class UMLModel implements Model{
     //
     ///////////////////////////////////////////////////////////
 
-    public void deleteClassGUI(String name)
+    public boolean deleteClassGUI(String name)
     {
         //Deletes attributes and the deletes the class
-        //getClassFor(name).deleteAttributes();
+        if(!classMap.containsKey(name)) {
+        	return false;
+        }
         getClasses().remove(name);
+        return true;
         
     }
     
@@ -112,12 +122,16 @@ public class UMLModel implements Model{
     //
     ///////////////////////////////////////////////////////////
 
-    public void createRelationshipGUI(String class1, String class2, String ID, String newType)
+    public boolean createRelationshipGUI(String class1, String class2, String ID, String newType)
     {
         //Create temp classes to be able to create relationship
+    	if(classMap.containsKey(class1) || classMap.containsKey(class2) || hasRelID(ID)) {
+    		return false;
+    	}
         ClassObject source = getClassFor(class1);
         ClassObject destination = getClassFor(class2);
         getRelationships().put(ID, new Relationships(source, destination, ID, newType)); 
+        return true;
     }
 
     //////////////////////////////////////////////////////////
@@ -126,9 +140,13 @@ public class UMLModel implements Model{
     //
     ///////////////////////////////////////////////////////////
 
-    public void deleteRelationshipGUI(String ID)
+    public boolean deleteRelationshipGUI(String ID)
     {
+    	if(!relMap.containsKey(ID)) {
+    		return false;
+    	}
         getRelationships().remove(ID); 
+        return true;
     }
 
     //////////////////////////////////////////////////////////
