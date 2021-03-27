@@ -1,6 +1,6 @@
 package edu.millersville.uml_editor.controller;
 
-public class ControllerType {
+public abstract class ControllerType {
 
 	public ControllerType() {
 

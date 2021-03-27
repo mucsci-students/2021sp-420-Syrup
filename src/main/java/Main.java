@@ -4,12 +4,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import edu.millersville.uml_editor.controller.Controller;
 import edu.millersville.uml_editor.model.*;
 import edu.millersville.uml_editor.view.UMLGUI;
+import edu.millersville.uml_editor.view.ViewTemplate;
 
 import org.apache.commons.io.FileUtils;
 import org.json.simple.parser.ParseException;
@@ -17,7 +18,7 @@ import org.json.simple.parser.ParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
-
+import com.fasterxml.jackson.databind.*;
 
 /**
  * 
@@ -69,6 +70,7 @@ public class Main
 		            System.out.println("7. Load from a JSON file");
 		            System.out.println("8. Help");
 		            System.out.println("9. Exit the program");
+		            System.out.println("10. Run cli");
 		            System.out.println();
 		            System.out.print("Please select a menu option: ");
 		            
@@ -1117,6 +1119,19 @@ public class Main
 		                System.out.print("That is not a menu option! Please try again.");
 		                System.out.println();
 		                break;
+		                
+		                
+		                case 10:
+		           
+		                		UMLModel model = new UMLModel();
+		                		ViewTemplate view;
+		                		Controller control;
+		                		view = new ViewTemplate(ViewTemplate.InterfaceType.CLI);
+		                		control = new Controller(model, view);
+		                		control.init();
+		                	
+		                	
+		            	break;
 		            }
 		        }
 	    	}
