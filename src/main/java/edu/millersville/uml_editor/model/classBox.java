@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import javax.swing.JMenu;
 import javax.swing.JTextField;
 import edu.millersville.uml_editor.model.*;
+import edu.millersville.uml_editor.view.GUI;
 import edu.millersville.uml_editor.controller.*;
 
 public class classBox extends JComponent {
@@ -63,6 +64,7 @@ public class classBox extends JComponent {
     private JTextField textBox3;
     private JTextField textBox4;
     private JTextField textBox5;
+    private JTextField textBox6;
     private JTextField paramName;
     private JTextField paramType;
     
@@ -70,14 +72,17 @@ public class classBox extends JComponent {
     private ArrayList<JButton> methodButtonList;
     private ArrayList<JButton> fieldButtonList;
     
-    private boolean isMethod = false;
-    
     private UMLController controller;
-    private UMLModel model;
+    
+    private boolean isMethod = false;
 
-    public classBox() {
+    public classBox(UMLController c) {
+    	className = new JLabel("New Class");
+    	controller = c;
     	initialize();
     }
+    
+    
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -100,160 +105,11 @@ public class classBox extends JComponent {
 		panel.add(FieldPanel);
 		panel.add(methodPanel);
 		
-		/////////////////////
-		//
-		// Add Method Labels
-		//
-		/////////////////////
-		JLabel methodName = new JLabel("Method Name:");
-		methodName.setFont(new Font("Serif", Font.BOLD, 12));
-		
-		JLabel methodType = new JLabel("Method Type:");
-		methodType.setFont(new Font("Serif", Font.BOLD, 12));
-		
-		JLabel paramNameLabel = new JLabel("Parameter Name:");
-		paramNameLabel.setFont(new Font("Serif", Font.BOLD, 12));
-		
-		JLabel paramTypeLabel = new JLabel("Parameter Type:");
-		paramTypeLabel.setFont(new Font("Serif", Font.BOLD, 12));
-		
-		JButton paramList = new JButton("Add Parameter to List");
-		JButton done = new JButton("Done");
-		dup1 = dup();
-		
-		JPopupMenu popupMenu = new JPopupMenu();
-		addPopup(panel, popupMenu);
-		popupMenu.setLabel("Menu");
-		popupMenu.setVisible(true);
-		
 		////////////////////////////////
 		//
-		// Popup menu: Add
+		// Movement Listener
 		//
 		////////////////////////////////
-		JMenu addOption = new JMenu("Add");
-		popupMenu.add(addOption);
-		
-		JMenu addMethod = new JMenu("Method");
-		addOption.add(addMethod);
-		textBox1 = new JTextField();
-		textBox1.setColumns(15);
-		addMethod.add(methodName);
-		addMethod.add(textBox1);
-		addMethod.add(methodType);
-		textBox2 = new JTextField();
-		textBox2.setColumns(15);
-		addMethod.add(textBox2);
-		addMethod.add(dup1);
-		dup1.setVisible(false);
-		
-		///////////////////////////
-		//
-		// Add Parameters in Method
-		//
-		///////////////////////////
-		addMethod.add(paramNameLabel);
-		paramName = new JTextField();
-		paramName.setColumns(15);
-		addMethod.add(paramName);
-		addMethod.add(paramTypeLabel);
-		paramType = new JTextField();
-		paramType.setColumns(15);
-		addMethod.add(paramType);
-		addMethod.add(paramList);
-		addMethod.add(done);
-		
-		
-		///////////////////////////
-		//
-		// Add Field
-		//
-		///////////////////////////
-		
-		JLabel fieldName = new JLabel("Field Name:");
-		fieldName.setFont(new Font("Serif", Font.BOLD, 12));
-		
-		JLabel fieldType = new JLabel("Field Type:");
-		fieldType.setFont(new Font("Serif", Font.BOLD, 12));
-		
-		dup2 = dup();
-		
-		JMenu addField = new JMenu("Field");
-		addOption.add(addField);
-		textBox3 = new JTextField();
-		textBox3.setColumns(15);
-		addField.add(fieldName);
-		addField.add(textBox3);
-		addField.add(fieldType);
-		textBox4 = new JTextField();
-		textBox4.setColumns(15);
-		addField.add(textBox4);
-		addField.add(dup2);
-		dup2.setVisible(false);
-		
-		////////////////////////////////
-		//
-		// Popup menu: delete
-		//
-		////////////////////////////////
-		
-		
-		JMenu deleteOption = new JMenu("Delete");
-		popupMenu.add(deleteOption);
-		
-		JMenuItem deleteClass = new JMenuItem("Class");
-		deleteOption.add(deleteClass);
-		
-		JMenu deleteMethod = new JMenu("Method");
-		deleteOption.add(deleteMethod);
-		
-		JMenu deleteField = new JMenu("Field");
-		deleteOption.add(deleteField);
-		
-		////////////////////////////////
-		//
-		// Popup menu: Rename
-		//
-		////////////////////////////////
-		JMenu renameOption = new JMenu("Rename");
-		popupMenu.add(renameOption);
-		
-		JLabel renameClassName = new JLabel("New Class Name:");
-		renameClassName.setFont(new Font("Serif", Font.BOLD, 12));
-		
-		JButton renameClassButton = new JButton("Rename Class");
-		
-		dup3 = dup();
-		
-		JMenu renameClass = new JMenu("Class");
-		renameOption.add(renameClass);
-		textBox5 = new JTextField();
-		textBox5.setColumns(15);
-		renameClass.add(renameClassName);
-		renameClass.add(textBox5);
-		renameClass.add(renameClassButton);
-		//textBox5.addActionListener(controller.renameClassCall());
-		
-		renameClass.add(dup3);
-		dup3.setVisible(false);
-		
-		JMenu renameMethod = new JMenu("Method");
-		renameOption.add(renameMethod);
-		
-		JMenu renameField = new JMenu("Field");
-		renameOption.add(renameField);
-		
-		////////////////////////////////
-		//
-		// Popup menu/movement Listeners
-		//
-		////////////////////////////////
-		panel.addMouseListener(new MouseAdapter(){
-			public void mousePressed(MouseEvent e) {
-				if(e.getButton() == MouseEvent.BUTTON3)
-					popupMenu.show(e.getComponent(), e.getX(), e.getY());
-			}
-		});
 		
 		panel.addMouseMotionListener(new MouseMotionAdapter(){
 			public void mouseDragged(MouseEvent e) {
@@ -268,8 +124,7 @@ public class classBox extends JComponent {
 			// Default class label
 			//
 			////////////////////////////////
-			
-			className = new JLabel("New Class");
+		
 			className.setFont(new Font("Serif", Font.BOLD, 16));
 			
 			GroupLayout gl_panel = new GroupLayout(panel);
@@ -328,25 +183,25 @@ public class classBox extends JComponent {
 	//
 	////////////////////////////////
 		
-	public void renameClass(String newName) {
+	public String getOldName() {
+		return textBox5.getText();
+	}	
+	
+	public String getNewName() {
+		return textBox6.getText();
+	}
+	
+	public String getClassName() {
+		return className.getText();
+	}
+	
+	public classBox getClassBox() {
+		return this;
+	}
+	
+	public void renameClassName(String newName) {
 		className.setText(newName);
 	}
-	
-	////////////////////////////////
-	//
-	// renameClassAction
-	//
-	////////////////////////////////
-	
-	public void renameActionPerformed(ActionEvent e)
-	{
-		String className1 = className.getText();
-		String newClassName = textBox5.getText();
-		
-		model.renameClassGUI(className1, newClassName);
-	}
-		
-		
 		
 	public JLabel dup(){
 		JLabel dup = new JLabel("This is a duplicate!");

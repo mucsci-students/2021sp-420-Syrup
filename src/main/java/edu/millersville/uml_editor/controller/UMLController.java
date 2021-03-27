@@ -2,6 +2,8 @@ package edu.millersville.uml_editor.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
+
 import edu.millersville.uml_editor.model.*;
 import edu.millersville.uml_editor.view.*;
 
@@ -9,12 +11,10 @@ import javax.swing.JLabel;
 
 public class UMLController {
     private UMLModel model;
-    private classBox box;
     private GUI gui;
 
-    public UMLController(UMLModel m, classBox newBox, GUI newGUI) {
+    public UMLController(UMLModel m, GUI newGUI) {
         this.model = m;
-        this.box = newBox;
         this.gui = newGUI;
     }
 
@@ -92,9 +92,7 @@ public class UMLController {
     
     public ActionListener renameClassCall(){
         return (ActionEvent e) -> {
-        	String newName = e.getActionCommand();
-        	box.renameClass(newName);
-            box.renameActionPerformed(e);
+            gui.renameActionPerformed();
         };
     }
     
