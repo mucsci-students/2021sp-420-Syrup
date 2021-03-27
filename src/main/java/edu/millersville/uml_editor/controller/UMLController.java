@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import edu.millersville.uml_editor.model.*;
 import edu.millersville.uml_editor.view.*;
 
-import javax.swing.JLabel;
 
 public class UMLController extends ControllerType {
     private UMLGUI gui;

@@ -77,7 +77,7 @@ public class CLIController extends ControllerType{
                 .variable(LineReader.MENU_COMPLETE, true).parser(parser).build();
     }
 
-    public void init() {
+    public void init() throws IOException {
         view.printIntro();
 
         while (true) {

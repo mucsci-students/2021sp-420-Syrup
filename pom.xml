@@ -26,7 +26,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>edu.millersville.uml_editor.view.Main</mainClass>
+              <mainClass>edu.millersville.uml_editor.Main</mainClass>
             </manifest>
           </archive>
         </configuration>

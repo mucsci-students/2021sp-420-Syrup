@@ -9,17 +9,25 @@ import edu.millersville.uml_editor.view.ViewTemplate;
 public class Controller {
 
 	private ControllerType control;
+	private UMLGUI control2;
 
     public Controller(UMLModel model, ViewTemplate view) throws IOException {
 
-    	if (ViewTemplate.isGUI()) {
-    		control = new UMLController(model, (UMLGUI) view.getViewinterface());
-    	} else {
+    	
     		control = new CLIController(model, view);
-    	}
+    	
     }
-
-    public void init() {
+    
+    public Controller(UMLModel model)
+    {
+    	control2 = new UMLGUI(model);
+    }
+    
+    public void init() throws IOException {
     	control.init();
+    }
+    
+    public void initGUI() {
+    	control2.drawGUI();
     }
 }
