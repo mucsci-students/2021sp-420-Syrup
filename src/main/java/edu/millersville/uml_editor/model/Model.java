@@ -23,6 +23,8 @@ public interface Model {
     ClassObject getClassFor(String className);
     
     boolean hasRelID(String ID);
+    
+    boolean isEmpty();
 
     ///////////////////////////////////////////////////////////
     //

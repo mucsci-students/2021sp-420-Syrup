@@ -66,6 +66,10 @@ public class UMLModel implements Model{
     public boolean hasRelID(String ID) {
     	return relMap.containsKey(ID);
     }
+    
+    public boolean isEmpty() {
+    	return classMap.isEmpty();
+    }
 
     ///////////////////////////////////////////////////////////
     //

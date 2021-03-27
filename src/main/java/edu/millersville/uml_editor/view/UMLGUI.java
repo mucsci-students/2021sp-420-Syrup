@@ -8,7 +8,7 @@ import edu.millersville.uml_editor.model.*;
 import edu.millersville.uml_editor.controller.*;
 import java.io.IOException;
 
-public class UMLGUI {
+public class UMLGUI extends ViewTemplate implements ViewInterface{
     private JFrame umlEditor = null;
     private JPanel menuPanel = null;
     
@@ -76,6 +76,11 @@ public class UMLGUI {
     private UMLController controller;
     private UMLModel model;
 
+    public UMLGUI() {
+    	this.model = new UMLModel();
+    	this.controller = null;
+    }
+    
     public UMLGUI(UMLModel m) {
         this.model = m;
         this.controller = null;

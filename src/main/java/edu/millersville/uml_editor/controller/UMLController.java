@@ -7,7 +7,7 @@ import edu.millersville.uml_editor.view.*;
 
 import javax.swing.JLabel;
 
-public class UMLController {
+public class UMLController extends ControllerType {
     private UMLGUI gui;
     private UMLModel model;
 

@@ -1,6 +1,6 @@
 package edu.millersville.uml_editor.view;
 
-public class CLIView {
+public class CLIView implements ViewInterface{
 
     public CLIView() {
     }
