@@ -19,6 +19,6 @@ public class FieldTest {
 	@Test
 	public void testToString(){
 	    Field field = new Field("field", "int");
-	    assertEquals("Correct toString() output", "field int", field.toString());
+	    assertEquals("Correct toString() output", "Name: field Type: int", field.toString());
 	}
 }

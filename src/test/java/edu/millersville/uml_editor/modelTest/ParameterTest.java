@@ -16,7 +16,7 @@ public class ParameterTest {
 	@Test
 	public void testToString(){
 	    Parameter param = new Parameter("param", "int");
-	    assertEquals("Correct toString() output", "param int", param.toString());
+	    assertEquals("Correct toString() output", "Name: param Type: int", param.toString());
 	}
 	
 }
