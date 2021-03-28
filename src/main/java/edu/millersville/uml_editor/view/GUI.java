@@ -360,8 +360,6 @@ public class GUI implements ViewInterface{
 		renameMethodNewName = new JTextField();
 		renameMethodNewName.setColumns(15);
 		renameMethod.add(renameMethodNewName);
-		renameMethod.add(dup3);
-		dup3.setVisible(false);
 		renameMethod.add(rename);
 		rename.addActionListener(controller.renameMethodCall());
 		
@@ -392,6 +390,8 @@ public class GUI implements ViewInterface{
 		JLabel addFieldTypeLabel = new JLabel("Field Type:");
 		addFieldTypeLabel.setFont(new Font("Serif", Font.BOLD, 12));
 		
+		JButton createField = new JButton("Add");
+		
 		dup4 = dup();
 		
 		addField.add(addFieldClassLabel);
@@ -406,8 +406,8 @@ public class GUI implements ViewInterface{
 		addFieldType = new JTextField();
 		addFieldType.setColumns(15);
 		addField.add(addFieldType);
-		addField.add(dup4);
-		dup4.setVisible(false);
+		addField.add(createField);
+		createField.addActionListener(controller.createFieldCall());
 		
 		////////////////////////////////
 		//
@@ -434,8 +434,7 @@ public class GUI implements ViewInterface{
 		deleteFieldName = new JTextField();
 		deleteFieldName.setColumns(15);
 		deleteField.add(deleteFieldName);
-		deleteField.add(dup4);
-		dup4.setVisible(false);
+
 		
 		////////////////////////////////
 		//
@@ -673,7 +672,7 @@ public class GUI implements ViewInterface{
 			for(int i = 0; i < paramListName.size(); i++) {
 				parName = nameArray[i];
 				parType = typeArray[i];
-				boxMap.get(className).addParam(parName, parType);
+				boxMap.get(className).addParam(methodName, parName, parType);
 			}
 			Uml_Editor.repaint();
 			return;
@@ -718,8 +717,8 @@ public class GUI implements ViewInterface{
 		else
 		{
 			model.renameMethod(className, methodName, newMethodName);
-			//NEED TO FIX RENAME METHOD FUNCTION 
-			boxMap.get(methodName).renameMethodName(methodName, newMethodName);
+			String methodType = model.getMethodType(className, newMethodName);
+			boxMap.get(className).renameMethodName(methodName, newMethodName, methodType);
 			boxMap.put(newMethodName, boxMap.get(methodName));
 			boxMap.remove(methodName);
 			Uml_Editor.repaint();
@@ -727,6 +726,33 @@ public class GUI implements ViewInterface{
 			renameMethodOldName.setText("");
 			renameMethodNewName.setText("");
 		}
+	}
+	
+	////////////////////////////////
+	//
+	// Field Actions
+	//
+	////////////////////////////////
+	
+	public void createFieldAction() {
+		String className = addFieldCN.getText();
+		String fieldName = addFieldName.getText();
+		String fieldType = addFieldType.getText();
+		
+    	if (!model.hasClass(className))
+    		notExistTrue();
+    	
+    	else if (model.hasField(className, fieldName))
+			classDupTrue();
+    	else
+    	{
+    		model.addField(className, fieldName, fieldType);
+			boxMap.get(className).addField(fieldName, fieldType);
+			Uml_Editor.repaint();
+			addFieldCN.setText("");
+			addFieldName.setText("");
+			addFieldType.setText("");
+    	}
 	}
 	
 	////////////////////////////////

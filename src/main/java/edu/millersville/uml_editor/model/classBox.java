@@ -8,6 +8,8 @@ import javax.swing.JTextPane;
 import javax.swing.JLayeredPane;
 import java.awt.Component;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
+
 import java.awt.Choice;
 import java.awt.List;
 import javax.swing.JComboBox;
@@ -33,6 +35,7 @@ import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JPopupMenu;
@@ -76,7 +79,7 @@ public class classBox extends JComponent {
     private ArrayList<JButton> fieldButtonList;
     
     private HashMap<String, JLabel> methodMap = new HashMap();
-    private HashMap<String, JLabel> paramMap = new HashMap();
+    private HashMap<String, ArrayList<JLabel>> paramMap = new HashMap();
     private HashMap<String, JLabel> fieldMap = new HashMap();
     
     private UMLController controller;
@@ -105,9 +108,11 @@ public class classBox extends JComponent {
 		
 		fieldPanel = new JPanel();
 		fieldPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		fieldPanel.setLayout(new GridLayout(5, 2));
 		
 		methodPanel = new JPanel();
 		methodPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		methodPanel.setLayout(new GridLayout(5, 2));
 		
 		panel.add(fieldPanel);
 		panel.add(methodPanel);
@@ -186,7 +191,7 @@ public class classBox extends JComponent {
 		
 	////////////////////////////////
 	//
-	// renameClass
+	// Getters
 	//
 	////////////////////////////////
 		
@@ -206,17 +211,6 @@ public class classBox extends JComponent {
 		return this;
 	}
 	
-	public void renameClassName(String newName) {
-		className.setText(newName);
-	}
-		
-	public JLabel dup(){
-		JLabel dup = new JLabel("This is a duplicate!");
-		dup.setFont(new Font("Serif", Font.BOLD, 12));
-		dup.setForeground(Color.RED);	
-		return dup;
-	}
-	
 	public JPanel boxPanel() {
 		return panel;
 	}
@@ -229,30 +223,92 @@ public class classBox extends JComponent {
 		return fieldPanel;
 	}
 	
+	////////////////////////////////
+	//
+	// renameClass
+	//
+	////////////////////////////////
+	
+	public void renameClassName(String newName) {
+		className.setText(newName);
+	}
+		
+	public JLabel dup(){
+		JLabel dup = new JLabel("This is a duplicate!");
+		dup.setFont(new Font("Serif", Font.BOLD, 12));
+		dup.setForeground(Color.RED);	
+		return dup;
+	}
+	
+	////////////////////////////////
+	//
+	// Method functions
+	//
+	////////////////////////////////
 	public void addMethod(String methodName, String methodType) {
 		JLabel method = new JLabel(methodName + ", " + methodType);
 		methodMap.put(methodName, method);
 		methodPanel.add(method);
 	}
 	
-	public void addParam(String paramName, String paramType) {
+	public void addParam(String methodName, String paramName, String paramType) {
 		JLabel param = new JLabel("(" + paramName + ", " + paramType + ")");
+		if(paramMap.containsKey(methodName)) {
+			ArrayList<JLabel> temp = paramMap.get(methodName);
+			temp.add(param);
+			paramMap.put(methodName, temp);
+		}
+		else {
+			ArrayList<JLabel> temp = new ArrayList<JLabel>();
+			temp.add(param);
+			paramMap.put(methodName, temp);
+		}
 		methodPanel.add(param);
 	}
 	
 	public JPanel deleteMethod(String methodName) {
 		methodPanel.remove(methodMap.get(methodName));
+		if(paramMap.containsKey(methodName)) {
+			ArrayList<JLabel> temp = paramMap.get(methodName);
+			for(int i = 0; i < temp.size(); i++) {
+				methodPanel.remove(temp.get(i));
+			}
+		}
 		return methodPanel;
 	}
 	
-	public void renameMethodName(String methodName, String methodNewName) {
-
+	public void renameMethodName(String methodName, String methodNewName, String methodType) {
+		methodPanel.remove(methodMap.get(methodName));
+		JLabel method = new JLabel(methodNewName + ", " + methodType);
+		methodPanel.add(method);
+		paramMap.put(methodNewName, paramMap.get(methodName));
+		paramMap.remove(methodName);
+		methodMap.put(methodNewName, method);
+		methodMap.remove(methodName);
+		ArrayList<JLabel> newList = paramMap.get(methodNewName);
+		for(int i = 0; i < newList.size(); i++) {
+			methodPanel.remove(newList.get(i));
+			methodPanel.add(newList.get(i));
+		}
 	}
 	
-	public JPanel deleteParam(String paramName) {
+	////////////////////////////////
+	//
+	// Field Functions
+	//
+	////////////////////////////////
+	
+	public void addField(String fieldName, String fieldType) {
+		JLabel field = new JLabel(fieldName + ", " + fieldType);
+		fieldMap.put(fieldName, field);
+		fieldPanel.add(field);
+	}
+
+	
+	/*public JPanel deleteParam(String paramName) {
 		methodPanel.remove(paramMap.get(paramName));
 		return methodPanel;
-	}
+	}*/
 	
 	public JPanel deleteField(String fieldName) {
 		fieldPanel.remove(fieldMap.get(fieldName));
