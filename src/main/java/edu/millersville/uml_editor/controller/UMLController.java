@@ -2,21 +2,23 @@ package edu.millersville.uml_editor.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
+
 import edu.millersville.uml_editor.model.*;
 import edu.millersville.uml_editor.view.*;
 
 import javax.swing.JLabel;
 
 public class UMLController {
-    private UMLGUI gui;
     private UMLModel model;
+    private GUI gui;
 
-    public UMLController(UMLModel m, UMLGUI gui) {
+    public UMLController(UMLModel m, GUI newGUI) {
         this.model = m;
-        this.gui = gui;
+        this.gui = newGUI;
     }
 
-    public ActionListener getSaveJSON(){
+   /* public ActionListener getSaveJSON(){
         return(ActionEvent e) -> {
         	switch (e.getActionCommand()) {
             case "Save":
@@ -30,12 +32,16 @@ public class UMLController {
     }
 
     public ActionListener getLoadJSON(){
-        return(ActionEvent e) -> {
-            if(e.getActionCommand() == "Load"){
-                //needs implementation
-            }
-            
-        };
+    	 return(ActionEvent e) -> {
+         	switch (e.getActionCommand()) {
+             case "Load":
+                 gui.loadPanel();
+                 break;
+             case "<--":
+                 gui.methodPanel();
+                 break;
+         	}
+         };
         
     }
     public ActionListener getHelp(){
@@ -44,9 +50,99 @@ public class UMLController {
             	gui.helpClassPanel();
             }
         };
+    }*/
+    
+	////////////////////////////////
+	//
+	// Print class box
+	//
+	////////////////////////////////
+    public ActionListener printClassListener(){
+        return(ActionEvent e) -> {
+            if(e.getActionCommand() == "Add Class"){
+            	String className = "New Class";
+            	if(!model.hasClass(className)){
+            		gui.classDupFalse();
+                    model.createNewClassGUI(className);
+                    gui.printClassBox();
+            	}
+            	else
+            		gui.classDupTrue();
+            }
+        };
     }
+    
+	////////////////////////////////
+	//
+	// Popup menu: Class
+	//
+	////////////////////////////////
+    
+    public ActionListener deleteClassCall(){
+        return (ActionEvent e) -> {
+        	String className = gui.delClassGet();
+            if(model.hasClass(className)){
+            	gui.notExistFalse();
+                model.deleteClassGUI(className);
+                gui.deleteClassAction();
+            }
+            else{
+                gui.notExistTrue();
+            }
+        };
+    }
+    
+    public ActionListener renameClassCall(){
+        return (ActionEvent e) -> {
+            gui.renameActionPerformed();
+        };
+    }
+    
+	////////////////////////////////
+	//
+	// Popup menu: Method
+	//
+	////////////////////////////////
+    
+    public ActionListener addMethodCall(){
+        return (ActionEvent e) -> {
+            gui.addMethodAction();
+        };
+    }
+    
+    public ActionListener addParamInMethodCall(){
+        return (ActionEvent e) -> {
+            gui.addParamToList();
+        };
+    }
+    
+    public ActionListener deleteMethodCall(){
+        return (ActionEvent e) -> {
+            gui.deleteMethodAction();
+        };
+    }
+    
+    public ActionListener renameMethodCall(){
+        return (ActionEvent e) -> {
+            gui.renameMethodAction();
+        };
+    }
+	    
+	////////////////////////////////
+	//
+	// Popup menu: Field
+	//
+	////////////////////////////////
 
-    public ActionListener getMainPageListener() {
+    
+    
+
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////OLD CODE//////////////////////////////////////////////////////////
+   /* public ActionListener getMainPageListener() {
         return (ActionEvent e) -> {
             switch (e.getActionCommand()) {
                 case "Class":
@@ -439,5 +535,17 @@ public class UMLController {
 			gui.saveAction();
 		};
 	}
-
+	
+	//////////////////////////////////
+	//
+	//	Load Calls
+	//
+	//////////////////////////////////
+	
+	public ActionListener loadPageCall(){
+		return (ActionEvent e) -> {
+			gui.loadAction();
+	};
+}
+*/
 }

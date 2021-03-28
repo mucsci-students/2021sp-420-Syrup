@@ -1,6 +1,6 @@
 package edu.millersville.uml_editor.view;
+
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -9,78 +9,36 @@ import java.util.Map;
 import java.util.Scanner;
 
 import edu.millersville.uml_editor.model.*;
-import edu.millersville.uml_editor.controller.*;
-import edu.millersville.uml_editor.view.*;
-
-import javax.lang.model.util.ElementScanner6;
-
-//import org.apache.commons.io.FileUtils;
-
-//import com.fasterxml.jackson.databind.ObjectMapper;
-/**
- * 
- *
- */
-public class Main 
-{
 
 
-///////////////////////////////////////////////////////////
-//
-//	Private Variables
-//
-///////////////////////////////////////////////////////////
-    private static UMLController controller;
-    private static UMLModel model;
-    public Main(UMLModel m) {
-        this.model = m;
-        this.controller = null;
-    }
-	
+import org.apache.commons.io.FileUtils;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
+
+public class CLIView implements ViewInterface{
+   ///////////////////////////////////////////////////////////
+    //
+    //	Private Variables
+    // 
+    ///////////////////////////////////////////////////////////
     private static Map<String, ClassObject> classMap = 
-			new HashMap<String, ClassObject>() {
-		@Override
-		public java.lang.String toString() {
-	    	StringBuffer s = new StringBuffer();
-	    	s.append("{");
-	    	s.append(System.lineSeparator());
-	    	boolean firstRow = true;
-	    	for (String key: classMap.keySet()) {
-	    		if (firstRow) {
-	    			firstRow = false;
-
-	    		} else {
-	    			s.append(",\n");
-	    		}
-	    		s.append("\"" + key + "\" : ");
-	    		s.append("{");
-	    		s.append(System.lineSeparator());
-	    		s.append(classMap.get(key).toString());
-	    		s.append("}");
-	    	}
-	    	s.append("\n");
-	    	s.append("}\n");
-	    	System.out.println(s.toString());
-	    	return s.toString();
-	    }
-	};
+			new HashMap<String, ClassObject>() {};
 	private static Map<String, Relationships> relMap =
 			new HashMap<String, Relationships>();
 	private static Scanner console = new Scanner(System.in);
-
-///////////////////////////////////////////////////////////
-//
-//	Main Method
-//
-///////////////////////////////////////////////////////////
 	
-    public static void main(String[] args) throws IOException
-    {
-    	if (args.length > 0 )
-    	{
-    		if (args[0].equals("--cli"))
-    		{
-		        boolean loop = true;
+    public CLIView() {
+    }
+
+    public void printIntro() throws IOException {
+    	System.out.println("Hello, and welcome to Team Syrup's UML editor.");
+    	System.out.println("To exit the program, type 'quit'.");
+    	System.out.println("To see all the commands available, type 'help'.\n");
+    			
+    			boolean loop = true;
 		        //Loop that controls the entire program
 		        while(loop)
 		        {
@@ -1077,9 +1035,12 @@ public class Main
 		                //Save JSON case
 				        case 6:
 				        System.out.println();   
-		            	System.out.print("Enter filepath (filepath+filename): ");
+		            	System.out.print("Enter filename: ");
 		            	String filename = console.next();
-		            	saveJSON(filename, classMap);
+		            	saveJSON(filename+".json");
+		            	saveClassJSON(filename+"classes.json");
+		            	saveRelJSON(filename+"relationships.json");
+		            	
 		            	System.out.println();
 		            	System.out.println("JSON file saved to: " + filename);
 		            	break;
@@ -1087,12 +1048,13 @@ public class Main
 		                //Load JSON case
 				        case 7:
 				        System.out.println();        
-		              	System.out.println("Enter filepath (filepath+filename) of file to open: ");
+		              	System.out.println("Enter file upload: ");
 		            	String filepath = console.next();
-		            	File jsonFile = new File(filepath);
-		            	if (jsonFile.exists()) {
-		            		//System.out.println(loadJSON(filepath));
-		            		System.out.println();
+		            	File jsonClassesFile = new File(filepath+"classes.json");
+		            	File jsonRelationshipsFile = new File(filepath+"relationships.json");
+		            	if (jsonClassesFile.exists() && jsonRelationshipsFile.exists()) {
+		            		loadClassesJSON(jsonClassesFile);
+		            		loadRelationshipsJSON(jsonRelationshipsFile);
 		            	} else {
 		            		System.out.println("No such file exists. Please enter filepath again.");
 		            	}
@@ -1141,254 +1103,321 @@ public class Main
 		                System.out.print("That is not a menu option! Please try again.");
 		                System.out.println();
 		                break;
+		              
 		            }
 		        }
 	    	}
-    		else
-    		{
-    			System.out.println("Invalid argument");
-    			return;
-    		}
-    	}
-    	else 
-    	{
-    		UMLGUI.drawGUI();
-    	}
-    }
- 
-///////////////////////////////////////////////////////////
-//
-//	createClass
-//
-///////////////////////////////////////////////////////////
+    	   
 
-    public static void createNewClassCLI(String className) 
-    {
-        //Checks if the class already exists
-    	if (classMap.containsKey(className))
-    	{
-    		System.out.println("There is already a class with that name.");
-    		return;
-    	}
-    	classMap.put(className, new ClassObject(className));
-	    
-	    System.out.println();
-        System.out.print("The class has been added!");
-        System.out.println();
-    }
-  
-///////////////////////////////////////////////////////////
-//
-//	renameClass
-//
-///////////////////////////////////////////////////////////
-  
-    public static void renameClass(String name, String newName)
-    {
-        //Checks if class exists, doesn't exists or if the name is a duplicate
-       	if (classMap.containsKey(newName))
-    	{
-    		System.out.println("There is a class with the new name.");
-    		return;
-    	}
-        if(!classMap.containsKey(name))
-        {
-           System.out.println("There is not an existing class with the name: " + name + ".");
-    		return; 
-        }
-        //Rename class but putting into map with new name and removing the old name
-        classMap.put(newName, classMap.get(name));
-        classMap.remove(name);
-	    
-	    System.out.println();
-        System.out.print("The class has been renamed!");
-        System.out.println();
-    }
-  
-///////////////////////////////////////////////////////////
-//
-//	deleteClass
-//
-///////////////////////////////////////////////////////////
 
-    public static void deleteClass(String name)
-    {
-        //Checks if class exists
-        if (!classMap.containsKey(name))
-    	{
-    		System.out.println("There is not a class with that name.");
-    		return;
-    	}
-        //Deletes the fields and methods, then deletes the class
-        classMap.get(name).deleteFields();
-        classMap.get(name).deleteMethods();
-        classMap.remove(name);
-        
-        System.out.println();
-        System.out.print("The class has been deleted!");
-        System.out.println();
+    
+
+    public void printInvalidCommand() {
+    	System.out.println("\nInvalid command.\nType help to see a list of all commands.\n");
     }
 
-//////////////////////////////////////////////////////////
-//
-//	createRelationship
-//
-///////////////////////////////////////////////////////////
-
-    public static void createRelationship(String class1, String class2, String ID, String newType)
-    {
-        //Checks to make sure the relationship is not already created
-        if(relMap.containsKey(ID))
-        {
-            System.out.println();
-            System.out.println("This relationship already exists");
-            return;
-        }
-        //Create temp classes to be able to create relationship
-        ClassObject source = classMap.get(class1);
-        ClassObject destination = classMap.get(class2);
-        relMap.put(ID, new Relationships(source, destination, ID, newType)); 
-	    
-	    System.out.println();
-        System.out.print("The relationship has been added!");
-        System.out.println();
-    }
-
-//////////////////////////////////////////////////////////
-//
-//	deleteRelationship
-//
-///////////////////////////////////////////////////////////
-
-    public static void deleteRelationship(String ID)
-    {
-        //Checks to see if relationship exists
-        if (!relMap.containsKey(ID))
-        {
-            System.out.println("There is not a relationship with that ID.");
-            return;
-        }
-        relMap.remove(ID); 
-        
-        System.out.println();
-        System.out.print("The relationship has been deleted!");
-        System.out.println();
-    }
-
-//////////////////////////////////////////////////////////
-//
-//	changeRelationshipType
-//
-///////////////////////////////////////////////////////////
-
-    public static void changeRelationshipType(String ID, String newType)
-    {
-        if(newType.equals(relMap.get(ID).relType()))
-        {
-            System.out.println();
-            System.out.println("There is already the type of the relationship.");
-            return;
-        }
-        relMap.get(ID).changeType(newType);
-
-        System.out.println();
-        System.out.print("The relationship type has been changed!");
-        System.out.println();
+    public void printError(String e) {
+    	System.out.println("\nERROR: " + e);
     }
     
-///////////////////////////////////////////////////////////
-//
-//	printClass
-//
-///////////////////////////////////////////////////////////
-      
-    public static void printClass(String className) 
-    {
-        System.out.println("Class Name: " + className);
-        
-        ClassObject classObj = classMap.get(className);
-        
-        String fieldString = classObj.printFields();
-        fieldString = fieldString.replace("[", "\n  ");
-        fieldString = fieldString.replace("]", "\n");
-        fieldString = fieldString.replace(",", "\n ");
-        
-        String methodString = classObj.printMethods();
-        methodString = methodString.replace("[", "\n  ");
-        methodString = methodString.replace("]", "");
-        methodString = methodString.replace(",", "\n ");
-        methodString = methodString.replace("(", "\n  Parameters: \n    ");
-        methodString = methodString.replace(")", "");
-        methodString = methodString.replace(";", "\n   ");
-        
-        System.out.println(fieldString);
-        System.out.println(methodString);
-        
-    }
-
-    public static void printClasses() 
-    {
-        for (String key : classMap.keySet()) 
-    	{
-            printClass(key);
-            System.out.println();
-    	}
-    }
-
-///////////////////////////////////////////////////////////
-//
-//	listRelationships
-//
-///////////////////////////////////////////////////////////
-
+	///////////////////////////////////////////////////////////
+	//
+	//createClass
+	//
+	///////////////////////////////////////////////////////////
+	
+	public static void createNewClassCLI(String className) 
+	{
+	//Checks if the class already exists
+	if (classMap.containsKey(className))
+	{
+	System.out.println("There is already a class with that name.");
+	return;
+	}
+	classMap.put(className, new ClassObject(className));
+	
+	System.out.println();
+	System.out.print("The class has been added!");
+	System.out.println();
+	}
+	
+	///////////////////////////////////////////////////////////
+	//
+	//renameClass
+	//
+	///////////////////////////////////////////////////////////
+	
+	public static void renameClass(String name, String newName)
+	{
+	//Checks if class exists, doesn't exists or if the name is a duplicate
+	if (classMap.containsKey(newName))
+	{
+	System.out.println("There is a class with the new name.");
+	return;
+	}
+	if(!classMap.containsKey(name))
+	{
+	System.out.println("There is not an existing class with the name: " + name + ".");
+	return; 
+	}
+	//Rename class but putting into map with new name and removing the old name
+	classMap.put(newName, classMap.get(name));
+	classMap.remove(name);
+	
+	System.out.println();
+	System.out.print("The class has been renamed!");
+	System.out.println();
+	}
+	
+	///////////////////////////////////////////////////////////
+	//
+	//deleteClass
+	//
+	///////////////////////////////////////////////////////////
+	
+	public static void deleteClass(String name)
+	{
+	//Checks if class exists
+	if (!classMap.containsKey(name))
+	{
+	System.out.println("There is not a class with that name.");
+	return;
+	}
+	//Deletes the fields and methods, then deletes the class
+	classMap.get(name).deleteFields();
+	classMap.get(name).deleteMethods();
+	classMap.remove(name);
+	
+	System.out.println();
+	System.out.print("The class has been deleted!");
+	System.out.println();
+	}
+	
+	//////////////////////////////////////////////////////////
+	//
+	//createRelationship
+	//
+	///////////////////////////////////////////////////////////
+	
+	public static void createRelationship(String class1, String class2, String ID, String newType)
+	{
+	//Checks to make sure the relationship is not already created
+	if(relMap.containsKey(ID))
+	{
+	System.out.println();
+	System.out.println("This relationship already exists");
+	return;
+	}
+	//Create temp classes to be able to create relationship
+	ClassObject source = classMap.get(class1);
+	ClassObject destination = classMap.get(class2);
+	relMap.put(ID, new Relationships(source, destination, ID, newType)); 
+	
+	System.out.println();
+	System.out.print("The relationship has been added!");
+	System.out.println();
+	}
+	
+	//////////////////////////////////////////////////////////
+	//
+	//deleteRelationship
+	//
+	///////////////////////////////////////////////////////////
+	
+	public static void deleteRelationship(String ID)
+	{
+	//Checks to see if relationship exists
+	if (!relMap.containsKey(ID))
+	{
+	System.out.println("There is not a relationship with that ID.");
+	return;
+	}
+	relMap.remove(ID); 
+	
+	System.out.println();
+	System.out.print("The relationship has been deleted!");
+	System.out.println();
+	}
+	
+	//////////////////////////////////////////////////////////
+	//
+	//changeRelationshipType
+	//
+	///////////////////////////////////////////////////////////
+	
+	public static void changeRelationshipType(String ID, String newType)
+	{
+	if(newType.equals(relMap.get(ID).relType()))
+	{
+	System.out.println();
+	System.out.println("There is already the type of the relationship.");
+	return;
+	}
+	relMap.get(ID).changeType(newType);
+	
+	System.out.println();
+	System.out.print("The relationship type has been changed!");
+	System.out.println();
+	}
+	
+	///////////////////////////////////////////////////////////
+	//
+	//printClass
+	//
+	///////////////////////////////////////////////////////////
+	
+	public static void printClass(String className) 
+	{
+	System.out.println("Class Name: " + className);
+	
+	ClassObject classObj = classMap.get(className);
+	
+	String fieldString = classObj.printFields();
+	fieldString = fieldString.replace("[", "\n  ");
+	fieldString = fieldString.replace("]", "\n");
+	fieldString = fieldString.replace(",", "\n ");
+	
+	String methodString = classObj.printMethods();
+	methodString = methodString.replace("[", "\n  ");
+	methodString = methodString.replace("]", "");
+	methodString = methodString.replace(",", "\n ");
+	methodString = methodString.replace("(", "\n  Parameters: \n    ");
+	methodString = methodString.replace(")", "");
+	methodString = methodString.replace(";", "\n   ");
+	
+	System.out.println(fieldString);
+	System.out.println(methodString);
+	
+	}
+	
+	public static void printClasses() 
+	{
+	/* for (String key : classMap.keySet()) 
+	{
+	printClass(key);
+	System.out.println();
+	}*/
+	System.out.println(classMap);
+	System.out.println(relMap);
+	}
+	
+	///////////////////////////////////////////////////////////
+	//
+	//listRelationships
+	//
+	///////////////////////////////////////////////////////////
+	
 	public static void listRelationships()	
-    {
+	{
 		System.out.println("ID: Type, Source, Dest");
 		for (String key : relMap.keySet())
 		{
-			System.out.print(key + ": ");
-			System.out.println(relMap.get(key).relType() + ", " + relMap.get(key).sourceName() + ", " + relMap.get(key).destinationName());
-		}
+		System.out.print(key + ": ");
+		System.out.println(relMap.get(key).relType() + ", " + relMap.get(key).sourceName() + ", " + relMap.get(key).destinationName());
+	}
 	}
 	
-///////////////////////////////////////////////////////////
-//
-//	saveJSON(String, Map<String, Class>)
-//
-//	function that creates and saves classMap to a JSON file using 
-//	a prompted file name and the classMap.
-//
-///////////////////////////////////////////////////////////
-
-    public static void saveJSON(String name, Map<String, ClassObject> map) throws IOException{
-    	//converts map into JSON object
-    	String s = map.toString();
-    	// writing map to JSON file
-    	try {
-    		FileWriter file = new FileWriter(name);
-    		file.write(s.toString());
-    		file.close();
-    	} catch (IOException e) {
-    		e.printStackTrace();
-            System.out.println("The filepath does not exist. Enter a correct filepath.");
-    	}
-    }
+	///////////////////////////////////////////////////////////
+	//
+	//saveJSON(String, Map<String, Class>)
+	//
+	//function that creates and saves classMap to a JSON file using 
+	//a prompted file name and the classMap.
+	//
+	///////////////////////////////////////////////////////////
+	
+	/**
+	* Method that saves a UML model to a JSON file
+	* @param name the JSON file
+	* @param map stores the model
+	* @throws IOException
+	*/
+	public static void saveJSON(String name) throws IOException{
+		UMLModel model = new UMLModel(classMap, relMap);
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+		ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
+		String fileText = writer.writeValueAsString(model);
+		FileWriter file = new FileWriter(name);
+		file.write(fileText);
+		file.close();
+	}
+	
+	/**
+	* Method that saves the classes to JSON file
+	* @param name the JSON file
+	* @throws IOException
+	*/
+	public static void saveClassJSON(String name) throws IOException{
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+		ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
+		String fileText = writer.writeValueAsString(classMap);
+		FileWriter file = new FileWriter(name);
+		file.write(fileText);
+		file.close();
+	}
+	
+	/**
+	* Method that saves the relationships to JSON file
+	* @param name the JSON file
+	* @throws IOException
+	*/
+	public static void saveRelJSON(String name) throws IOException{
+	ObjectMapper mapper = new ObjectMapper();
+	mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+	ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
+	String fileText = writer.writeValueAsString(relMap);
+	FileWriter file = new FileWriter(name);
+	file.write(fileText);
+	file.close();
+	}
+	
+	///////////////////////////////////////////////////////////
+	//
+	//loadJSON(String, Map<String, Class>)
+	//
+	//function that loads a JSON file using 
+	//a prompted filepath.
+	//
+	///////////////////////////////////////////////////////////
+	
+	/**
+	* Method to load in a JSON file that stores classes 
+	* @param filepath the JSON file
+	* @throws IOException
+	*/
+	public static void loadClassesJSON(File filepath) throws IOException {
+	ObjectMapper objectMapper = new ObjectMapper();
+	objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+	try {
+	classMap.clear();
+	String file = FileUtils.readFileToString(filepath, StandardCharsets.UTF_8);
+	HashMap<String, ClassObject> newMap = objectMapper.readValue(file, HashMap.class);
+	classMap = newMap;
+	}
+	catch(Exception e) {
+	e.printStackTrace();
+	}
+	}   
+	
+	/**
+	* Method to load in the JSON file that stores relationships
+	* @param filepath
+	* @throws IOException
+	*/
+	public static void loadRelationshipsJSON(File filepath) throws IOException {
+	ObjectMapper objectMapper = new ObjectMapper();
+	objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+	try {
+	classMap.clear();
+	String file = FileUtils.readFileToString(filepath, StandardCharsets.UTF_8);
+	HashMap<String, Relationships> newMap = objectMapper.readValue(file, HashMap.class);
+	relMap = newMap;
+	}
+	catch(Exception e) {
+	e.printStackTrace();
+	}
+	} 
     
-///////////////////////////////////////////////////////////
-//
-// loadJSON(String, Map<String, Class>)
-//
-// function that loads a JSON file using 
-// a prompted filepath.
-//
-///////////////////////////////////////////////////////////
-    
-    /*public static Map<String, Class> loadJSON(String filepath) throws IOException, FileNotFoundException {
-        // added JAR file
-    	String file = FileUtils.readFileToString(new File(filepath), StandardCharsets.UTF_8);    	
-    	ObjectMapper objectMapper = new ObjectMapper();
-    	Map<String, Class> newObj = objectMapper.readValue(file, HashMap.class);
-    	classMap = newObj;
-    	return newObj;
-    }*/
 }
