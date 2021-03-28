@@ -1207,6 +1207,7 @@ public class UMLGUI {
 		String methodName = textBox2.getText();
 		String newMethodName = textBox3.getText();
 		
+		
 		if (!model.hasClass(className))
 			notExistPanel();
 		else if (!model.hasMethod(className, methodName))

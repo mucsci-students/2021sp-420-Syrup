@@ -40,6 +40,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JMenu;
 import javax.swing.JTextField;
@@ -58,6 +59,8 @@ public class classBox extends JComponent {
 	private JButton renameClassButton = null;
 	
 	private JPanel panel = null;
+	private JPanel methodPanel = null;
+	private JPanel fieldPanel = null;
 	
 	private JTextField textBox1;
     private JTextField textBox2;
@@ -71,6 +74,10 @@ public class classBox extends JComponent {
     private JMenu deleteMethod;
     private ArrayList<JButton> methodButtonList;
     private ArrayList<JButton> fieldButtonList;
+    
+    private HashMap<String, JLabel> methodMap = new HashMap();
+    private HashMap<String, JLabel> paramMap = new HashMap();
+    private HashMap<String, JLabel> fieldMap = new HashMap();
     
     private UMLController controller;
     
@@ -96,13 +103,13 @@ public class classBox extends JComponent {
 		panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		
-		JPanel FieldPanel = new JPanel();
-		FieldPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		fieldPanel = new JPanel();
+		fieldPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		
-		JPanel methodPanel = new JPanel();
+		methodPanel = new JPanel();
 		methodPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		
-		panel.add(FieldPanel);
+		panel.add(fieldPanel);
 		panel.add(methodPanel);
 		
 		////////////////////////////////
@@ -137,7 +144,7 @@ public class classBox extends JComponent {
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(91)
 					.addComponent(className, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-				.addComponent(FieldPanel, GroupLayout.PREFERRED_SIZE, 275, GroupLayout.PREFERRED_SIZE))
+				.addComponent(fieldPanel, GroupLayout.PREFERRED_SIZE, 275, GroupLayout.PREFERRED_SIZE))
 			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 			);
 			
@@ -146,7 +153,7 @@ public class classBox extends JComponent {
 			.addGroup(gl_panel.createSequentialGroup()
 			.addComponent(className, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
 			.addPreferredGap(ComponentPlacement.RELATED)
-			.addComponent(FieldPanel, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+			.addComponent(fieldPanel, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
 			.addPreferredGap(ComponentPlacement.RELATED)
 			.addComponent(methodPanel, GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
 			);
@@ -212,5 +219,43 @@ public class classBox extends JComponent {
 	
 	public JPanel boxPanel() {
 		return panel;
+	}
+	
+	public JPanel methodPanel() {
+		return methodPanel;
+	}
+	
+	public JPanel fieldPanel() {
+		return fieldPanel;
+	}
+	
+	public void addMethod(String methodName, String methodType) {
+		JLabel method = new JLabel(methodName + ", " + methodType);
+		methodMap.put(methodName, method);
+		methodPanel.add(method);
+	}
+	
+	public void addParam(String paramName, String paramType) {
+		JLabel param = new JLabel("(" + paramName + ", " + paramType + ")");
+		methodPanel.add(param);
+	}
+	
+	public JPanel deleteMethod(String methodName) {
+		methodPanel.remove(methodMap.get(methodName));
+		return methodPanel;
+	}
+	
+	public void renameMethodName(String methodName, String methodNewName) {
+
+	}
+	
+	public JPanel deleteParam(String paramName) {
+		methodPanel.remove(paramMap.get(paramName));
+		return methodPanel;
+	}
+	
+	public JPanel deleteField(String fieldName) {
+		fieldPanel.remove(fieldMap.get(fieldName));
+		return fieldPanel;
 	}
 }

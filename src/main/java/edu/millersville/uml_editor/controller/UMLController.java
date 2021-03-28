@@ -74,27 +74,66 @@ public class UMLController {
     
 	////////////////////////////////
 	//
-	// Popup menu: Add
+	// Popup menu: Class
 	//
 	////////////////////////////////
     
-	////////////////////////////////
-	//
-	// Popup menu: Delete
-	//
-	////////////////////////////////
-	    
-	////////////////////////////////
-	//
-	// Popup menu: Rename
-	//
-	////////////////////////////////
+    public ActionListener deleteClassCall(){
+        return (ActionEvent e) -> {
+        	String className = gui.delClassGet();
+            if(model.hasClass(className)){
+            	gui.notExistFalse();
+                model.deleteClassGUI(className);
+                gui.deleteClassAction();
+            }
+            else{
+                gui.notExistTrue();
+            }
+        };
+    }
     
     public ActionListener renameClassCall(){
         return (ActionEvent e) -> {
             gui.renameActionPerformed();
         };
     }
+    
+	////////////////////////////////
+	//
+	// Popup menu: Method
+	//
+	////////////////////////////////
+    
+    public ActionListener addMethodCall(){
+        return (ActionEvent e) -> {
+            gui.addMethodAction();
+        };
+    }
+    
+    public ActionListener addParamInMethodCall(){
+        return (ActionEvent e) -> {
+            gui.addParamToList();
+        };
+    }
+    
+    public ActionListener deleteMethodCall(){
+        return (ActionEvent e) -> {
+            gui.deleteMethodAction();
+        };
+    }
+    
+    public ActionListener renameMethodCall(){
+        return (ActionEvent e) -> {
+            gui.renameMethodAction();
+        };
+    }
+	    
+	////////////////////////////////
+	//
+	// Popup menu: Field
+	//
+	////////////////////////////////
+
     
     
 

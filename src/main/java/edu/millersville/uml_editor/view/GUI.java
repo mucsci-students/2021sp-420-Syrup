@@ -15,6 +15,7 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.swing.JMenuItem;
 import javax.swing.BorderFactory;
@@ -52,6 +53,7 @@ public class GUI {
 	private JFrame Uml_Editor;
 	
 	private JLabel dup1, dup2, dup3, dup4, dup5, dup6 = null;
+	private JLabel notEx1 = null;
 	private JLabel classDupLabel = null;
 
     private JTextField textBoxClassDel;
@@ -80,7 +82,10 @@ public class GUI {
     
     private Map<String, classBox> boxMap;
     
-    private boolean isMethod = false;
+    private Vector<String> paramListName = new Vector<String>();
+    private Vector<String> paramListType = new Vector<String>();
+    String[] nameArray;
+    String[] typeArray;
     
     private UMLController controller;
     private UMLModel model;
@@ -139,6 +144,10 @@ public class GUI {
 		Uml_Editor.setBounds(100, 100, 1266, 683);
 		Uml_Editor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Uml_Editor.setVisible(true);
+		
+        classDupLabel = new JLabel("");
+		classDupLabel.setFont(new Font("Serif", Font.BOLD, 16));
+		classDupLabel.setForeground(Color.RED);
 
 		////////////////////////////////////////
 		//
@@ -181,11 +190,16 @@ public class GUI {
         JMenu deleteClass = new JMenu("Delete");
         classOption.add(deleteClass);
         
+		notEx1 = notExist();	
+        
         deleteClass.add(classNameDel);
         textBoxClassDel = new JTextField();
 		textBoxClassDel.setColumns(15);
 		deleteClass.add(textBoxClassDel);
 		deleteClass.add(classDelButton);
+		deleteClass.add(classDupLabel);
+		//notEx1.setVisible(false);
+		classDelButton.addActionListener(controller.deleteClassCall());
         
 		////////////////////////////////
 		//
@@ -279,8 +293,8 @@ public class GUI {
 		addMethod.add(paramType);
 		addMethod.add(paramList);
 		addMethod.add(done);
-		addMethod.add(dup2);
-		dup2.setVisible(false);
+		paramList.addActionListener(controller.addParamInMethodCall());
+		done.addActionListener(controller.addMethodCall());
 		
         
 		////////////////////////////////
@@ -298,6 +312,8 @@ public class GUI {
 		JLabel delMethodNameLabel = new JLabel("Method Name:");
 		delMethodNameLabel.setFont(new Font("Serif", Font.BOLD, 12));
 		
+        JButton methodDelButton = new JButton("Delete");
+		
 		delMethodCN = new JTextField();
 		delMethodCN.setColumns(15);
 		deleteMethod.add(delMethodClassName);
@@ -306,6 +322,9 @@ public class GUI {
 		delMethodName = new JTextField();
 		delMethodName.setColumns(15);
 		deleteMethod.add(delMethodName);
+		deleteMethod.add(methodDelButton);
+		methodDelButton.addActionListener(controller.deleteMethodCall());
+		
 
 		
 		////////////////////////////////
@@ -326,6 +345,8 @@ public class GUI {
 		JLabel methodNewName = new JLabel("New Method Name:");
 		methodNewName.setFont(new Font("Serif", Font.BOLD, 12));
 		
+		JButton rename = new JButton("Rename");
+		
 		dup3 = dup();
 		renameMethod.add(renMethodClassName);
 		renClassName = new JTextField();
@@ -341,6 +362,8 @@ public class GUI {
 		renameMethod.add(renameMethodNewName);
 		renameMethod.add(dup3);
 		dup3.setVisible(false);
+		renameMethod.add(rename);
+		rename.addActionListener(controller.renameMethodCall());
 		
 		////////////////////////////////
 		//
@@ -464,10 +487,6 @@ public class GUI {
 		// addClassButton
         //
 		////////////////////////////////
-        
-        classDupLabel = new JLabel("");
-		classDupLabel.setFont(new Font("Serif", Font.BOLD, 16));
-		classDupLabel.setForeground(Color.RED);
 		
 		JButton addClassButton = new JButton("Add Class");
 		addClassButton.addActionListener(controller.printClassListener());
@@ -545,15 +564,29 @@ public class GUI {
 	
 	////////////////////////////////
 	//
-	// renameClassAction
+	// Class Actions
 	//
 	////////////////////////////////
+    
+	public void deleteClassAction()
+	{	
+		String className = textBoxClassDel.getText();
+		
+		Uml_Editor.remove(boxMap.get(className).boxPanel());
+		boxMap.remove(className);
+		textBoxClassDel.setText("");
+		
+		Uml_Editor.repaint();
+	}
 	
 	public void renameActionPerformed()
 	{	
 		String oldName = renameClassOld.getText();
 		String newName = renameClassNew.getText();
 		
+		classDupFalse();
+		
+		//NEED TO ADD ERROR CHECKS
 		boxMap.get(oldName).renameClassName(newName);
 		boxMap.put(newName, boxMap.get(oldName));
 		model.renameClassGUI(oldName, newName);
@@ -562,11 +595,143 @@ public class GUI {
 		renameClassOld.setText("");
 		renameClassNew.setText("");
 	}
-    
 	
 	////////////////////////////////
 	//
-	// Duplicate helpers
+	// Method Actions
+	//
+	////////////////////////////////
+	
+	public void addMethodAction() {
+		String className = addMethodCN.getText();
+		String methodName = addMethodName.getText();
+		String methodType = addMethodType.getText();
+		
+		classDupFalse();
+		notExistFalse();
+		if (!model.hasClass(className)) {
+    		notExistTrue();
+			return;
+		}
+    	else if (model.hasMethod(className, methodName)) {
+			classDupTrue();
+			return;
+    	}
+    	else
+    	{
+    		model.addMethod(className, methodName, methodType);
+    	}
+		
+		if(!paramListName.isEmpty()) {
+			String parName;
+			String parType;
+			nameArray = new String[paramListName.size()];
+			typeArray = new String[paramListType.size()];
+			paramListName.copyInto(nameArray);
+			paramListType.copyInto(typeArray);
+			
+			for(int i = 0; i < paramListName.size(); i++) {
+				parName = nameArray[i];
+				parType = typeArray[i];
+				model.addParameter(className, methodName, parName, parType);
+			}
+		}
+		
+		printMethod();
+		paramListName.clear();
+		paramListType.clear();
+		addMethodCN.setText("");
+		addMethodName.setText("");
+		addMethodType.setText("");
+	}
+	
+	public void addParamToList() {
+		String parName = paramName.getText();
+		String parType = paramType.getText();
+		
+		paramListName.add(parName);
+		paramListType.add(parType);
+		
+		paramName.setText("");
+		paramType.setText("");
+	}
+	
+	public void printMethod() {
+		String className = addMethodCN.getText();
+		String methodName = addMethodName.getText();
+		String methodType = addMethodType.getText();
+		
+		if(!paramListName.isEmpty()) {
+			String parName;
+			String parType;
+			nameArray = new String[paramListName.size()];
+			typeArray = new String[paramListType.size()];
+			paramListName.copyInto(nameArray);
+			paramListType.copyInto(typeArray);
+			
+			boxMap.get(className).addMethod(methodName, methodType);
+			for(int i = 0; i < paramListName.size(); i++) {
+				parName = nameArray[i];
+				parType = typeArray[i];
+				boxMap.get(className).addParam(parName, parType);
+			}
+			Uml_Editor.repaint();
+			return;
+		}
+		else {
+			boxMap.get(className).addMethod(methodName, methodType);
+			Uml_Editor.repaint();
+		}
+	}
+	
+	public void deleteMethodAction() {
+		String delMethodClassName = delMethodCN.getText();
+		String delMethodN = delMethodName.getText();
+		
+		classDupFalse();
+		notExistFalse();
+		if (!model.hasClass(delMethodClassName) || !model.hasMethod(delMethodClassName, delMethodN))
+			notExistTrue();
+		else
+		{
+			model.deleteMethod(delMethodClassName, delMethodN);
+			Uml_Editor.remove(boxMap.get(delMethodClassName).deleteMethod(delMethodN));
+		}
+		
+		delMethodCN.setText("");
+		delMethodName.setText("");
+	}
+	
+	public void renameMethodAction() {
+		String className = renClassName.getText();
+		String methodName = renameMethodOldName.getText();
+		String newMethodName = renameMethodNewName.getText();
+		
+		classDupFalse();
+		notExistFalse();
+		if (!model.hasClass(className))
+			notExistTrue();
+		else if (!model.hasMethod(className, methodName))
+			notExistTrue();
+		else if (model.hasMethod(className, newMethodName))
+			classDupTrue();
+		else
+		{
+			model.renameMethod(className, methodName, newMethodName);
+			//NEED TO FIX RENAME METHOD FUNCTION 
+			boxMap.get(methodName).renameMethodName(methodName, newMethodName);
+			boxMap.put(newMethodName, boxMap.get(methodName));
+			boxMap.remove(methodName);
+			Uml_Editor.repaint();
+			renClassName.setText("");
+			renameMethodOldName.setText("");
+			renameMethodNewName.setText("");
+		}
+	}
+	
+	////////////////////////////////
+	//
+	// Error Checking helpers
 	//
 	////////////////////////////////
     
@@ -577,11 +742,31 @@ public class GUI {
 		return dup;
 	}
 	
+	public JLabel notExist(){
+		JLabel notExist = new JLabel("This does not exist!");
+		notExist.setFont(new Font("Serif", Font.BOLD, 12));
+		notExist.setForeground(Color.RED);	
+		notExist.setVisible(false);
+		return notExist;
+	}
+	
 	public void classDupTrue() {
 		classDupLabel.setText("This is a duplicate name!");
 	}
 	
 	public void classDupFalse() {
 		classDupLabel.setText("");
+	}
+	
+	public void notExistTrue() {
+		classDupLabel.setText("This does not exist!");
+	}
+	
+	public void notExistFalse() {
+		classDupLabel.setText("");
+	}
+	
+	public String delClassGet() {
+		return textBoxClassDel.getText();
 	}
 }
