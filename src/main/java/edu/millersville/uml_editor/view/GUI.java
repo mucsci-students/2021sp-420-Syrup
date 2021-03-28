@@ -49,7 +49,7 @@ import edu.millersville.uml_editor.model.*;
 import edu.millersville.uml_editor.controller.*;
 
 
-public class GUI {
+public class GUI implements ViewInterface{
 	private JFrame Uml_Editor;
 	
 	private JLabel dup1, dup2, dup3, dup4, dup5, dup6 = null;
@@ -100,7 +100,7 @@ public class GUI {
 	/**
 	 * Launch the application.
 	 */
-    public static void drawGUI() {
+    public void drawGUI() {
 
         try {
             // Set System L&F

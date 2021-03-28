@@ -18,7 +18,7 @@ public class Main
 	
     public static void main(String[] args) throws IOException, ParseException
     {
-    	System.out.println("Enter mode: ");
+    	System.out.print("Enter mode: ");
     	Scanner console = new Scanner(System.in);
     	String line = console.next();
     	UMLModel model = new UMLModel();
@@ -30,9 +30,8 @@ public class Main
     	    control = new Controller(model, view);
     	    control.init();
     	} else if(line.equals("gui")){
-    	    view = new ViewTemplate(ViewTemplate.InterfaceType.GUI);
-    	    control = new Controller(model);
-    	    control.initGUI();
+    	    GUI view2 = new GUI(model);
+    	    view2.drawGUI();
     	} else {
     	    System.out.println(
     		    "You did not enter the correct mode. Please enter a mode.");
