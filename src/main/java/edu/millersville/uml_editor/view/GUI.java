@@ -424,6 +424,8 @@ public class GUI implements ViewInterface{
 		JLabel deleteFieldTypeLabel = new JLabel("Field Name:");
 		deleteFieldTypeLabel.setFont(new Font("Serif", Font.BOLD, 12));
 		
+		JButton deleteFieldButton = new JButton("Delete");
+		
 		dup4 = dup();
 		
 		deleteFieldClassName = new JTextField();
@@ -434,6 +436,8 @@ public class GUI implements ViewInterface{
 		deleteFieldName = new JTextField();
 		deleteFieldName.setColumns(15);
 		deleteField.add(deleteFieldName);
+		deleteField.add(deleteFieldButton);
+		deleteFieldButton.addActionListener(controller.deleteFieldCall());
 
 		
 		////////////////////////////////
@@ -695,10 +699,10 @@ public class GUI implements ViewInterface{
 		{
 			model.deleteMethod(delMethodClassName, delMethodN);
 			Uml_Editor.remove(boxMap.get(delMethodClassName).deleteMethod(delMethodN));
+			Uml_Editor.repaint();
+			delMethodCN.setText("");
+			delMethodName.setText("");
 		}
-		
-		delMethodCN.setText("");
-		delMethodName.setText("");
 	}
 	
 	public void renameMethodAction() {
@@ -753,6 +757,22 @@ public class GUI implements ViewInterface{
 			addFieldName.setText("");
 			addFieldType.setText("");
     	}
+	}
+	
+	public void deleteFieldAction() {
+		String className = deleteFieldClassName.getText();
+		String fieldName = deleteFieldName.getText();
+		
+		if (!model.hasClass(className) || !model.hasField(className, fieldName))
+			notExistTrue();
+		else
+		{
+			model.deleteField(className, fieldName);
+			Uml_Editor.remove(boxMap.get(className).deleteField(fieldName));
+			Uml_Editor.repaint();
+			deleteFieldClassName.setText("");
+			deleteFieldName.setText("");
+		}
 	}
 	
 	////////////////////////////////

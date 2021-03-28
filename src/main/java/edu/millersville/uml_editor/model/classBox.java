@@ -304,12 +304,6 @@ public class classBox extends JComponent {
 		fieldPanel.add(field);
 	}
 
-	
-	/*public JPanel deleteParam(String paramName) {
-		methodPanel.remove(paramMap.get(paramName));
-		return methodPanel;
-	}*/
-	
 	public JPanel deleteField(String fieldName) {
 		fieldPanel.remove(fieldMap.get(fieldName));
 		return fieldPanel;

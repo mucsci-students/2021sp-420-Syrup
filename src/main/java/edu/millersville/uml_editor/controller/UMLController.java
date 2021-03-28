@@ -142,7 +142,7 @@ public class UMLController {
     
     public ActionListener deleteFieldCall(){
         return (ActionEvent e) -> {
-            //gui.deleteFieldAction();
+            gui.deleteFieldAction();
         };
     }
     
