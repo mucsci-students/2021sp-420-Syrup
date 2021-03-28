@@ -1022,9 +1022,6 @@ public class UMLGUI extends ViewTemplate implements ViewInterface{
     public void createMethodPanel(){
         //checks to see if the panel was already created
         panelCheck(createMethodPanel);
-
-        JLabel className = new JLabel("Enter Class:");
-        className.setFont(new Font("Serif", Font.BOLD, 16));
         
         JLabel methodName = new JLabel("Enter Method Name:");
         methodName.setFont(new Font("Serif", Font.BOLD, 16));
@@ -1035,26 +1032,18 @@ public class UMLGUI extends ViewTemplate implements ViewInterface{
         JButton addParamsButton = new JButton("Add Parameters");
         addParamsButton.addActionListener(controller.addParamInMethodCall());
         
-        JButton backButton = new JButton("<--");
-        backButton.addActionListener(controller.getPrintPageListener());
         
         textBox1 = new JTextField();
         textBox2 = new JTextField();
-        textBox3 = new JTextField();
-
         createMethodPanel = new JPanel(new GridLayout(8, 1, 8, 8));
         
-        createMethodPanel.add(className);
+        createMethodPanel.add(methodName);
         createMethodPanel.add(textBox1);
         
-        createMethodPanel.add(methodName);
+        createMethodPanel.add(methodType);
         createMethodPanel.add(textBox2);
         
-        createMethodPanel.add(methodType);
-        createMethodPanel.add(textBox3);
-        
         createMethodPanel.add(addParamsButton);
-        createMethodPanel.add(backButton);
         
         createMethodPanel.setBorder(BorderFactory.createEmptyBorder(10, 8, 10, 8));
         changePanel(createMethodPanel);
@@ -1222,6 +1211,7 @@ public class UMLGUI extends ViewTemplate implements ViewInterface{
 		String className = textBox1.getText();
 		String methodName = textBox2.getText();
 		String newMethodName = textBox3.getText();
+		
 		
 		if (!model.hasClass(className))
 			notExistPanel();

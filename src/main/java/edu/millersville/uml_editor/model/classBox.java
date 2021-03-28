@@ -1,0 +1,261 @@
+package edu.millersville.uml_editor.model;
+
+import javax.swing.JFrame;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JTextArea;
+import javax.swing.JTextPane;
+import javax.swing.JLayeredPane;
+import java.awt.Component;
+import javax.swing.Box;
+import java.awt.Choice;
+import java.awt.List;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JEditorPane;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import java.awt.TextArea;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JDesktopPane;
+import javax.swing.JPanel;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+import java.awt.BorderLayout;
+import javax.swing.SwingConstants;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import javax.swing.JPopupMenu;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.swing.JMenu;
+import javax.swing.JTextField;
+import edu.millersville.uml_editor.model.*;
+import edu.millersville.uml_editor.view.GUI;
+import edu.millersville.uml_editor.controller.*;
+
+public class classBox extends JComponent {
+
+	private JFrame Uml_Editor;
+	
+	private JLabel dup1, dup2, dup3 = null;
+	private JLabel className = null;
+	private JLabel classDupLabel = null;
+	
+	private JButton renameClassButton = null;
+	
+	private JPanel panel = null;
+	private JPanel methodPanel = null;
+	private JPanel fieldPanel = null;
+	
+	private JTextField textBox1;
+    private JTextField textBox2;
+    private JTextField textBox3;
+    private JTextField textBox4;
+    private JTextField textBox5;
+    private JTextField textBox6;
+    private JTextField paramName;
+    private JTextField paramType;
+    
+    private JMenu deleteMethod;
+    private ArrayList<JButton> methodButtonList;
+    private ArrayList<JButton> fieldButtonList;
+    
+    private HashMap<String, JLabel> methodMap = new HashMap();
+    private HashMap<String, JLabel> paramMap = new HashMap();
+    private HashMap<String, JLabel> fieldMap = new HashMap();
+    
+    private UMLController controller;
+    
+    private boolean isMethod = false;
+
+    public classBox(UMLController c) {
+    	className = new JLabel("New Class");
+    	controller = c;
+    	initialize();
+    }
+    
+    
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	public void initialize() {
+		
+		////////////////////////////////
+		//
+		// Create class box display
+		//
+		////////////////////////////////
+		panel = new JPanel();
+		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		
+		fieldPanel = new JPanel();
+		fieldPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		
+		methodPanel = new JPanel();
+		methodPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		
+		panel.add(fieldPanel);
+		panel.add(methodPanel);
+		
+		////////////////////////////////
+		//
+		// Movement Listener
+		//
+		////////////////////////////////
+		
+		panel.addMouseMotionListener(new MouseMotionAdapter(){
+			public void mouseDragged(MouseEvent e) {
+				e.translatePoint(e.getComponent().getLocation().x, e.getComponent()
+				  .getLocation().y);
+				panel.setLocation(e.getX(), e.getY());
+			}
+		});
+		
+			////////////////////////////////
+			//
+			// Default class label
+			//
+			////////////////////////////////
+		
+			className.setFont(new Font("Serif", Font.BOLD, 16));
+			
+			GroupLayout gl_panel = new GroupLayout(panel);
+			
+			gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+			.addGroup(gl_panel.createSequentialGroup()
+			.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+				.addComponent(methodPanel, GroupLayout.PREFERRED_SIZE, 275, GroupLayout.PREFERRED_SIZE)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(91)
+					.addComponent(className, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addComponent(fieldPanel, GroupLayout.PREFERRED_SIZE, 275, GroupLayout.PREFERRED_SIZE))
+			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+			);
+			
+			gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+			.addGroup(gl_panel.createSequentialGroup()
+			.addComponent(className, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+			.addPreferredGap(ComponentPlacement.RELATED)
+			.addComponent(fieldPanel, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+			.addPreferredGap(ComponentPlacement.RELATED)
+			.addComponent(methodPanel, GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
+			);
+			
+			panel.setVisible(true);
+			panel.setLayout(gl_panel);
+		}
+		
+		////////////////////////////////
+		//
+		// Popup menu Listeners
+		//
+		////////////////////////////////
+		private void addPopup(Component component, final JPopupMenu popup) {
+			component.addMouseListener(new MouseAdapter() {
+				public void mousePressed(MouseEvent e) {
+					if (e.isPopupTrigger())
+						showMenu(e);
+					}
+				public void mouseReleased(MouseEvent e) {
+					if (e.isPopupTrigger()) 
+							showMenu(e);
+				}
+				private void showMenu(MouseEvent e) {
+					popup.show(e.getComponent(), e.getX(), e.getY());
+				}
+			});
+
+		}
+		
+	////////////////////////////////
+	//
+	// renameClass
+	//
+	////////////////////////////////
+		
+	public String getOldName() {
+		return textBox5.getText();
+	}	
+	
+	public String getNewName() {
+		return textBox6.getText();
+	}
+	
+	public String getClassName() {
+		return className.getText();
+	}
+	
+	public classBox getClassBox() {
+		return this;
+	}
+	
+	public void renameClassName(String newName) {
+		className.setText(newName);
+	}
+		
+	public JLabel dup(){
+		JLabel dup = new JLabel("This is a duplicate!");
+		dup.setFont(new Font("Serif", Font.BOLD, 12));
+		dup.setForeground(Color.RED);	
+		return dup;
+	}
+	
+	public JPanel boxPanel() {
+		return panel;
+	}
+	
+	public JPanel methodPanel() {
+		return methodPanel;
+	}
+	
+	public JPanel fieldPanel() {
+		return fieldPanel;
+	}
+	
+	public void addMethod(String methodName, String methodType) {
+		JLabel method = new JLabel(methodName + ", " + methodType);
+		methodMap.put(methodName, method);
+		methodPanel.add(method);
+	}
+	
+	public void addParam(String paramName, String paramType) {
+		JLabel param = new JLabel("(" + paramName + ", " + paramType + ")");
+		methodPanel.add(param);
+	}
+	
+	public JPanel deleteMethod(String methodName) {
+		methodPanel.remove(methodMap.get(methodName));
+		return methodPanel;
+	}
+	
+	public void renameMethodName(String methodName, String methodNewName) {
+
+	}
+	
+	public JPanel deleteParam(String paramName) {
+		methodPanel.remove(paramMap.get(paramName));
+		return methodPanel;
+	}
+	
+	public JPanel deleteField(String fieldName) {
+		fieldPanel.remove(fieldMap.get(fieldName));
+		return fieldPanel;
+	}
+}
