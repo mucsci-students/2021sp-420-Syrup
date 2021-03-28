@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.jline.builtins.Completers.TreeCompleter;
 import org.jline.reader.LineReader;
+import org.jline.reader.LineReaderBuilder;
 import org.jline.reader.impl.completer.AggregateCompleter;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
@@ -11,6 +12,8 @@ import org.jline.terminal.TerminalBuilder;
 import edu.millersville.uml_editor.Commands.AddCommand;
 import edu.millersville.uml_editor.Commands.LoadCommand;
 import edu.millersville.uml_editor.Commands.PrintCommand;
+import edu.millersville.uml_editor.Commands.RemoveCommand;
+import edu.millersville.uml_editor.Commands.RenameCommand;
 import edu.millersville.uml_editor.Commands.SaveCommand;
 import edu.millersville.uml_editor.model.UMLModel;
 import edu.millersville.uml_editor.view.CLIView;
@@ -38,7 +41,7 @@ public class CLIController {
 
         switch(commands[0]) {
             case "add":
-            AddCommand add = new AddCommand();
+            AddCommand add = new AddCommand(model, view, commands);
             break;
 
             case "save":
@@ -54,11 +57,11 @@ public class CLIController {
             break;
 
             case "remove":
-            // TODO
+            RemoveCommand remove = new RemoveCommand();
             break;
 
             case "rename":
-            // TODO
+            RenameCommand rename = new RenameCommand();
             break;
 
             default:

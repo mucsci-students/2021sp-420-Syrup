@@ -12,7 +12,7 @@ public class TabCompleter {
     public TabCompleter() {
         this.completer = new AggregateCompleter(
             new ArgumentCompleter(
-                new StringsCompleter("add"),
+                new StringsCompleter("add"), 
                 new StringsCompleter("class", "field", "method", "parameter"),
                 new NullCompleter()
             ),
