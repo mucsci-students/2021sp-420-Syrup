@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import edu.millersville.uml_editor.model.*;
 import edu.millersville.uml_editor.controller.*;
 
-public class UMLGUI {
+public class GUIView {
     private JFrame umlEditor = null;
     private JPanel menuPanel = null;
     
@@ -60,7 +60,7 @@ public class UMLGUI {
     private UMLController controller;
     private UMLModel model;
 
-    public UMLGUI(UMLModel m) {
+    public GUIView(UMLModel m) {
         this.model = m;
         this.controller = null;
     }
@@ -1606,7 +1606,7 @@ public class UMLGUI {
         }
 
         UMLModel model = new UMLModel();
-        UMLGUI gui = new UMLGUI(model);
+        GUIView gui = new GUIView(model);
         UMLController controller = new UMLController(model, gui);
         gui.setController(controller);
         gui.show();

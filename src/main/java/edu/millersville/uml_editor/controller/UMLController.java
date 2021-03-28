@@ -8,10 +8,10 @@ import edu.millersville.uml_editor.view.*;
 import javax.swing.JLabel;
 
 public class UMLController {
-    private UMLGUI gui;
+    private GUIView gui;
     private UMLModel model;
 
-    public UMLController(UMLModel m, UMLGUI gui) {
+    public UMLController(UMLModel m, GUIView gui) {
         this.model = m;
         this.gui = gui;
     }
