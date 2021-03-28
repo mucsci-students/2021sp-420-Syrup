@@ -11,9 +11,11 @@ This is a GUI and command line program that allows the user to create a UML diag
 
 1. Download our UML [repository](https://github.com/mucsci-students/2021sp-420-Syrup/tree/develop) from Github.
 2. Navigate to the directory the contains our project
-3. Type `mvn package`
-4. To run the GUI version, type `java -jar uml-2.jar`
-5. To run the command line version, type `java -jar uml-2.jar --cli`
+3. Type `mvn clean`
+4. Type `mvn package`
+5. Type `java -jar uml-3.jar` to run the program
+6. For the GUI version, enter `gui` when prompted for the mode.
+7. For the command line version, enter `cli` when prompted for the mode.
 
 ## Authors
 ```
