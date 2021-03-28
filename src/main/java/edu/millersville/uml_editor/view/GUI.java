@@ -100,7 +100,7 @@ public class GUI {
 	/**
 	 * Launch the application.
 	 */
-    public static void main(String[] args) {
+    public static void drawGUI() {
 
         try {
             // Set System L&F

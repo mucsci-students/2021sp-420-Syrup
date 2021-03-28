@@ -17,7 +17,7 @@ public class ViewTemplate {
 
 		    	if (viewtype.equals(InterfaceType.GUI)) {
 		    		try {
-		    			setViewinterface(new UMLGUI());
+		    			setViewinterface(new GUI());
 		    		} catch (Exception e) {
 		    			e.printStackTrace();
 			    }
