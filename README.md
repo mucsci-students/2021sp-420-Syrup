@@ -13,9 +13,8 @@ This is a GUI and command line program that allows the user to create a UML diag
 2. Navigate to the directory the contains our project
 3. Type `mvn clean`
 4. Type `mvn package`
-5. Type `java -jar uml-3.jar` to run the program
-6. For the GUI version, enter `gui` when prompted for the mode.
-7. For the command line version, enter `cli` when prompted for the mode.
+5. For the GUI version, type `java -jar target\uml-3.jar`
+6. For the CLI version, type `java -jar target\uml-3.jar --cli`
 
 ## Authors
 ```
