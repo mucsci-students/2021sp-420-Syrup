@@ -782,6 +782,8 @@ public class GUI implements ViewInterface{
 		String fieldName = fieldCurrent.getText();
 		String newFieldName = fieldNew.getText();
 		
+		classDupFalse();
+		notExistFalse();
 		if (!model.hasClass(className))
 			notExistTrue();
 		else if (!model.hasField(className, fieldName))
