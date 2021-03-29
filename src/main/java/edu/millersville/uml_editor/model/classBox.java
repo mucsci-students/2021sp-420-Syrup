@@ -249,6 +249,7 @@ public class classBox extends JComponent {
 		JLabel method = new JLabel(methodName + ", " + methodType);
 		methodMap.put(methodName, method);
 		methodPanel.add(method);
+		methodPanel.repaint();
 	}
 	
 	public void addParam(String methodName, String paramName, String paramType) {
@@ -264,6 +265,7 @@ public class classBox extends JComponent {
 			paramMap.put(methodName, temp);
 		}
 		methodPanel.add(param);
+		methodPanel.repaint();
 	}
 	
 	public JPanel deleteMethod(String methodName) {
@@ -274,6 +276,7 @@ public class classBox extends JComponent {
 				methodPanel.remove(temp.get(i));
 			}
 		}
+		methodPanel.repaint();
 		return methodPanel;
 	}
 	
@@ -286,10 +289,13 @@ public class classBox extends JComponent {
 		methodMap.put(methodNewName, method);
 		methodMap.remove(methodName);
 		ArrayList<JLabel> newList = paramMap.get(methodNewName);
-		for(int i = 0; i < newList.size(); i++) {
-			methodPanel.remove(newList.get(i));
-			methodPanel.add(newList.get(i));
+		if(newList != null) {
+			for(int i = 0; i < newList.size(); i++) {
+				methodPanel.remove(newList.get(i));
+				methodPanel.add(newList.get(i));
+			}
 		}
+		methodPanel.repaint();
 	}
 	
 	////////////////////////////////
@@ -302,10 +308,12 @@ public class classBox extends JComponent {
 		JLabel field = new JLabel(fieldName + ", " + fieldType);
 		fieldMap.put(fieldName, field);
 		fieldPanel.add(field);
+		fieldPanel.repaint();
 	}
 
 	public JPanel deleteField(String fieldName) {
 		fieldPanel.remove(fieldMap.get(fieldName));
+		fieldPanel.repaint();
 		return fieldPanel;
 	}
 	
@@ -315,5 +323,6 @@ public class classBox extends JComponent {
 		fieldPanel.add(field);
 		fieldMap.put(newFieldName, field);
 		fieldMap.remove(fieldName);
+		fieldPanel.repaint();
 	}
 }
