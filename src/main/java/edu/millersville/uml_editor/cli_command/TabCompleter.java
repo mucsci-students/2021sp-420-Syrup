@@ -35,7 +35,7 @@ public class TabCompleter {
                         new NullCompleter()
                 ),
                 new ArgumentCompleter(
-                        new StringsCompleter("create"),
+                        new StringsCompleter("add"),
                         new StringsCompleter("class", "field", "method", "parameter"),
                         new NullCompleter()
                 ),
@@ -61,50 +61,44 @@ public class TabCompleter {
         // array list to hold class names (to use for completer later)
         ArrayList<String> UMLclasses = new ArrayList<>();
 
+        // map of classes
+        Map<String, ClassObject> theClasses = classes.getClasses();
+        
         // array lists of enums
         //ArrayList<String> visTypes = new ArrayList<>(Arrays.asList("public", "private", "protected"));
 
         // loop through classes and create completers for fields/methods/parameters
-        for (int i = 0; i < classes.getClasses().size(); ++i) {
+        for (String key : theClasses.keySet()) {
             // get current class
-            ClassObject currClass = classes.getClasses().get(i);
-            String className = currClass.getName();
+            ClassObject currClass = theClasses.get(key);
+            //String className = currClass.getName();
             // add to list of class names
-            UMLclasses.add(className);
+            UMLclasses.add(key);
+            
+            
 
             // get fields for completer
             ArrayList<String> classFields = new ArrayList<>();
             for (Field f : currClass.getFields()) {
                 classFields.add(f.getName());
-                // add completer for setvis
+                
+                //add completer for field add
                 completers.add(
                         new ArgumentCompleter(
-                                //new StringsCompleter("setvis"),
                                 new StringsCompleter("field"),
-                                new StringsCompleter(className),
+                                new StringsCompleter(key),
                                 new StringsCompleter(f.getName()),
-                                //new StringsCompleter(visTypes),
+                                new StringsCompleter("settype"),
                                 new NullCompleter()
                         )
                 );
-                /*
-                //add completer for settype
-                completers.add(
-                        new ArgumentCompleter(
-                                //new StringsCompleter("settype"),
-                                new StringsCompleter("field"),
-                                new StringsCompleter(className),
-                                new StringsCompleter(f.getName()),
-                                new NullCompleter()
-                        )
-                );*/
 
                 // add completers that deal with fields
                 completers.add(
                         new ArgumentCompleter(
                                 new StringsCompleter("delete", "rename"),
                                 new StringsCompleter("field"),
-                                new StringsCompleter(className),
+                                new StringsCompleter(key),
                                 new StringsCompleter(classFields),
                                 new NullCompleter()
                         )
@@ -115,25 +109,15 @@ public class TabCompleter {
             ArrayList<String> classMethods = new ArrayList<>();
             for (Method m : currClass.getMethods()) {
                 classMethods.add(m.getName());
-                // add completer for setvis
-                completers.add(
-                        new ArgumentCompleter(
-                                new StringsCompleter("setvis"),
-                                new StringsCompleter("method"),
-                                new StringsCompleter(className),
-                                new StringsCompleter(m.getName()),
-                                //new StringsCompleter(visTypes),
-                                new NullCompleter()
-                        )
-                );
+               
 
                 //add completer for settype
                 completers.add(
-                        new ArgumentCompleter(
-                                new StringsCompleter("settype"),
+                        new ArgumentCompleter(  
                                 new StringsCompleter("method"),
-                                new StringsCompleter(className),
+                                new StringsCompleter(key),
                                 new StringsCompleter(m.getName()),
+                                new StringsCompleter("settype"),
                                 new NullCompleter()
                         )
                 );
@@ -143,7 +127,7 @@ public class TabCompleter {
                         new ArgumentCompleter(
                                 new StringsCompleter("delete", "rename"),
                                 new StringsCompleter("method"),
-                                new StringsCompleter(className),
+                                new StringsCompleter(key),
                                 new StringsCompleter(classMethods),
                                 new NullCompleter()
                         )
@@ -152,10 +136,11 @@ public class TabCompleter {
                 // add completer for create parameter
                 completers.add(
                         new ArgumentCompleter(
-                                new StringsCompleter("create"),
+                                new StringsCompleter("add"),
                                 new StringsCompleter("parameter"),
-                                new StringsCompleter(className),
+                                new StringsCompleter(key),
                                 new StringsCompleter(m.getName()),
+                                new StringsCompleter("settype"),
                                 new NullCompleter()
                         )
                 );
@@ -164,24 +149,14 @@ public class TabCompleter {
                 ArrayList<String> parameters = new ArrayList<>();
                 for (Parameter p : m.getParameters()) {
                     parameters.add(p.getName());
-                    //add completer for settype
-                    completers.add(
-                            new ArgumentCompleter(
-                                    new StringsCompleter("settype"),
-                                    new StringsCompleter("parameter"),
-                                    new StringsCompleter(className),
-                                    new StringsCompleter(m.getName()),
-                                    new StringsCompleter(p.getName()),
-                                    new NullCompleter()
-                            )
-                    );
+                    
                 }
                 // add completer for method's parameters
                 completers.add(
                         new ArgumentCompleter(
                                 new StringsCompleter("rename", "delete"),
                                 new StringsCompleter("parameter"),
-                                new StringsCompleter(className),
+                                new StringsCompleter(key),
                                 new StringsCompleter(m.getName()),
                                 new StringsCompleter(parameters),
                                 new NullCompleter()
@@ -204,7 +179,7 @@ public class TabCompleter {
         //add completer for creating fields/methods/parameters with existing class names
         completers.add(
                 new ArgumentCompleter(
-                        new StringsCompleter("create"),
+                        new StringsCompleter("add"),
                         new StringsCompleter("field", "method"),
                         new StringsCompleter(UMLclasses),
                         //new StringsCompleter(visTypes),

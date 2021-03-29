@@ -10,8 +10,8 @@ public class LoadCommand extends Command {
 	private static LineReader savePromptReader;
     private String file;
 
-    public LoadCommand(Model m, CLIView v, String[] com, boolean p, LineReader reader, String file) {
-        super();
+    public LoadCommand(UMLModel m, CLIView v, String[] com, boolean p, LineReader reader, String file) {
+        super(m, v, com, p);
         savePromptReader = reader;
         this.file = file;
     }

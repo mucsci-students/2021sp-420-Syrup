@@ -2,6 +2,8 @@ package edu.millersville.uml_editor.controller;
 
 import java.io.IOException;
 
+
+
 import edu.millersville.uml_editor.model.UMLModel;
 import edu.millersville.uml_editor.view.GUI;
 import edu.millersville.uml_editor.view.ViewTemplate;
@@ -12,10 +14,7 @@ public class Controller {
 	private GUI control2;
 
     public Controller(UMLModel model, ViewTemplate view) throws IOException {
-
-    	
     		control = new CLIController(model, view);
-    	
     }
     
     public Controller(UMLModel model)
