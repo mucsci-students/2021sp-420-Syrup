@@ -2,46 +2,163 @@ package edu.millersville.uml_editor.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
+
 import edu.millersville.uml_editor.model.*;
 import edu.millersville.uml_editor.view.*;
 
 import javax.swing.JLabel;
 
 public class UMLController {
-    private UMLGUI gui;
     private UMLModel model;
+    private GUI gui;
 
-    public UMLController(UMLModel m, UMLGUI gui) {
+    public UMLController(UMLModel m, GUI newGUI) {
         this.model = m;
-        this.gui = gui;
+        this.gui = newGUI;
     }
 
-    public ActionListener getSaveJSON(){
+   /* public ActionListener getSaveJSON(){
         return(ActionEvent e) -> {
-            if(e.getActionCommand() == "Save"){
-                //needs implementation
-            }
+        	switch (e.getActionCommand()) {
+            case "Save":
+                gui.savePanel();
+                break;
+            case "<--":
+                gui.methodPanel();
+                break;
+        	}
         };
     }
 
     public ActionListener getLoadJSON(){
-        return(ActionEvent e) -> {
-            if(e.getActionCommand() == "Load"){
-                //needs implementation
-            }
-            
-        };
+    	 return(ActionEvent e) -> {
+         	switch (e.getActionCommand()) {
+             case "Load":
+                 gui.loadPanel();
+                 break;
+             case "<--":
+                 gui.methodPanel();
+                 break;
+         	}
+         };
         
     }
     public ActionListener getHelp(){
         return(ActionEvent e) -> {
             if(e.getActionCommand() == "Help"){
-                //needs implementation
+            	gui.helpClassPanel();
+            }
+        };
+    }*/
+    
+	////////////////////////////////
+	//
+	// Print class box
+	//
+	////////////////////////////////
+    public ActionListener printClassListener(){
+        return(ActionEvent e) -> {
+            if(e.getActionCommand() == "Add Class"){
+            	String className = "New Class";
+            	if(!model.hasClass(className)){
+            		gui.classDupFalse();
+                    model.createNewClassGUI(className);
+                    gui.printClassBox();
+            	}
+            	else
+            		gui.classDupTrue();
             }
         };
     }
+    
+	////////////////////////////////
+	//
+	// Popup menu: Class
+	//
+	////////////////////////////////
+    
+    public ActionListener deleteClassCall(){
+        return (ActionEvent e) -> {
+        	String className = gui.delClassGet();
+            if(model.hasClass(className)){
+            	gui.notExistFalse();
+                model.deleteClassGUI(className);
+                gui.deleteClassAction();
+            }
+            else{
+                gui.notExistTrue();
+            }
+        };
+    }
+    
+    public ActionListener renameClassCall(){
+        return (ActionEvent e) -> {
+            gui.renameActionPerformed();
+        };
+    }
+    
+	////////////////////////////////
+	//
+	// Popup menu: Method
+	//
+	////////////////////////////////
+    
+    public ActionListener addMethodCall(){
+        return (ActionEvent e) -> {
+            gui.addMethodAction();
+        };
+    }
+    
+    public ActionListener addParamInMethodCall(){
+        return (ActionEvent e) -> {
+            gui.addParamToList();
+        };
+    }
+    
+    public ActionListener deleteMethodCall(){
+        return (ActionEvent e) -> {
+            gui.deleteMethodAction();
+        };
+    }
+    
+    public ActionListener renameMethodCall(){
+        return (ActionEvent e) -> {
+            gui.renameMethodAction();
+        };
+    }
+	    
+	////////////////////////////////
+	//
+	// Popup menu: Field
+	//
+	////////////////////////////////
+    
+    public ActionListener createFieldCall(){
+        return (ActionEvent e) -> {
+            gui.createFieldAction();
+        };
+    }
+    
+    public ActionListener deleteFieldCall(){
+        return (ActionEvent e) -> {
+            gui.deleteFieldAction();
+        };
+    }
+    
+    public ActionListener renameFieldCall(){
+        return (ActionEvent e) -> {
+            gui.renameFieldAction();
+        };
+    }
+    
 
-    public ActionListener getMainPageListener() {
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////OLD CODE//////////////////////////////////////////////////////////
+   /* public ActionListener getMainPageListener() {
         return (ActionEvent e) -> {
             switch (e.getActionCommand()) {
                 case "Class":
@@ -97,7 +214,29 @@ public class UMLController {
                     gui.renameMethodPanel();
                     break;
                 case "Parameters":
-                	// implementation needed
+                	gui.paramPanel();
+                	break;
+                case "<--":
+                    gui.menuPanel();
+                    break;
+            }
+        };
+    }
+    
+    public ActionListener getParamPageListener(){
+        return(ActionEvent e) -> {
+            switch(e.getActionCommand()){
+                case "Delete a parameter":
+                	gui.deleteParamPanel();
+                    break;
+                case "Delete a parameter list":
+                	gui.deleteAllParamPanel();
+                    break;
+                case "Change a parameter":
+                	gui.changeParamPanel();
+                    break;
+                case "Change a parameter list":
+                	gui.changeParamListPanel();
                 	break;
                 case "<--":
                     gui.menuPanel();
@@ -211,9 +350,15 @@ public class UMLController {
 	//
 	//////////////////////////////////
     
-    public ActionListener createMethodCall(){
+    public ActionListener createdMethodCall(){
         return (ActionEvent e) -> {
-            gui.createMethodAction(e);
+            gui.createdMethodPanel();
+        };
+    }
+    
+    public ActionListener addParamInMethodCall(){
+        return (ActionEvent e) -> {
+            gui.addMethodHelper();
         };
     }
     
@@ -228,7 +373,49 @@ public class UMLController {
             gui.renameMethodAction(e);
         };
     }
+	    
+	//////////////////////////////////
+	//
+	//	Parameter Calls
+	//
+	//////////////////////////////////
 	   
+    public ActionListener deleteParamCall(){
+        return (ActionEvent e) -> {
+            gui.deleteParamAction(e);
+        };
+    }
+    
+    public ActionListener deleteAllParamCall(){
+        return (ActionEvent e) -> {
+            gui.deleteAllParamAction(e);
+        };
+    }
+    
+    public ActionListener changeParamCall(){
+        return (ActionEvent e) -> {
+            gui.changeParamAction(e);
+        };
+    }
+    
+    public ActionListener changeAllParamCall(){
+        return (ActionEvent e) -> {
+            gui.changeParamListAction(e);
+        };
+    }
+    
+    public ActionListener addParamToListCall(){
+        return (ActionEvent e) -> {
+            gui.addParamHelper();
+        };
+    }
+    
+    public ActionListener doneParamCall(){
+        return (ActionEvent e) -> {
+            gui.changedParamListPanel();
+        };
+    }
+
 	    
 	//////////////////////////////////
 	//
@@ -285,4 +472,96 @@ public class UMLController {
         };
     }
     
+	//////////////////////////////////
+	//
+	//	Help Listeners
+	//
+	//////////////////////////////////
+	
+	public ActionListener getClassHelpListener(){
+		return(ActionEvent e) -> {
+		switch(e.getActionCommand()){
+			case "-->":
+				gui.helpMethodPanel();
+			break;
+			case "<--":
+				gui.menuPanel();
+			break;
+			}
+		};
+	}
+	
+	public ActionListener getMethodHelpListener(){
+		return(ActionEvent e) -> {
+			switch(e.getActionCommand()){
+				case "-->":
+					gui.helpFieldPanel();
+				break;
+				case "<--":
+					gui.menuPanel();
+				break;
+			}
+		};
+	}
+	
+	public ActionListener getFieldHelpListener(){
+		return(ActionEvent e) -> {
+			switch(e.getActionCommand()){
+				case "-->":
+					gui.helpRelPanel();
+				break;
+				case "<--":
+					gui.menuPanel();
+				break;
+			}
+		};
+	}
+	
+	public ActionListener getRelHelpListener(){
+		return(ActionEvent e) -> {
+			switch(e.getActionCommand()){
+				case "-->":
+					gui.helpPrintPanel();
+				break;
+				case "<--":
+					gui.menuPanel();
+				break;
+			}
+		};
+	}
+	
+	public ActionListener getPrintHelpListener(){
+		return(ActionEvent e) -> {
+			switch(e.getActionCommand()){
+				case "<--":
+					gui.menuPanel();
+				break;
+			}
+		};
+	}
+	
+	//////////////////////////////////
+	//
+	//	Save Calls
+	//
+	//////////////////////////////////
+	
+	public ActionListener savePageCall(){
+		return (ActionEvent e) -> {
+			gui.saveAction();
+		};
+	}
+	
+	//////////////////////////////////
+	//
+	//	Load Calls
+	//
+	//////////////////////////////////
+	
+	public ActionListener loadPageCall(){
+		return (ActionEvent e) -> {
+			gui.loadAction();
+	};
+}
+*/
 }

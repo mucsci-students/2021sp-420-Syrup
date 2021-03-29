@@ -22,6 +22,6 @@ public class Field extends Formal {
 		 * A method that returns a string of the name and type of the field.
 		 */
 		public String toString() {
-			return getName() + " " + getType();
+			return "Name: " + getName() + " Type: " + getType();
 		}
 }

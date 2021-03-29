@@ -4,7 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UMLModel {
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import com.fasterxml.jackson.databind.*;
+
+
+public class UMLModel implements Model{
     private Map<String, ClassObject> classMap;
     private Map<String, Relationships> relMap;
     
@@ -12,6 +21,17 @@ public class UMLModel {
 		classMap = new HashMap<String, ClassObject>();
 		relMap = new HashMap<String, Relationships>();
     }
+    
+    public UMLModel(Map<String, ClassObject> newClassMap, Map<String, Relationships> newRelMap) {
+    	classMap = newClassMap;
+    	relMap = newRelMap;
+    }
+    
+    public void clear() {
+    	classMap.clear();
+    	relMap.clear();
+    }
+    
 
     public  Map<String, ClassObject> getClasses() {
         return classMap;
@@ -46,17 +66,23 @@ public class UMLModel {
     public boolean hasRelID(String ID) {
     	return relMap.containsKey(ID);
     }
+    
+    public boolean isEmpty() {
+    	return classMap.isEmpty();
+    }
 
     ///////////////////////////////////////////////////////////
     //
     //	createNewClass
     //
     ///////////////////////////////////////////////////////////
-    public void createNewClassGUI(String className) 
+    public boolean createNewClassGUI(String className) 
     {
-        
-    	getClasses().put(className, new ClassObject(className));
-	    
+    	if(!classMap.containsKey(className)) {
+    		classMap.put(className, new ClassObject(className));
+    		return true;
+    	}
+    	return false;
     }
     
     ///////////////////////////////////////////////////////////
@@ -65,11 +91,16 @@ public class UMLModel {
     //
     ///////////////////////////////////////////////////////////
   
-    public void renameClassGUI(String name, String newName)
+    public boolean renameClassGUI(String name, String newName)
     {
         //Rename class but putting into map with new name and removing the old name
-        getClasses().put(newName, getClassFor(name));
-        getClasses().remove(name);
+    	if(!classMap.containsKey(newName)) {
+    		getClasses().put(newName, getClassFor(name));
+    		getClasses().remove(name);
+    		return true;
+    	}
+    	return false;
+        
     }
 
     ///////////////////////////////////////////////////////////
@@ -78,11 +109,14 @@ public class UMLModel {
     //
     ///////////////////////////////////////////////////////////
 
-    public void deleteClassGUI(String name)
+    public boolean deleteClassGUI(String name)
     {
         //Deletes attributes and the deletes the class
-        //getClassFor(name).deleteAttributes();
+        if(!classMap.containsKey(name)) {
+        	return false;
+        }
         getClasses().remove(name);
+        return true;
         
     }
     
@@ -92,12 +126,16 @@ public class UMLModel {
     //
     ///////////////////////////////////////////////////////////
 
-    public void createRelationshipGUI(String class1, String class2, String ID, String newType)
+    public boolean createRelationshipGUI(String class1, String class2, String ID, String newType)
     {
         //Create temp classes to be able to create relationship
+    	if(!classMap.containsKey(class1) || !classMap.containsKey(class2) || hasRelID(ID)) {
+    		return false;
+    	}
         ClassObject source = getClassFor(class1);
         ClassObject destination = getClassFor(class2);
         getRelationships().put(ID, new Relationships(source, destination, ID, newType)); 
+        return true;
     }
 
     //////////////////////////////////////////////////////////
@@ -106,9 +144,13 @@ public class UMLModel {
     //
     ///////////////////////////////////////////////////////////
 
-    public void deleteRelationshipGUI(String ID)
+    public boolean deleteRelationshipGUI(String ID)
     {
+    	if(!relMap.containsKey(ID)) {
+    		return false;
+    	}
         getRelationships().remove(ID); 
+        return true;
     }
 
     //////////////////////////////////////////////////////////
@@ -196,6 +238,14 @@ public class UMLModel {
     		return false;
     	}
     	return classMap.get(className).changeMethodType(methodName, newType);
+    }
+    
+    public String getMethodType(String className, String methodName) {
+    	return classMap.get(className).getMethod(methodName).getType();
+    }
+    
+    public String getFieldType(String className, String fieldName) {
+    	return classMap.get(className).getField(fieldName).getType();
     }
     
     
@@ -371,5 +421,91 @@ public class UMLModel {
 			return false;
 		}
 		return classMap.get(className).replaceParameterList(methodName, newParamList);
+	}
+	
+	/**
+     * A function that removes the parameter.
+     * @param className
+     *         The class the method is in.
+     * @param methodName
+     *         The method that the parameter is in.
+     * @param paramName
+     *         The parameter to delete.
+     * @return
+     *         Returns true when the parameter is deleted.
+     */
+    public void deleteAllParams(String className, String methodName) {
+        classMap.get(className).deleteAllParams(methodName);
+    }
+    
+	/**
+	 * A method that saves this model into a JSON file.
+	 * @param name the name of the file.
+	 * @throws IOException
+	 */
+	
+	public void saveJSON(String name) throws IOException {
+		UMLModel model = new UMLModel(classMap, relMap);
+		
+		ObjectMapper classMapper = new ObjectMapper();
+		ObjectMapper mapper = new ObjectMapper();
+	  	ObjectMapper relMapper = new ObjectMapper();
+
+		
+		ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
+    	String fileText = writer.writeValueAsString(model);
+    	FileWriter file = new FileWriter(name+".json");
+		file.write(fileText);
+		file.close();
+		
+    	classMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    	ObjectWriter classWriter = classMapper.writerWithDefaultPrettyPrinter();
+    	String classFileText = classWriter.writeValueAsString(classMap);
+		FileWriter classFile = new FileWriter(name + "class.json");
+		classFile.write(classFileText);
+		classFile.close();
+		
+    	relMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    	ObjectWriter relWriter = relMapper.writerWithDefaultPrettyPrinter();
+    	String relFileText = relWriter.writeValueAsString(relMap);
+		FileWriter relFile = new FileWriter(name+"rel.json");
+		relFile.write(relFileText);
+		relFile.close();
+		
+	}
+	
+	/**
+	 * A method that loads a JSON file into this object.
+	 * @param filepath the name of the file
+	 * @throws IOException
+	 */
+	
+	public void loadJSON(String filepath) throws IOException{
+		File jsonClassFile = new File(filepath+"class.json");
+		File jsonRelFile = new File(filepath+"rel.json");
+		ObjectMapper objectMapper = new ObjectMapper();
+    	objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    	try {
+    		classMap.clear();
+    		String classFile = FileUtils.readFileToString(jsonClassFile, StandardCharsets.UTF_8);
+    		HashMap<String, ClassObject> newMap = objectMapper.readValue(classFile, HashMap.class);
+    		classMap = newMap;
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	
+    	ObjectMapper relObjectMapper = new ObjectMapper();
+    	relObjectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    	try {
+    		classMap.clear();
+    		String relFile = FileUtils.readFileToString(jsonRelFile, StandardCharsets.UTF_8);
+    		HashMap<String, Relationships> newMap = relObjectMapper.readValue(relFile, HashMap.class);
+    		relMap = newMap;
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	
 	}
 }
