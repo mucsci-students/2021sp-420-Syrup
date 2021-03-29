@@ -148,7 +148,7 @@ public class UMLController {
     
     public ActionListener renameFieldCall(){
         return (ActionEvent e) -> {
-            //gui.renameFieldAction();
+            gui.renameFieldAction();
         };
     }
     

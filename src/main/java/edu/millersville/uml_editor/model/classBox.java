@@ -308,4 +308,12 @@ public class classBox extends JComponent {
 		fieldPanel.remove(fieldMap.get(fieldName));
 		return fieldPanel;
 	}
+	
+	public void renameFieldName(String fieldName, String newFieldName, String fieldType) {
+		fieldPanel.remove(fieldMap.get(fieldName));
+		JLabel field = new JLabel(newFieldName + ", " + fieldType);
+		fieldPanel.add(field);
+		fieldMap.put(newFieldName, field);
+		fieldMap.remove(fieldName);
+	}
 }

@@ -458,6 +458,8 @@ public class GUI implements ViewInterface{
 		JLabel fieldNewName = new JLabel("New Field Name:");
 		fieldNewName.setFont(new Font("Serif", Font.BOLD, 12));
 		
+		JButton renameFieldButton = new JButton("Rename");
+		
 		dup4 = dup();
 		
 		renameField.add(renameFieldClassLabel);
@@ -472,8 +474,8 @@ public class GUI implements ViewInterface{
 		fieldNew = new JTextField();
 		fieldNew.setColumns(15);
 		renameField.add(fieldNew);
-		renameField.add(dup4);
-		dup4.setVisible(false);
+		renameField.add(renameFieldButton);
+		renameFieldButton.addActionListener(controller.renameFieldCall());
         
 		////////////////////////////////
 		//
@@ -772,6 +774,31 @@ public class GUI implements ViewInterface{
 			Uml_Editor.repaint();
 			deleteFieldClassName.setText("");
 			deleteFieldName.setText("");
+		}
+	}
+	
+	public void renameFieldAction() {
+		String className = renameFieldCN.getText();
+		String fieldName = fieldCurrent.getText();
+		String newFieldName = fieldNew.getText();
+		
+		if (!model.hasClass(className))
+			notExistTrue();
+		else if (!model.hasField(className, fieldName))
+			notExistTrue();
+		else if (model.hasField(className, newFieldName))
+			classDupTrue();
+		else
+		{
+			model.renameField(className, fieldName, newFieldName);
+			String fieldType = model.getFieldType(className, newFieldName);
+			boxMap.get(className).renameFieldName(fieldName, newFieldName, fieldType);
+			boxMap.put(newFieldName, boxMap.get(fieldName));
+			boxMap.remove(fieldName);
+			Uml_Editor.repaint();
+			renameFieldCN.setText("");
+			fieldCurrent.setText("");
+			fieldNew.setText("");
 		}
 	}
 	
