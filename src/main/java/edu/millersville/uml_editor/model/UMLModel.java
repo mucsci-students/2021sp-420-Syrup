@@ -240,6 +240,14 @@ public class UMLModel implements Model{
     	return classMap.get(className).changeMethodType(methodName, newType);
     }
     
+    public String getMethodType(String className, String methodName) {
+    	return classMap.get(className).getMethod(methodName).getType();
+    }
+    
+    public String getFieldType(String className, String fieldName) {
+    	return classMap.get(className).getField(fieldName).getType();
+    }
+    
     
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Field Functions
