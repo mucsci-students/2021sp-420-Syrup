@@ -133,8 +133,24 @@ public class UMLController {
 	// Popup menu: Field
 	//
 	////////////////////////////////
-
     
+    public ActionListener createFieldCall(){
+        return (ActionEvent e) -> {
+            gui.createFieldAction();
+        };
+    }
+    
+    public ActionListener deleteFieldCall(){
+        return (ActionEvent e) -> {
+            gui.deleteFieldAction();
+        };
+    }
+    
+    public ActionListener renameFieldCall(){
+        return (ActionEvent e) -> {
+            gui.renameFieldAction();
+        };
+    }
     
 
 	

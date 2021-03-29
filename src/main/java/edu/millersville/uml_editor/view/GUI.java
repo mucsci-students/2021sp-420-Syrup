@@ -52,7 +52,6 @@ import edu.millersville.uml_editor.controller.*;
 public class GUI implements ViewInterface{
 	private JFrame Uml_Editor;
 	
-	private JLabel dup1, dup2, dup3, dup4, dup5, dup6 = null;
 	private JLabel notEx1 = null;
 	private JLabel classDupLabel = null;
 
@@ -190,15 +189,12 @@ public class GUI implements ViewInterface{
         JMenu deleteClass = new JMenu("Delete");
         classOption.add(deleteClass);
         
-		notEx1 = notExist();	
-        
         deleteClass.add(classNameDel);
         textBoxClassDel = new JTextField();
 		textBoxClassDel.setColumns(15);
 		deleteClass.add(textBoxClassDel);
 		deleteClass.add(classDelButton);
 		deleteClass.add(classDupLabel);
-		//notEx1.setVisible(false);
 		classDelButton.addActionListener(controller.deleteClassCall());
         
 		////////////////////////////////
@@ -215,8 +211,6 @@ public class GUI implements ViewInterface{
 		
 		JButton renameClassButton = new JButton("Rename");
 		
-		dup1 = dup();
-		
         JMenu renameClass = new JMenu("Rename");
         classOption.add(renameClass);
         renameClassOld = new JTextField();
@@ -228,8 +222,6 @@ public class GUI implements ViewInterface{
 		renameClassNew.setColumns(15);
 		renameClass.add(renameClassNew);
 		renameClass.add(renameClassButton);
-		renameClass.add(dup1);
-		dup1.setVisible(false);
 		renameClassButton.addActionListener(controller.renameClassCall());
 		
 		
@@ -268,7 +260,6 @@ public class GUI implements ViewInterface{
 		
 		JButton paramList = new JButton("Add Parameter to List");
 		JButton done = new JButton("Done");
-		dup2 = dup();
 		
 		addMethod.add(addMethodClassName);
 		addMethodCN = new JTextField();
@@ -282,6 +273,7 @@ public class GUI implements ViewInterface{
 		addMethodType = new JTextField();
 		addMethodType.setColumns(15);
 		addMethod.add(addMethodType);
+		
 		// Adding parameters to list
 		addMethod.add(paramNameLabel);
 		paramName = new JTextField();
@@ -347,7 +339,7 @@ public class GUI implements ViewInterface{
 		
 		JButton rename = new JButton("Rename");
 		
-		dup3 = dup();
+		
 		renameMethod.add(renMethodClassName);
 		renClassName = new JTextField();
 		renClassName.setColumns(15);
@@ -360,8 +352,6 @@ public class GUI implements ViewInterface{
 		renameMethodNewName = new JTextField();
 		renameMethodNewName.setColumns(15);
 		renameMethod.add(renameMethodNewName);
-		renameMethod.add(dup3);
-		dup3.setVisible(false);
 		renameMethod.add(rename);
 		rename.addActionListener(controller.renameMethodCall());
 		
@@ -392,7 +382,8 @@ public class GUI implements ViewInterface{
 		JLabel addFieldTypeLabel = new JLabel("Field Type:");
 		addFieldTypeLabel.setFont(new Font("Serif", Font.BOLD, 12));
 		
-		dup4 = dup();
+		JButton createField = new JButton("Add");
+		
 		
 		addField.add(addFieldClassLabel);
 		addFieldCN = new JTextField();
@@ -406,8 +397,8 @@ public class GUI implements ViewInterface{
 		addFieldType = new JTextField();
 		addFieldType.setColumns(15);
 		addField.add(addFieldType);
-		addField.add(dup4);
-		dup4.setVisible(false);
+		addField.add(createField);
+		createField.addActionListener(controller.createFieldCall());
 		
 		////////////////////////////////
 		//
@@ -424,7 +415,8 @@ public class GUI implements ViewInterface{
 		JLabel deleteFieldTypeLabel = new JLabel("Field Name:");
 		deleteFieldTypeLabel.setFont(new Font("Serif", Font.BOLD, 12));
 		
-		dup4 = dup();
+		JButton deleteFieldButton = new JButton("Delete");
+		
 		
 		deleteFieldClassName = new JTextField();
 		deleteFieldClassName.setColumns(15);
@@ -434,8 +426,9 @@ public class GUI implements ViewInterface{
 		deleteFieldName = new JTextField();
 		deleteFieldName.setColumns(15);
 		deleteField.add(deleteFieldName);
-		deleteField.add(dup4);
-		dup4.setVisible(false);
+		deleteField.add(deleteFieldButton);
+		deleteFieldButton.addActionListener(controller.deleteFieldCall());
+
 		
 		////////////////////////////////
 		//
@@ -455,7 +448,8 @@ public class GUI implements ViewInterface{
 		JLabel fieldNewName = new JLabel("New Field Name:");
 		fieldNewName.setFont(new Font("Serif", Font.BOLD, 12));
 		
-		dup4 = dup();
+		JButton renameFieldButton = new JButton("Rename");
+		
 		
 		renameField.add(renameFieldClassLabel);
 		renameFieldCN = new JTextField();
@@ -469,8 +463,8 @@ public class GUI implements ViewInterface{
 		fieldNew = new JTextField();
 		fieldNew.setColumns(15);
 		renameField.add(fieldNew);
-		renameField.add(dup4);
-		dup4.setVisible(false);
+		renameField.add(renameFieldButton);
+		renameFieldButton.addActionListener(controller.renameFieldCall());
         
 		////////////////////////////////
 		//
@@ -673,7 +667,7 @@ public class GUI implements ViewInterface{
 			for(int i = 0; i < paramListName.size(); i++) {
 				parName = nameArray[i];
 				parType = typeArray[i];
-				boxMap.get(className).addParam(parName, parType);
+				boxMap.get(className).addParam(methodName, parName, parType);
 			}
 			Uml_Editor.repaint();
 			return;
@@ -696,10 +690,10 @@ public class GUI implements ViewInterface{
 		{
 			model.deleteMethod(delMethodClassName, delMethodN);
 			Uml_Editor.remove(boxMap.get(delMethodClassName).deleteMethod(delMethodN));
+			Uml_Editor.repaint();
+			delMethodCN.setText("");
+			delMethodName.setText("");
 		}
-		
-		delMethodCN.setText("");
-		delMethodName.setText("");
 	}
 	
 	public void renameMethodAction() {
@@ -718,14 +712,92 @@ public class GUI implements ViewInterface{
 		else
 		{
 			model.renameMethod(className, methodName, newMethodName);
-			//NEED TO FIX RENAME METHOD FUNCTION 
-			boxMap.get(methodName).renameMethodName(methodName, newMethodName);
+			String methodType = model.getMethodType(className, newMethodName);
+			boxMap.get(className).renameMethodName(methodName, newMethodName, methodType);
 			boxMap.put(newMethodName, boxMap.get(methodName));
 			boxMap.remove(methodName);
 			Uml_Editor.repaint();
-			renClassName.setText("");
-			renameMethodOldName.setText("");
-			renameMethodNewName.setText("");
+			
+		}
+		renClassName.setText("");
+		renameMethodOldName.setText("");
+		renameMethodNewName.setText("");
+	}
+	
+	////////////////////////////////
+	//
+	// Field Actions
+	//
+	////////////////////////////////
+	
+	public void createFieldAction() {
+		String className = addFieldCN.getText();
+		String fieldName = addFieldName.getText();
+		String fieldType = addFieldType.getText();
+		
+    	if (!model.hasClass(className))
+    	{
+    		notExistTrue();
+    		return;
+    	}
+    	
+    	else if (model.hasField(className, fieldName))
+    	{
+			classDupTrue();
+			return;
+    	}
+    	else
+    	{
+    		model.addField(className, fieldName, fieldType);
+			boxMap.get(className).addField(fieldName, fieldType);
+			addFieldCN.setText("");
+			addFieldName.setText("");
+			addFieldType.setText("");
+    	}
+    	
+    	Uml_Editor.repaint();
+	}
+	
+	public void deleteFieldAction() {
+		String className = deleteFieldClassName.getText();
+		String fieldName = deleteFieldName.getText();
+		
+		if (!model.hasClass(className) || !model.hasField(className, fieldName))
+			notExistTrue();
+		else
+		{
+			model.deleteField(className, fieldName);
+			Uml_Editor.remove(boxMap.get(className).deleteField(fieldName));
+			Uml_Editor.repaint();
+			deleteFieldClassName.setText("");
+			deleteFieldName.setText("");
+		}
+	}
+	
+	public void renameFieldAction() {
+		String className = renameFieldCN.getText();
+		String fieldName = fieldCurrent.getText();
+		String newFieldName = fieldNew.getText();
+		
+		classDupFalse();
+		notExistFalse();
+		if (!model.hasClass(className))
+			notExistTrue();
+		else if (!model.hasField(className, fieldName))
+			notExistTrue();
+		else if (model.hasField(className, newFieldName))
+			classDupTrue();
+		else
+		{
+			model.renameField(className, fieldName, newFieldName);
+			String fieldType = model.getFieldType(className, newFieldName);
+			boxMap.get(className).renameFieldName(fieldName, newFieldName, fieldType);
+			boxMap.put(newFieldName, boxMap.get(fieldName));
+			boxMap.remove(fieldName);
+			Uml_Editor.repaint();
+			renameFieldCN.setText("");
+			fieldCurrent.setText("");
+			fieldNew.setText("");
 		}
 	}
 	
@@ -734,21 +806,6 @@ public class GUI implements ViewInterface{
 	// Error Checking helpers
 	//
 	////////////////////////////////
-    
-	public JLabel dup(){
-		JLabel dup = new JLabel("This is a duplicate!");
-		dup.setFont(new Font("Serif", Font.BOLD, 12));
-		dup.setForeground(Color.RED);	
-		return dup;
-	}
-	
-	public JLabel notExist(){
-		JLabel notExist = new JLabel("This does not exist!");
-		notExist.setFont(new Font("Serif", Font.BOLD, 12));
-		notExist.setForeground(Color.RED);	
-		notExist.setVisible(false);
-		return notExist;
-	}
 	
 	public void classDupTrue() {
 		classDupLabel.setText("This is a duplicate name!");
