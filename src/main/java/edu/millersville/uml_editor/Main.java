@@ -8,14 +8,6 @@ import edu.millersville.uml_editor.view.*;
 
 public class Main 
 {
-
-
-///////////////////////////////////////////////////////////
-//
-//	Main Method
-//
-///////////////////////////////////////////////////////////
-	
     public static void main(String[] args) throws IOException
     {
 		UMLModel model = new UMLModel();

@@ -1,6 +1,5 @@
 package edu.millersville.uml_editor.cli_command;
 
-
 import org.jline.reader.LineReader;
 import org.jline.reader.MaskingCallback;
 
@@ -21,15 +20,14 @@ public class MiscCommand extends Command {
 	switch (commands[0]) {
 	case "quit":
 	    if (commands.length != 1) {
-		view.printError(errorMessage + commandUsage[27] + "\n");
-		return prompt;
+	    	view.printError(errorMessage + commandUsage[21] + "\n");
+	    	return prompt;
 	    } else if (prompt) {
-		System.out.println("\nYou have unsaved changes, are you sure you want to continue?");
-		System.out.println("Type 'yes' to quit, or 'no' to go back.");
-		prompt = savePrompt(prompt);
+	    	System.out.println("Type 'yes' to quit, or 'no' to go back.");
+	    	prompt = savePrompt(prompt);
 	    }
 	    if (!prompt) {
-		System.exit(0);
+	    	System.exit(0);
 	    }
 	    return true;
 
@@ -38,11 +36,11 @@ public class MiscCommand extends Command {
 	    return prompt;
 	case "clear":
 	    if (commands.length != 1) {
-		view.printError(errorMessage + commandUsage[24] + "\n");
-		return prompt;
+	    	view.printError(errorMessage + commandUsage[18] + "\n");
+	    	return prompt;
 	    } else if (!model.isEmpty()) {
-		System.out.println("\nAre you sure you want to delete everything?");
-		System.out.println("Type 'yes' to delete, or 'no' to go back.");
+	    	System.out.println("\nAre you sure you want to delete everything?");
+	    	System.out.println("Type 'yes' to delete, or 'no' to go back.");
 		boolean answer = savePrompt(true);
 
 		if (!answer) {
@@ -53,7 +51,7 @@ public class MiscCommand extends Command {
 	    return prompt;
 	case "sudo":
 	    if (commands[1].equals("quit") && commands.length == 2) {
-		System.exit(0);
+	    	System.exit(0);
 	    } else if (commands[1].equals("load") && commands.length == 3) {
 		try {
 		    String file = commands[2];
@@ -63,19 +61,17 @@ public class MiscCommand extends Command {
 		    System.out.println("Failed to parse directory. Exiting.");
 		}
 	    } else if (commands[1].equals("clear") && commands.length == 2) {
-		model.clear();
-		prompt = true;
+	    	model.clear();
+	    	prompt = true;
 	    } else {
-		System.out.println("\nInvalid command.\nType help to see a list of all commands.\n");
+		System.out.println("\nInvalid command.\nType help to see a list of commands.\n");
 	    }
 	    return prompt;
 	}
 	return prompt;
     }
 
-    // Gets user input to set save prompt flag.
-    // False if they wish to continue
-    // True if they want to return
+    
     private static boolean savePrompt(boolean prompt) {
 	while (prompt) {
 
@@ -83,22 +79,22 @@ public class MiscCommand extends Command {
 	    line = line.trim();
 
 	    if (line.equals("yes")) {
-		System.out.println("Proceeding.\n");
-		prompt = false;
-		break;
+	    	System.out.println("Proceeding.\n");
+	    	prompt = false;
+	    	break;
 	    } else if (line.equals("no")) {
-		System.out.println("Stopping.\n");
-		prompt = true;
-		break;
+	    	System.out.println("Stopping.\n");
+	    	prompt = true;
+	    	break;
 	    }
 	    System.out.println("Invalid command. Type 'yes' to proceed, or 'no' to go back.");
 	}
 	return prompt;
     }
 
-    // Prints out how to use all the commands in the CLI
+    
     private static void help(String[] commandUsage) {
-	System.out.print("\nHere is a list of available commands:");
+	System.out.print("\nList of commands:");
 	System.out.println(
 		commandUsage[0] + " - Save file to specific path" 
 		+ commandUsage[1] + " - Loads a file at a specific path\n" 
@@ -106,15 +102,15 @@ public class MiscCommand extends Command {
 		+ commandUsage[3] + " - add a field in <class name>, titled <field name> with type <field type>"
 		+ commandUsage[4] + " - add a method in <class name>, titled <method name> with type type <method type>"
 		+ commandUsage[5] + " - add relationship between <class name1> and <class name2> with type <type> (Aggregation, Realization, Composition, Inheritance)"
-		+ commandUsage[6] + " - add a parameter in <class name> for <method> with type <parameter type> titled <parameter name>\n"
+		+ commandUsage[6] + " - add a parameter in <class name> for <method>  titled <parameter name> with type <parameter type>\n"
 		+ commandUsage[7] + " - delete a class with title <name>" 
-		+ commandUsage[8] + " - delete field <field name> in class titled <class name>" 
-		+ commandUsage[9] + " - delete method <method name> in class titled <class name>" 
-		+ commandUsage[10] + " - delete a relationship with type <type> (Aggregation, Realization, Composition, Inheritance) between <class name1> and <class name2>"
-		+ commandUsage[11] + " - delete a parameter in <class name> for <method name> with  <parameter name>\n"
+		+ commandUsage[8] + " - delete field in class titled <class name> with name <field name>" 
+		+ commandUsage[9] + " - delete method in class titled <class name> with name <method name>" 
+		+ commandUsage[10] + " - delete a relationship between <class name1> and <class name2> with type <type> (Aggregation, Realization, Composition, Inheritance)"
+		+ commandUsage[11] + " - delete a parameter in <class name> for <method name> with <parameter name>\n"
 		+ commandUsage[12] + " - rename class <name> to <new name>" 
-		+ commandUsage[13] + " - rename field <field name> to <newname> in class titled <class name>" 
-		+ commandUsage[14] + " - rename method <method name> to <newname> in class titled <class name>" 
+		+ commandUsage[13] + " - rename field in class titled <class name> with field name <field name> to <newname>" 
+		+ commandUsage[14] + " - rename method in class titled <class name> with method name <method name> to <newname>" 
 		+ commandUsage[15] + " - rename parameter in <class name> for <method> titled <parameter name> to <parameter newname>\n"
 		+ commandUsage[16] +  " - List all existing classes" 
 		+ commandUsage[17] + " - List all existing relationships" 

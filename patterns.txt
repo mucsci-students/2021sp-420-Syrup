@@ -9,4 +9,20 @@
 	we used the MVC design model. Our models are in the models directory, the view files are in the views directory, and the controller
 	files are in the controller directory. 
 	
-4.) 
+4.) Memento
+	we used memento by creating a model memento for the undo and redo functions.
+	
+5.) Composite
+	we used this in UMLModel since it brings together all of our models into one.
+	
+6.) Command
+	we used this in our tab completion. We created different commands which activated based on what was typed in the command line.
+	
+7.) Mediator
+	we used this in Main since it calls the controllers that handle data going through the views and models.
+	
+8.) State
+	we used this in undo and redo since the "this" is based off of which state the object is in.
+
+9.) Facade
+	we used this in the views and controllers. We created simple interfaces which are defined in a more complex class.

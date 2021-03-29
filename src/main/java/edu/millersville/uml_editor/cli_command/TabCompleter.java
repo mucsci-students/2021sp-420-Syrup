@@ -40,7 +40,7 @@ public class TabCompleter {
                         new NullCompleter()
                 ),
                 new ArgumentCompleter(
-                        new StringsCompleter("create"),
+                        new StringsCompleter("add"),
                         new StringsCompleter("relationship"),
                         new StringsCompleter("AGGREGATION", "COMPOSITION", "INHERITANCE", "REALIZATION"),
                         new NullCompleter()
@@ -54,35 +54,21 @@ public class TabCompleter {
     }
 
     public AggregateCompleter updateCompleter(UMLModel classes) {
-        // start with base completers
+        
         Collection<Completer> completers = completer.getCompleters();
         completers = new ArrayList<>(completers);
 
-        // array list to hold class names (to use for completer later)
         ArrayList<String> UMLclasses = new ArrayList<>();
 
-        // map of classes
         Map<String, ClassObject> theClasses = classes.getClasses();
         
-        // array lists of enums
-        //ArrayList<String> visTypes = new ArrayList<>(Arrays.asList("public", "private", "protected"));
-
-        // loop through classes and create completers for fields/methods/parameters
         for (String key : theClasses.keySet()) {
-            // get current class
             ClassObject currClass = theClasses.get(key);
-            //String className = currClass.getName();
-            // add to list of class names
             UMLclasses.add(key);
             
-            
-
-            // get fields for completer
             ArrayList<String> classFields = new ArrayList<>();
             for (Field f : currClass.getFields()) {
                 classFields.add(f.getName());
-                
-                //add completer for field add
                 completers.add(
                         new ArgumentCompleter(
                                 new StringsCompleter("field"),
@@ -92,8 +78,6 @@ public class TabCompleter {
                                 new NullCompleter()
                         )
                 );
-
-                // add completers that deal with fields
                 completers.add(
                         new ArgumentCompleter(
                                 new StringsCompleter("delete", "rename"),
@@ -105,13 +89,9 @@ public class TabCompleter {
                 );
             }
 
-            // get methods for completer
             ArrayList<String> classMethods = new ArrayList<>();
             for (Method m : currClass.getMethods()) {
                 classMethods.add(m.getName());
-               
-
-                //add completer for settype
                 completers.add(
                         new ArgumentCompleter(  
                                 new StringsCompleter("method"),
@@ -121,8 +101,6 @@ public class TabCompleter {
                                 new NullCompleter()
                         )
                 );
-
-                // add completers for methods
                 completers.add(
                         new ArgumentCompleter(
                                 new StringsCompleter("delete", "rename"),
@@ -132,8 +110,6 @@ public class TabCompleter {
                                 new NullCompleter()
                         )
                 );
-
-                // add completer for create parameter
                 completers.add(
                         new ArgumentCompleter(
                                 new StringsCompleter("add"),
@@ -144,14 +120,11 @@ public class TabCompleter {
                                 new NullCompleter()
                         )
                 );
-
-                //get parameters for completer
                 ArrayList<String> parameters = new ArrayList<>();
                 for (Parameter p : m.getParameters()) {
                     parameters.add(p.getName());
                     
                 }
-                // add completer for method's parameters
                 completers.add(
                         new ArgumentCompleter(
                                 new StringsCompleter("rename", "delete"),
@@ -163,10 +136,7 @@ public class TabCompleter {
                         )
                 );
             }
-
         }
-
-        //add completer for tab completing classes for create/rename/delete
         completers.add(
                 new ArgumentCompleter(
                         new StringsCompleter("rename", "delete"),
@@ -175,14 +145,11 @@ public class TabCompleter {
                         new NullCompleter()
                 )
         );
-
-        //add completer for creating fields/methods/parameters with existing class names
         completers.add(
                 new ArgumentCompleter(
                         new StringsCompleter("add"),
                         new StringsCompleter("field", "method"),
                         new StringsCompleter(UMLclasses),
-                        //new StringsCompleter(visTypes),
                         new NullCompleter()
                 )
         );
@@ -194,7 +161,6 @@ public class TabCompleter {
         }
 
         for(Relationships r : relArray) {
-          //add completers for deleting a relationship
           completers.add(
               new ArgumentCompleter(
                   new StringsCompleter("delete"),
@@ -206,7 +172,6 @@ public class TabCompleter {
               )
           );
         }
-
         return new AggregateCompleter(completers);
     }
 }

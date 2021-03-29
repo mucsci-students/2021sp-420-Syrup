@@ -25,7 +25,8 @@ public class RenameCommand extends Command{
 			return true;
 		    } else {
 			view.printError(
-				"Rename class failed. Make sure the class exists and the new class name doesn't exist.\n");
+				"Could not rename class. Make sure the original class name exists/is spelled correctly"
+				+ " and the new class name doesn't exist.\n");
 		    }
 		// renaming a field
 		} else if (commands[1].equals("field")) {
@@ -37,7 +38,8 @@ public class RenameCommand extends Command{
 			return true;
 		    } else {
 			view.printError(
-				"Rename field failed. Make sure the class and field exist and the new field name doesn't exist.\n");
+				"Could not rename field. Make sure the class and field exist/are spelled correctly"
+				+ " and the new field name doesn't exist.\n");
 		    }
 		// renaming a method    
 		} else if (commands[1].equals("method")) {
@@ -49,7 +51,8 @@ public class RenameCommand extends Command{
 			return true;
 		    } else {
 			view.printError(
-				"Rename method failed. Make sure the class and method exist and the new method name doesn't exist.\n");
+				"Could not rename method. Make sure the class and method exist/are spelled correctly"
+				+ " and the new method name doesn't exist.\n");
 		    }
 		// renaming a parameter    
 		} else if (commands[1].equals("parameter")) {
@@ -61,7 +64,8 @@ public class RenameCommand extends Command{
 			return true;
 		    } else {
 			view.printError(
-				"Rename parameter failed. Make sure the class, method, and parameter all exist and the new parameter name does not exist.");
+				"Could not rename parameter. Make sure the class, method, and parameter all exist/are spelled correctly"
+				+ " and the new parameter name does not exist.");
 		    }
 		} else {
 		    view.printError(

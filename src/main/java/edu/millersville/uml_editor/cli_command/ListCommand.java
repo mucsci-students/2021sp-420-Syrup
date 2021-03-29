@@ -11,13 +11,13 @@ public class ListCommand extends Command{
 
 		    public boolean execute() {
 			if (commands.length < 2) {
-			    view.printError(errorMessage + commandUsage[21] + commandUsage[22] + commandUsage[23] + "\n");
+			    view.printError(errorMessage + commandUsage[16] + commandUsage[17] + "\n");
 			    return prompt;
 			}
 			// get list of classes
 			if (commands[1].equals("classes")) {
 			    if (commands.length != 2) {
-				view.printError(errorMessage + commandUsage[21] + "\n");
+				view.printError(errorMessage + commandUsage[16] + "\n");
 				return prompt;
 			    } else {
 				System.out.println();
@@ -25,9 +25,10 @@ public class ListCommand extends Command{
 				System.out.println();
 				return prompt;
 			    }
+			// get list of relationships
 			} else if (commands[1].equals("relationships")) {
 			    if (commands.length != 2) {
-				view.printError(errorMessage + commandUsage[22] + "\n");
+				view.printError(errorMessage + commandUsage[17] + "\n");
 				return prompt;
 			    } else {
 				System.out.println();
@@ -35,20 +36,9 @@ public class ListCommand extends Command{
 				System.out.println();
 				return prompt;
 			    }
-			} else if (commands[1].equals("all")) {
-			    if (commands.length != 2) {
-				view.printError(errorMessage + commandUsage[23] + "\n");
-				return prompt;
-			    } else {
-				System.out.println();
-				model.getClasses();
-				System.out.println();
-				model.getRelationships();
-				System.out.println();
-				return prompt;
-			    }
+			
 			} else {
-			    view.printError(errorMessage + commandUsage[21] + commandUsage[22] + commandUsage[23] + "\n");
+			    view.printError(errorMessage + commandUsage[16] + commandUsage[17] + "\n");
 			}
 			return prompt;
 	}
