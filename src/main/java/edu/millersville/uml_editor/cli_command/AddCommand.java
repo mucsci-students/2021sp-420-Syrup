@@ -20,7 +20,7 @@ public class AddCommand extends Command {
 	 * @param p true or false
 	 */
 	 public AddCommand(UMLModel m, CLIView v, String[] com, boolean p) {
-		 super();
+		 super(m, v, com, p);
 	 }
 
 	public boolean execute() {
@@ -38,11 +38,11 @@ public class AddCommand extends Command {
 		    if (model.createNewClassGUI(commands[2])) {
 			return true;
 		    } else {
-			view.printError("Create class failed. Make sure the class name doesn't already exist.\n");
+			view.printError("Could not add the class: " + commands[2] + ". Make sure the class name doesn't already exist.\n");
 		    }
 		// adding a field
 		} else if (commands[1].equals("field")) {
-		    if (commands.length != 6) {
+		    if (commands.length != 5) {
 			view.printError(errorMessage + commandUsage[3] + "\n");
 			return prompt;
 		    }
@@ -50,11 +50,11 @@ public class AddCommand extends Command {
 			return true;
 		    } else {
 			view.printError(
-				"Create field failed. Make sure the field doesn't already exist and the class name does exist.\n");
+				"Could not add field " + commands[3] + ". Make sure the field doesn't already exist and/or the class name is spelled correctly/exists.\n");
 		    }
 		// adding a method
 		} else if (commands[1].equals("method")) {
-		    if (commands.length != 6) {
+		    if (commands.length != 5) {
 			view.printError(errorMessage + commandUsage[4] + "\n");
 			return prompt;
 		    }
@@ -62,11 +62,11 @@ public class AddCommand extends Command {
 			return true;
 		    } else {
 			view.printError(
-				"Create method failed. Make sure the method doesn't already exist and the class name does exist.\n");
+				"Could not add method " + commands[3] + ". Make sure the method doesn't already exist and/or the class name is spelled correctly/exists.\n");
 		    }
 		// adding a relationship
 		} else if (commands[1].equals("relationship")) {
-		    if (commands.length != 5) {
+		    if (commands.length != 6) {
 			view.printError(errorMessage + commandUsage[5] + "\n");
 			return prompt;
 		    }
@@ -74,7 +74,7 @@ public class AddCommand extends Command {
 			return true;
 		    } else {
 			view.printError(
-				"Create relationship failed. Make sure the classes exist, the relationship type is valid, and that it is not a duplicate.\n");
+				"Could not add relationship " + commands[3] + ". Make sure the classes exist/are spelled correct, has a valid type, and is not a duplicate.\n");
 		    }
 		// adding a parameter
 		} else if (commands[1].equals("parameter")) {
@@ -86,7 +86,7 @@ public class AddCommand extends Command {
 			return true;
 		    } else {
 			view.printError(
-				"Create parameter failed. Make sure the class exists, method exists, and the parameter does NOT exist.\n");
+				"Could not add parameter " + commands[3] + ". Make sure the class exists/are spelled correctly, method exists, and the parameter does not already exist.\n");
 		    }
 		} else {
 		    view.printError(errorMessage + commandUsage[2] + commandUsage[3] + commandUsage[4] + commandUsage[5]

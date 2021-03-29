@@ -5,8 +5,8 @@ import edu.millersville.uml_editor.view.*;
 
 public class ListCommand extends Command{
 
-	 public ListCommand(Model m, CLIView v, String[] com, boolean p) {
-			super();
+	 public ListCommand(UMLModel m, CLIView v, String[] com, boolean p) {
+			super(m, v, com, p);
 		    }
 
 		    public boolean execute() {
@@ -21,7 +21,7 @@ public class ListCommand extends Command{
 				return prompt;
 			    } else {
 				System.out.println();
-				model.getClasses();
+				System.out.print(model.getClasses());
 				System.out.println();
 				return prompt;
 			    }
@@ -31,7 +31,7 @@ public class ListCommand extends Command{
 				return prompt;
 			    } else {
 				System.out.println();
-				model.getRelationships();
+				System.out.print(model.getRelationships());
 				System.out.println();
 				return prompt;
 			    }

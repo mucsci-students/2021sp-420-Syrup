@@ -41,8 +41,33 @@
         </configuration>
       </plugin>
       
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+          <manifest>
+            <addClasspath>true</addClasspath>
+            <mainClass>edu.millersville.uml_editor.Main</mainClass>
+          </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      
     </plugins>
   </build>
+  
+  
 
   <dependencies>
 	<dependency>
@@ -92,13 +117,20 @@
     <groupId>org.mockito</groupId>
     <artifactId>mockito-junit-jupiter</artifactId>
     <version>3.8.0</version>
-    <scope>test</scope>
+    <scope>compile</scope>
 </dependency>
 
 <dependency>
     <groupId>org.jline</groupId>
     <artifactId>jline</artifactId>
     <version>3.19.0</version>
+</dependency>
+
+<dependency>
+    <groupId>org.junit.jupiter</groupId>
+    <artifactId>junit-jupiter-api</artifactId>
+    <version>5.7.1</version>
+    <scope>test</scope>
 </dependency>
 
     

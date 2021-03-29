@@ -1,7 +1,6 @@
 package edu.millersville.uml_editor;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 import edu.millersville.uml_editor.controller.*;
 import edu.millersville.uml_editor.model.*;
@@ -22,7 +21,7 @@ public class Main
 		UMLModel model = new UMLModel();
 		ViewTemplate view;
 		Controller control;
-
+		
 		if(args.length == 1 && args[0].equals("--cli")) {
 			view = new ViewTemplate(ViewTemplate.InterfaceType.CLI);
     	    control = new Controller(model, view);

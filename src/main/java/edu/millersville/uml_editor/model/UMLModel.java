@@ -129,7 +129,7 @@ public class UMLModel implements Model{
     public boolean createRelationshipGUI(String class1, String class2, String ID, String newType)
     {
         //Create temp classes to be able to create relationship
-    	if(classMap.containsKey(class1) || classMap.containsKey(class2) || hasRelID(ID)) {
+    	if(!classMap.containsKey(class1) || !classMap.containsKey(class2) || hasRelID(ID)) {
     		return false;
     	}
         ClassObject source = getClassFor(class1);

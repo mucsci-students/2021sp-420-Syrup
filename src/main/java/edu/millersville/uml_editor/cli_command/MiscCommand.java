@@ -12,7 +12,7 @@ public class MiscCommand extends Command {
     private static LineReader savePromptReader;
 
     public MiscCommand(UMLModel m, CLIView v, String[] com, boolean p, LineReader reader) {
-		super();
+		super(m, v, com, p);
 		prompt = p;
 		savePromptReader = reader;
     }
@@ -99,34 +99,27 @@ public class MiscCommand extends Command {
     // Prints out how to use all the commands in the CLI
     private static void help(String[] commandUsage) {
 	System.out.print("\nHere is a list of available commands:");
-	System.out.println(commandUsage[0] + " - Save file to specific path" + commandUsage[1]
-		+ " - Loads a file at a specific path\n" + commandUsage[2] + " - create a class with title <name>"
-		+ commandUsage[3]
-		+ " - create a field in <class name> with visibility <type visibility>, type <field type> titled <field name>"
-		+ commandUsage[4]
-		+ " - create a method in <class name> with visibility <method visibility>, type <method type> titled <method name>"
-		+ commandUsage[5]
-		+ " - create a relationship between <class name1> and <class name2> with type <type> (Aggregation, Realization, Composition, Inheritance)"
-		+ commandUsage[6]
-		+ " - create a parameter in <class name> for <method> with type <parameter type> titled <parameter name>\n"
-		+ commandUsage[7] + " - delete a class with title <name>" + commandUsage[8]
-		+ " - delete field <field name> in class titled <class name>" + commandUsage[9]
-		+ " - delete method <method name> in class titled <class name>" + commandUsage[10]
-		+ " - delete a relationship with type <type> (Aggregation, Realization, Composition, Inheritance) between <class name1> and <class name2>"
+	System.out.println(
+		commandUsage[0] + " - Save file to specific path" 
+		+ commandUsage[1] + " - Loads a file at a specific path\n" 
+		+ commandUsage[2] + " - add a class with title <name>"
+		+ commandUsage[3] + " - add a field in <class name>, titled <field name> with type <field type>"
+		+ commandUsage[4] + " - add a method in <class name>, titled <method name> with type type <method type>"
+		+ commandUsage[5] + " - add relationship between <class name1> and <class name2> with type <type> (Aggregation, Realization, Composition, Inheritance)"
+		+ commandUsage[6] + " - add a parameter in <class name> for <method> with type <parameter type> titled <parameter name>\n"
+		+ commandUsage[7] + " - delete a class with title <name>" 
+		+ commandUsage[8] + " - delete field <field name> in class titled <class name>" 
+		+ commandUsage[9] + " - delete method <method name> in class titled <class name>" 
+		+ commandUsage[10] + " - delete a relationship with type <type> (Aggregation, Realization, Composition, Inheritance) between <class name1> and <class name2>"
 		+ commandUsage[11] + " - delete a parameter in <class name> for <method name> with  <parameter name>\n"
-		+ commandUsage[12] + " - rename class <name> to <new name>" + commandUsage[13]
-		+ " - rename field <field name> to <newname> in class titled <class name>" + commandUsage[14]
-		+ " - rename method <method name> to <newname> in class titled <class name>" + commandUsage[15]
-		+ " - rename parameter in <class name> for <method> titled <parameter name> to <parameter newname>\n"
-		+ commandUsage[16] + " - set type of field <field name> in <class name> to <type>" + commandUsage[17]
-		+ " - set type of method <method name> in <class name> to <type>" + commandUsage[18]
-		+ " - set type of parameter <class name> in <method name> titled <parameter name> to <type>\n"
-		+ commandUsage[19] + " - set visibility of field <field name> in <class name> to <visibility>"
-		+ commandUsage[20] + " - set visibility of method <method name> in <class name> to <visibility>\n"
-		+ commandUsage[21] + " - List all existing classes" + commandUsage[22]
-		+ " - List all existing relationships" + commandUsage[23]
-		+ " - List all existing classes and relationships\n" + commandUsage[24]
-		+ " - Clear all classes and relationships\n"
+		+ commandUsage[12] + " - rename class <name> to <new name>" 
+		+ commandUsage[13] + " - rename field <field name> to <newname> in class titled <class name>" 
+		+ commandUsage[14] + " - rename method <method name> to <newname> in class titled <class name>" 
+		+ commandUsage[15] + " - rename parameter in <class name> for <method> titled <parameter name> to <parameter newname>\n"
+		+ commandUsage[16] +  " - List all existing classes" 
+		+ commandUsage[17] + " - List all existing relationships" 
+		+ commandUsage[18] + " - List all existing classes and relationships\n" 
+		+ commandUsage[19] + " - Clear all classes and relationships\n"
 		+ "  undo - Reverts the most recent change to the UML Editor\n"
 		+ "  redo - Restores the most recently undone action.\n" + "  quit - exits the program\n");
     }
