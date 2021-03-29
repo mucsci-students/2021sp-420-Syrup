@@ -37,7 +37,7 @@ public class CLIView implements ViewInterface{
     	System.out.println("Hello, and welcome to Team Syrup's UML editor.");
     	System.out.println("To exit the program, type 'quit'.");
     	System.out.println("To see all the commands available, type 'help'.\n");
-    			
+    			/*
     			boolean loop = true;
 		        //Loop that controls the entire program
 		        while(loop)
@@ -1105,7 +1105,7 @@ public class CLIView implements ViewInterface{
 		                break;
 		              
 		            }
-		        }
+		        }*/
 	    	}
     	   
 

@@ -8,12 +8,13 @@ public abstract class Command {
 	 protected UMLModel model;
 	 protected CLIView view;
 	 protected String[] commands;
-	 protected String errorMessage = "Error in parsing command. Proper command usage is: ";
+	 protected String errorMessage = "There was an error in the command. Proper command usage is: ";
 	 protected String[] commandUsage;
 	 protected static boolean prompt;
 	 
 	 
-	 public void CommandObj(UMLModel m, CLIView view, String[] com, boolean p) {
+	
+	public Command(UMLModel m, CLIView view, String[] com, boolean p) {
 			this.model = m;
 			this.view = view;
 			this.commands = com;
@@ -25,11 +26,11 @@ public abstract class Command {
 			String[] commandUsage = { 
 				"\n  save <name>.json", 
 				"\n  load <path>", 
-				"\n  create class <name>",
-				"\n  create field <class name> <field name> <field type>",
-				"\n  create method <class name> <method name> <method type>",
-				"\n  create relationship <class name1> <class name2> <relationship ID> <relationship type>",
-				"\n  create parameter <class name> <method> <parameter name> <parameter type>",
+				"\n  add class <name>",
+				"\n  add field <class name> <field name> <field type>",
+				"\n  add method <class name> <method name> <method type>",
+				"\n  add relationship <class name1> <class name2> <relationship ID> <relationship type>",
+				"\n  add parameter <class name> <method> <parameter name> <parameter type>",
 				"\n  delete class <name>", 
 				"\n  delete field <class name> <field name>",
 				"\n  delete method <class name> <method name>",

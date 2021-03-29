@@ -6,8 +6,8 @@ import edu.millersville.uml_editor.view.*;
 public class DeleteCommand extends Command {
 
 	
-	public DeleteCommand(Model m, CLIView v, String[] com, boolean p) {
-		super();
+	public DeleteCommand(UMLModel m, CLIView v, String[] com, boolean p) {
+		super(m, v, com, p);
 	}
 	
 	public boolean execute() {
@@ -51,7 +51,7 @@ public class DeleteCommand extends Command {
 		    }
 		// delete a relationship
 		} else if (commands[1].equals("relationship")) {
-		    if (commands.length != 5) {
+		    if (commands.length != 3) {
 			view.printError(errorMessage + commandUsage[10] + "\n");
 			return prompt;
 		    }

@@ -9,8 +9,8 @@ public class SaveCommand extends Command{
 	
 	private String file;
 
-    public SaveCommand(Model m, CLIView v, String[] com, boolean p, String file) {
-        super();
+    public SaveCommand(UMLModel m, CLIView v, String[] com, boolean p, String file) {
+        super(m, v, com, p);
         this.file = file;
     }
 

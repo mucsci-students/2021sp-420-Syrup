@@ -1,6 +1,5 @@
 package edu.millersville.uml_editor.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -9,6 +8,7 @@ import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
 import org.jline.reader.MaskingCallback;
 import org.jline.reader.impl.DefaultParser;
+
 import org.jline.reader.impl.completer.AggregateCompleter;
 import org.jline.reader.impl.completer.StringsCompleter;
 import org.jline.reader.impl.history.DefaultHistory;
@@ -22,23 +22,6 @@ import edu.millersville.uml_editor.cli_command.TabCompleter;
 
 public class CLIController extends ControllerType{
 
-	/*
-    private Terminal terminal;
-    private UMLModel model;
-    private UMLGUI view;
-
-    private AggregateCompleter completer;
-    private LineReader reader;
-	*/
-	/*
-    public CLIController(UMLModel model, CLIGUI view) throws IOException {
-        this.model = model;
-        this.view = view;
-
-        terminal = TerminalBuilder.builder().system(true).build();
-        completer = new TabCompleter().updateCompleter(model);
-        reader = LineReaderBuilder.builder().terminal(terminal).completer(completer).variable(LineReader.MENU_COMPLETE, true).build();
-    }*/
     private UMLModel model;
     private CLIView view;
     private boolean prompt;
@@ -65,7 +48,7 @@ public class CLIController extends ControllerType{
 
         StringsCompleter savePromptCompleter = new StringsCompleter("yes", "no");
 
-        history = new DefaultHistory();
+        //history = new DefaultHistory();
 
         parser = new DefaultParser();
         parser.setEscapeChars(new char[]{});
@@ -128,7 +111,7 @@ public class CLIController extends ControllerType{
                 break;
             // Call create class, field, method, or relationship based on length and user
             // input
-            case "create":
+            case "add":
                 AddCommand create = new AddCommand(meme.getModel(), view, commands, prompt);
                 prompt = create.execute();
                 newMeme(meme);

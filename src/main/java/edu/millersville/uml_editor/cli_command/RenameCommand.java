@@ -5,8 +5,8 @@ import edu.millersville.uml_editor.view.*;
 
 public class RenameCommand extends Command{
 	
-	public RenameCommand(Model m, CLIView v, String[] com, boolean p) {
-		super();
+	public RenameCommand(UMLModel m, CLIView v, String[] com, boolean p) {
+		super(m, v, com, p);
 	    }
 
 	    public boolean execute() {
