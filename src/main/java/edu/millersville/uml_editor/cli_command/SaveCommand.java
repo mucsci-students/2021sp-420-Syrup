@@ -21,19 +21,19 @@ public class SaveCommand extends Command{
                 model.saveJSON(file);
                 System.out.println("File saved at: " + file);
             } catch (IOException e) {
-                view.printError("Failed to parse directory. Exiting.");
+                view.printError("Failed save file. Exiting.");
                 return prompt;
             }
         } else if(commands.length == 1) {
         	if(file == null) {
-        		System.out.println("\nSpecify a file path to save to. Proper command usage is: " + commandUsage[0] + "\n");
+        		System.out.println("\nRe-enter name of file: " + commandUsage[0] + "\n");
         		return prompt;
 			}
 			try {
 				model.saveJSON(file);
 				System.out.println("File saved at: " + file);
 			} catch (IOException e) {
-				view.printError("Failed to parse directory. Exiting.");
+				view.printError("Failed to save file. Exiting.");
 				return prompt;
 			}
 		} else {

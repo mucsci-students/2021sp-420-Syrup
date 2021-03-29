@@ -48,7 +48,7 @@ public class CLIController extends ControllerType{
 
         StringsCompleter savePromptCompleter = new StringsCompleter("yes", "no");
 
-        //history = new DefaultHistory();
+        history = new DefaultHistory();
 
         parser = new DefaultParser();
         parser.setEscapeChars(new char[]{});
@@ -73,10 +73,8 @@ public class CLIController extends ControllerType{
 
             evaluateCommand(commands);
 
-            // update completer
             AggregateCompleter completer = new TabCompleter().updateCompleter(model);
 
-            // rebuild reader
             reader = LineReaderBuilder.builder().terminal(terminal).completer(completer).history(history)
                     .variable(LineReader.MENU_COMPLETE, true).parser(parser).build();
         }
@@ -89,74 +87,50 @@ public class CLIController extends ControllerType{
                 MiscCommand quit = new MiscCommand(model, view, commands, prompt, savePromptReader);
                 prompt = quit.execute();
                 break;
-            // Call help
             case "help":
                 MiscCommand help = new MiscCommand(model, view, commands, prompt, savePromptReader);
                 prompt = help.execute();
                 break;
-            // Call save depending on if pathname was specified or not
             case "save":
                 SaveCommand save = new SaveCommand(model, view, commands, prompt, file);
                 prompt = save.execute();
-                //update file
                 file = save.getFile();
                 break;
-            // Call load given a directory+filename
             case "load":
                 LoadCommand load = new LoadCommand(meme.getModel(), view, commands, prompt, savePromptReader, file);
                 prompt = load.execute();
-                //update file
                 file = load.getFile();
                 newMeme(meme);
                 break;
-            // Call create class, field, method, or relationship based on length and user
-            // input
             case "add":
                 AddCommand create = new AddCommand(meme.getModel(), view, commands, prompt);
                 prompt = create.execute();
                 newMeme(meme);
                 break;
-            // Call delete class, field, method, or relationship based on length and user
-            // input
             case "delete":
                 DeleteCommand delete = new DeleteCommand(meme.getModel(), view, commands, prompt);
                 prompt = delete.execute();
                 newMeme(meme);
                 break;
-            // Call rename class, field, or method depending on user input and length
             case "rename":
                 RenameCommand rename = new RenameCommand(meme.getModel(), view, commands, prompt);
                 prompt = rename.execute();
                 newMeme(meme);
                 break;
-            /*case "settype":
-                SettypeCommand settype = new SettypeCommand(meme.getModel(), view, commands, prompt);
-                prompt = settype.execute();
-                newMeme(meme);
-                break;
-            case "setvis":
-                SetvisCommand setvis = new SetvisCommand(meme.getModel(), view, commands, prompt);
-                prompt = setvis.execute();
-                newMeme(meme);
-                break;*/
-            // Call list class or relationship based on length and user input
+           
             case "list":
                 ListCommand list = new ListCommand(model, view, commands, prompt);
                 prompt = list.execute();
                 break;
-            // Calls clear
             case "clear":
                 MiscCommand clear = new MiscCommand(meme.getModel(), view, commands, prompt, savePromptReader);
                 prompt = clear.execute();
                 newMeme(meme);
                 break;
-            // Mostly for testing. Undocumented addition to allow for doing things without
-            // prompting.
             case "sudo":
                 MiscCommand sudo = new MiscCommand(model, view, commands, prompt, savePromptReader);
                 prompt = sudo.execute();
                 break;
-            // Proper command not detected, print an error
             case "undo":
                 undo();
                 break;
@@ -204,7 +178,7 @@ public class CLIController extends ControllerType{
         ++currMeme;
     }
 
-    public Model getModel() {
+    public UMLModel getModel() {
         return model;
     }
     

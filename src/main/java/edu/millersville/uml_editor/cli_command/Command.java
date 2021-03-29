@@ -5,15 +5,14 @@ import edu.millersville.uml_editor.view.*;
 
 public abstract class Command {
 	
-	 protected UMLModel model;
-	 protected CLIView view;
-	 protected String[] commands;
-	 protected String errorMessage = "There was an error in the command. Proper command usage is: ";
-	 protected String[] commandUsage;
-	 protected static boolean prompt;
+	protected UMLModel model;
+	protected CLIView view;
+	protected String[] commands;
+	protected String errorMessage = "There was an error in the command. Proper command usage is: ";
+	protected String[] commandUsage;
+	protected static boolean prompt;
+	protected abstract boolean execute();
 	 
-	 
-	
 	public Command(UMLModel m, CLIView view, String[] com, boolean p) {
 			this.model = m;
 			this.view = view;
@@ -23,7 +22,7 @@ public abstract class Command {
 	 }
 	 
 	 private static String[] getCommandUsage() {
-			String[] commandUsage = { 
+		String[] commandUsage = { 
 				"\n  save <name>.json", 
 				"\n  load <path>", 
 				"\n  add class <name>",
@@ -42,10 +41,12 @@ public abstract class Command {
 				"\n  rename parameter <class name> <method name> <parameter name> <parameter newname>",
 				"\n  list classes",
 				"\n  list relationships", 
-				"\n  clear", 
-				"\n quit" 
-				};
-			return commandUsage;
+				"\n  clear",
+				"\n  undo",
+				"\n  redo",
+				"\n  quit" 
+		};
+		return commandUsage;
 	}
-	 protected abstract boolean execute();
+	
 }

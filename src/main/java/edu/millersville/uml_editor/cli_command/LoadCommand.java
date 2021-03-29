@@ -20,8 +20,7 @@ public class LoadCommand extends Command {
         if (commands.length == 2) {
             try {
                 if (prompt) {
-                    System.out.println("\nYou have unsaved changes, are you sure you want to continue?");
-                    System.out.println("Type 'yes' to continue loading, or 'no' to go back.");
+                    System.out.println("All previous work will be erased. Type 'yes' to continue loading, or 'no' to go back.");
                     prompt = savePrompt();
                 }
                 if (!prompt) {
@@ -30,7 +29,7 @@ public class LoadCommand extends Command {
                     return false;
                 }
             } catch (Exception e) {
-                view.printError("Failed to parse directory. Exiting.\n");
+                view.printError("Failed to load file. Exiting.\n");
                 return prompt;
             }
         } else {
@@ -40,7 +39,6 @@ public class LoadCommand extends Command {
         return prompt;
     }
 
-    
     private static boolean savePrompt() {
         while (prompt) {
 
@@ -48,7 +46,7 @@ public class LoadCommand extends Command {
             line = line.trim();
 
             if (line.equals("yes")) {
-                System.out.println("Proceeding.\n");
+                System.out.println("Saving.\n");
                 prompt = false;
                 break;
             } else if (line.equals("no")) {
