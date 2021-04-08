@@ -152,6 +152,18 @@ public class UMLController {
         };
     }
     
+    ////////////////////////////////
+	//
+	// Popup menu: Relationship
+	//
+	////////////////////////////////
+    
+    public ActionListener createRelCall(){
+        return (ActionEvent e) -> {
+            gui.createRelAction();
+        };
+    }
+    
 
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////

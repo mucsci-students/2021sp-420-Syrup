@@ -507,7 +507,7 @@ public class GUI implements ViewInterface{
 		JLabel relDestLabel = new JLabel("Destination Class Name:");
 		relDestLabel.setFont(new Font("Serif", Font.BOLD, 12));
 		
-		JLabel relTypeLabel = new JLabel("Relationship Type:");
+		JLabel relTypeLabel = new JLabel("Relationship Type: (A, C, I, R)");
 		relTypeLabel.setFont(new Font("Serif", Font.BOLD, 12));
 		
 		JButton relAddButton = new JButton("Add Relationship");
@@ -533,6 +533,7 @@ public class GUI implements ViewInterface{
 		addRel.add(relTypeLabel);
 		addRel.add(addRelType);
 		addRel.add(relAddButton);
+		relAddButton.addActionListener(controller.createRelCall());
 		
 		////////////////////////////////
 		//
@@ -901,6 +902,37 @@ public class GUI implements ViewInterface{
 			fieldCurrent.setText("");
 			fieldNew.setText("");
 		}
+	}
+	
+	////////////////////////////////
+	//
+	// Relationship Actions
+	//
+	////////////////////////////////
+	
+	public void createRelAction()
+	{
+		String ID = addRelID.getText();
+        String sourceClass = addRelSource.getText();
+        String destClass = addRelDest.getText();
+        String type = addRelType.getText();
+
+        classDupFalse();
+		notExistFalse();
+        if (!model.hasClass(sourceClass) || !model.hasClass(destClass))
+        	notExistTrue();
+        else if (model.hasRelID(ID))
+        	classDupTrue();
+        else if (!type.equals("A") && !type.equals("C") && !type.equals("I") && !type.equals("R"))
+        	notExistTrue();
+        else
+        {
+            model.createRelationshipGUI(sourceClass, destClass, ID, type);
+        }
+        addRelID.setText("");
+        addRelSource.setText("");
+        addRelDest.setText("");
+        addRelType.setText("");
 	}
 	
 	////////////////////////////////
