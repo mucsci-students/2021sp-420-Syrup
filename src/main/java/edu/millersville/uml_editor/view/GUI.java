@@ -87,7 +87,7 @@ public class GUI implements ViewInterface{
     private JTextField addRelType;
     private JTextField delRel;
     private JTextField changeRelID;
-    private JTextField changeRelType;
+    private JTextField newRelType;
     
     private Map<String, classBox> boxMap;
     
@@ -551,6 +551,32 @@ public class GUI implements ViewInterface{
 		deleteRel.add(delRelIDLabel);
 		deleteRel.add(delRel);
 		deleteRel.add(relDelButton);
+		
+		////////////////////////////////
+		//
+		// Change Relationship Option
+		//
+		////////////////////////////////
+		
+		JLabel typeRelIDLabel = new JLabel("ID:");
+		typeRelIDLabel.setFont(new Font("Serif", Font.BOLD, 12));
+		
+		JLabel newRelTypeLabel = new JLabel("New Type:");
+		newRelTypeLabel.setFont(new Font("Serif", Font.BOLD, 12));
+		
+		JButton relTypeButton = new JButton("Change Relationship Type");
+		
+		changeRelID = new JTextField();
+		changeRelID.setColumns(15);
+		
+		newRelType = new JTextField();
+		newRelType.setColumns(15);
+		
+		changeRelType.add(typeRelIDLabel);
+		changeRelType.add(changeRelID);
+		changeRelType.add(newRelTypeLabel);
+		changeRelType.add(newRelType);
+		changeRelType.add(relTypeButton);
 		
         ////////////////////////////////
         //
