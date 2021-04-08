@@ -42,7 +42,10 @@ public class CLIController extends ControllerType{
         mementos = new ArrayList<Memento>();
         mementos.add(new Memento(this.model));
 
-        terminal = TerminalBuilder.builder().system(true).build();
+        //terminal = TerminalBuilder.builder().system(true).build();
+        //terminal = TerminalBuilder.builder().build();
+        terminal = TerminalBuilder.terminal();
+
 
         AggregateCompleter completer = new TabCompleter().updateCompleter(model);
 
@@ -70,7 +73,7 @@ public class CLIController extends ControllerType{
             line = line.trim();
 
             String[] commands = line.split(" ");
-
+            
             evaluateCommand(commands);
 
             AggregateCompleter completer = new TabCompleter().updateCompleter(model);
