@@ -37,6 +37,8 @@ import javax.swing.JPanel;
 import java.awt.Canvas;
 import javax.swing.JMenuBar;
 import java.awt.Point;
+import java.awt.TextField;
+
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.JPasswordField;
@@ -78,6 +80,14 @@ public class GUI implements ViewInterface{
     private JTextField renameFieldCN;
 	private JTextField fieldCurrent;
     private JTextField fieldNew;
+    
+    private JTextField addRelID;
+    private JTextField addRelSource;
+    private JTextField addRelDest;
+    private JTextField addRelType;
+    private JTextField delRel;
+    private JTextField changeRelID;
+    private JTextField changeRelType;
     
     private Map<String, classBox> boxMap;
     
@@ -474,7 +484,56 @@ public class GUI implements ViewInterface{
 		
 		JMenu rel = new JMenu("Relationship");
         menuBar.add(rel);
-
+        
+        JMenu addRel = new JMenu("Add");
+		rel.add(addRel);
+		JMenu deleteRel = new JMenu("Delete");
+		rel.add(deleteRel);
+		JMenu changeRelType = new JMenu("Change Type");
+		rel.add(changeRelType);
+		
+		////////////////////////////////
+		//
+		// Add Relationship Option
+		//
+		////////////////////////////////
+		
+		JLabel relIDLabel = new JLabel("ID:");
+		relIDLabel.setFont(new Font("Serif", Font.BOLD, 12));
+		
+		JLabel relSourceLabel = new JLabel("Source Class Name:");
+		relSourceLabel.setFont(new Font("Serif", Font.BOLD, 12));
+		
+		JLabel relDestLabel = new JLabel("Destination Class Name:");
+		relDestLabel.setFont(new Font("Serif", Font.BOLD, 12));
+		
+		JLabel relTypeLabel = new JLabel("Relationship Type:");
+		relTypeLabel.setFont(new Font("Serif", Font.BOLD, 12));
+		
+		JButton relAddButton = new JButton("Add Relationship");
+		
+		addRelID = new JTextField();
+		addRelID.setColumns(15);
+		
+		addRelSource = new JTextField();
+		addRelSource.setColumns(15);
+		
+		addRelDest = new JTextField();
+		addRelDest.setColumns(15);
+		
+		addRelType = new JTextField();
+		addRelType.setColumns(15);
+		
+		addRel.add(relIDLabel);
+		addRel.add(addRelID);
+		addRel.add(relSourceLabel);
+		addRel.add(addRelSource);
+		addRel.add(relDestLabel);
+		addRel.add(addRelDest);
+		addRel.add(relTypeLabel);
+		addRel.add(addRelType);
+		addRel.add(relAddButton);
+		
 		
         ////////////////////////////////
         //
