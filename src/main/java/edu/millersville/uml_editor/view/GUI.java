@@ -534,6 +534,23 @@ public class GUI implements ViewInterface{
 		addRel.add(addRelType);
 		addRel.add(relAddButton);
 		
+		////////////////////////////////
+		//
+		// Delete Relationship Option
+		//
+		////////////////////////////////
+		
+		JLabel delRelIDLabel = new JLabel("ID:");
+		delRelIDLabel.setFont(new Font("Serif", Font.BOLD, 12));
+		
+		JButton relDelButton = new JButton("Delete Relationship");
+		
+		delRel = new JTextField();
+		delRel.setColumns(15);
+		
+		deleteRel.add(delRelIDLabel);
+		deleteRel.add(delRel);
+		deleteRel.add(relDelButton);
 		
         ////////////////////////////////
         //
