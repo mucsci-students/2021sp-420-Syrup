@@ -579,6 +579,7 @@ public class GUI implements ViewInterface{
 		changeRelType.add(newRelTypeLabel);
 		changeRelType.add(newRelType);
 		changeRelType.add(relTypeButton);
+		relTypeButton.addActionListener(controller.changeTypeCall());
 		
         ////////////////////////////////
         //
@@ -950,6 +951,23 @@ public class GUI implements ViewInterface{
 		
 		
 		delRel.setText("");
+	}
+	
+	public void changeRelTypeAction() {
+	  	String ID = changeRelID.getText();
+    	String type = newRelType.getText();
+    	
+    	if (!model.hasRelID(ID))
+    		notExistTrue();
+    	else if (!type.equals("A") && !type.equals("C") && !type.equals("I") && !type.equals("R"))
+    		notExistTrue();
+    	else
+    	{
+    		model.changeRelationshipTypeGUI(ID, type);
+    	}
+    	
+    	changeRelID.setText("");
+    	newRelType.setText("");
 	}
 	
 	////////////////////////////////
