@@ -164,6 +164,18 @@ public class UMLController {
         };
     }
     
+    public ActionListener deleteRelCall(){
+        return (ActionEvent e) -> {
+        	String ID = e.getActionCommand();
+            if(model.hasRelID(ID)){
+                model.deleteRelationshipGUI(ID);
+                gui.removeArrow();
+            }
+            else{
+                gui.notExistTrue();
+            }
+        };
+    }
 
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
