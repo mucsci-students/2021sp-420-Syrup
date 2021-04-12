@@ -510,7 +510,7 @@ public class GUI implements ViewInterface{
 		JLabel relTypeLabel = new JLabel("Relationship Type: (A, C, I, R)");
 		relTypeLabel.setFont(new Font("Serif", Font.BOLD, 12));
 		
-		JButton relAddButton = new JButton("Add Relationship");
+		JButton relAddButton = new JButton("Add");
 		
 		addRelID = new JTextField();
 		addRelID.setColumns(15);
@@ -552,10 +552,11 @@ public class GUI implements ViewInterface{
 		deleteRel.add(delRelIDLabel);
 		deleteRel.add(delRel);
 		deleteRel.add(relDelButton);
+		relDelButton.addActionListener(controller.deleteRelCall());
 		
 		////////////////////////////////
 		//
-		// Change Relationship Option
+		// Change Relationship Type Option
 		//
 		////////////////////////////////
 		
@@ -929,10 +930,26 @@ public class GUI implements ViewInterface{
         {
             model.createRelationshipGUI(sourceClass, destClass, ID, type);
         }
+        drawArrow();
         addRelID.setText("");
         addRelSource.setText("");
         addRelDest.setText("");
         addRelType.setText("");
+        
+	}
+	
+	public void drawArrow() {
+		
+		
+		
+	}
+	
+	public void removeArrow() {
+		String id = delRel.getText();
+		
+		
+		
+		delRel.setText("");
 	}
 	
 	////////////////////////////////
