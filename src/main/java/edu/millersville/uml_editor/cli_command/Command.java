@@ -11,7 +11,6 @@ public abstract class Command {
 	protected String errorMessage = "There was an error in the command. Proper command usage is: ";
 	protected String[] commandUsage;
 	protected static boolean prompt;
-	protected abstract boolean execute();
 	 
 	public Command(UMLModel m, CLIView view, String[] com, boolean p) {
 			this.model = m;
@@ -48,5 +47,7 @@ public abstract class Command {
 		};
 		return commandUsage;
 	}
+	 
+	protected abstract boolean execute();
 	
 }
