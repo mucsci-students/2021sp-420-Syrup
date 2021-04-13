@@ -37,6 +37,8 @@ import javax.swing.JPanel;
 import java.awt.Canvas;
 import javax.swing.JMenuBar;
 import java.awt.Point;
+import java.awt.TextField;
+
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.JPasswordField;
@@ -78,6 +80,14 @@ public class GUI implements ViewInterface{
     private JTextField renameFieldCN;
 	private JTextField fieldCurrent;
     private JTextField fieldNew;
+    
+    private JTextField addRelID;
+    private JTextField addRelSource;
+    private JTextField addRelDest;
+    private JTextField addRelType;
+    private JTextField delRel;
+    private JTextField changeRelID;
+    private JTextField newRelType;
     
     private Map<String, classBox> boxMap;
     
@@ -474,7 +484,102 @@ public class GUI implements ViewInterface{
 		
 		JMenu rel = new JMenu("Relationship");
         menuBar.add(rel);
-
+        
+        JMenu addRel = new JMenu("Add");
+		rel.add(addRel);
+		JMenu deleteRel = new JMenu("Delete");
+		rel.add(deleteRel);
+		JMenu changeRelType = new JMenu("Change Type");
+		rel.add(changeRelType);
+		
+		////////////////////////////////
+		//
+		// Add Relationship Option
+		//
+		////////////////////////////////
+		
+		JLabel relIDLabel = new JLabel("ID:");
+		relIDLabel.setFont(new Font("Serif", Font.BOLD, 12));
+		
+		JLabel relSourceLabel = new JLabel("Source Class Name:");
+		relSourceLabel.setFont(new Font("Serif", Font.BOLD, 12));
+		
+		JLabel relDestLabel = new JLabel("Destination Class Name:");
+		relDestLabel.setFont(new Font("Serif", Font.BOLD, 12));
+		
+		JLabel relTypeLabel = new JLabel("Relationship Type: (A, C, I, R)");
+		relTypeLabel.setFont(new Font("Serif", Font.BOLD, 12));
+		
+		JButton relAddButton = new JButton("Add");
+		
+		addRelID = new JTextField();
+		addRelID.setColumns(15);
+		
+		addRelSource = new JTextField();
+		addRelSource.setColumns(15);
+		
+		addRelDest = new JTextField();
+		addRelDest.setColumns(15);
+		
+		addRelType = new JTextField();
+		addRelType.setColumns(15);
+		
+		addRel.add(relIDLabel);
+		addRel.add(addRelID);
+		addRel.add(relSourceLabel);
+		addRel.add(addRelSource);
+		addRel.add(relDestLabel);
+		addRel.add(addRelDest);
+		addRel.add(relTypeLabel);
+		addRel.add(addRelType);
+		addRel.add(relAddButton);
+		relAddButton.addActionListener(controller.createRelCall());
+		
+		////////////////////////////////
+		//
+		// Delete Relationship Option
+		//
+		////////////////////////////////
+		
+		JLabel delRelIDLabel = new JLabel("ID:");
+		delRelIDLabel.setFont(new Font("Serif", Font.BOLD, 12));
+		
+		JButton relDelButton = new JButton("Delete Relationship");
+		
+		delRel = new JTextField();
+		delRel.setColumns(15);
+		
+		deleteRel.add(delRelIDLabel);
+		deleteRel.add(delRel);
+		deleteRel.add(relDelButton);
+		relDelButton.addActionListener(controller.deleteRelCall());
+		
+		////////////////////////////////
+		//
+		// Change Relationship Type Option
+		//
+		////////////////////////////////
+		
+		JLabel typeRelIDLabel = new JLabel("ID:");
+		typeRelIDLabel.setFont(new Font("Serif", Font.BOLD, 12));
+		
+		JLabel newRelTypeLabel = new JLabel("New Type:");
+		newRelTypeLabel.setFont(new Font("Serif", Font.BOLD, 12));
+		
+		JButton relTypeButton = new JButton("Change Relationship Type");
+		
+		changeRelID = new JTextField();
+		changeRelID.setColumns(15);
+		
+		newRelType = new JTextField();
+		newRelType.setColumns(15);
+		
+		changeRelType.add(typeRelIDLabel);
+		changeRelType.add(changeRelID);
+		changeRelType.add(newRelTypeLabel);
+		changeRelType.add(newRelType);
+		changeRelType.add(relTypeButton);
+		relTypeButton.addActionListener(controller.changeTypeCall());
 		
         ////////////////////////////////
         //
@@ -799,6 +904,70 @@ public class GUI implements ViewInterface{
 			fieldCurrent.setText("");
 			fieldNew.setText("");
 		}
+	}
+	
+	////////////////////////////////
+	//
+	// Relationship Actions
+	//
+	////////////////////////////////
+	
+	public void createRelAction()
+	{
+		String ID = addRelID.getText();
+        String sourceClass = addRelSource.getText();
+        String destClass = addRelDest.getText();
+        String type = addRelType.getText();
+
+        classDupFalse();
+		notExistFalse();
+        if (!model.hasClass(sourceClass) || !model.hasClass(destClass))
+        	notExistTrue();
+        else if (model.hasRelID(ID))
+        	classDupTrue();
+        else if (!type.equals("A") && !type.equals("C") && !type.equals("I") && !type.equals("R"))
+        	notExistTrue();
+        else
+        {
+            model.createRelationshipGUI(sourceClass, destClass, ID, type);
+        }
+        drawArrow();
+        addRelID.setText("");
+        addRelSource.setText("");
+        addRelDest.setText("");
+        addRelType.setText("");
+        
+	}
+	
+	public void drawArrow() {
+		
+		
+		
+	}
+	
+	public void removeArrow() {
+		String id = delRel.getText();
+		
+		
+		
+		delRel.setText("");
+	}
+	
+	public void changeRelTypeAction() {
+	  	String ID = changeRelID.getText();
+    	String type = newRelType.getText();
+    	
+    	if (!model.hasRelID(ID))
+    		notExistTrue();
+    	else if (!type.equals("A") && !type.equals("C") && !type.equals("I") && !type.equals("R"))
+    		notExistTrue();
+    	else
+    	{
+    		model.changeRelationshipTypeGUI(ID, type);
+    	}
+    	
+    	changeRelID.setText("");
+    	newRelType.setText("");
 	}
 	
 	////////////////////////////////

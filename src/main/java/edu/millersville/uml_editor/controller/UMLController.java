@@ -152,6 +152,36 @@ public class UMLController {
         };
     }
     
+    ////////////////////////////////
+	//
+	// Popup menu: Relationship
+	//
+	////////////////////////////////
+    
+    public ActionListener createRelCall(){
+        return (ActionEvent e) -> {
+            gui.createRelAction();
+        };
+    }
+    
+    public ActionListener deleteRelCall(){
+        return (ActionEvent e) -> {
+        	String ID = e.getActionCommand();
+            if(model.hasRelID(ID)){
+                model.deleteRelationshipGUI(ID);
+                gui.removeArrow();
+            }
+            else{
+                gui.notExistTrue();
+            }
+        };
+    }
+    
+    public ActionListener changeTypeCall(){
+        return (ActionEvent e) -> {
+            gui.changeRelTypeAction();
+        };
+    }
 
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
