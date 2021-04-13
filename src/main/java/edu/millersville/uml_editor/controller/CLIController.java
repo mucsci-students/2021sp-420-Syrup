@@ -117,7 +117,6 @@ public class CLIController extends ControllerType{
                 prompt = rename.execute();
                 newMeme(meme);
                 break;
-           
             case "list":
                 ListCommand list = new ListCommand(model, view, commands, prompt);
                 prompt = list.execute();
