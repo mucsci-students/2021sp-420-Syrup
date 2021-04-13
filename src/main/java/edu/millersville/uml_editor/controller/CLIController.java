@@ -48,7 +48,7 @@ public class CLIController extends ControllerType{
         this.view = (CLIView) view.getViewinterface();
         currMeme = 0;
         mementos = new ArrayList<Memento>();
-        //mementos.add(new Memento(this.model));
+        mementos.add(new Memento(this.model));
         originator = new Originator();
         careTaker  = new CareTaker();
         terminal = TerminalBuilder.builder().system(true).build();
@@ -99,8 +99,8 @@ public class CLIController extends ControllerType{
     public void evaluateCommand(String[] commands) {
     	// creates a new memento of the current model.
         Memento meme = new Memento(new UMLModel(this.model.getClasses(), this.model.getRelationships()));
-        originator.setState(meme.getModel());
-        careTaker.add(originator.saveStateToMemento());
+        //originator.setState(model);
+        //careTaker.add(originator.saveStateToMemento());
         // goes through the commands and executes.
         switch (commands[0]) {
             case "quit":
@@ -123,10 +123,9 @@ public class CLIController extends ControllerType{
                 newMeme(meme);
                 break;
             case "add":
-                
+            	
             	AddCommand create = new AddCommand(meme.getModel(), view, commands, prompt);
-                create.execute();
-                
+                prompt = create.execute();             
                 newMeme(meme);
                 break;
             case "delete":
@@ -155,7 +154,6 @@ public class CLIController extends ControllerType{
                     prompt = true;
                 } else {
                     System.out.println("No actions to undo.");
-
                 }
                 break;
             case "redo":
@@ -211,8 +209,9 @@ public class CLIController extends ControllerType{
     private void newMeme(Memento meme) {
         truncateMemes();
         mementos.add(meme);
-        this.model = meme.getModel();
         ++currMeme;
+        this.model = meme.getModel();
+        
     }
 
     /**

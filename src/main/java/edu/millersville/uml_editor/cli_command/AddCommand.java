@@ -94,4 +94,8 @@ public class AddCommand extends Command {
 		}
 		return prompt;
 	}
+	
+	public UMLModel getUMLModel() {
+		return model;
+	}
 }
