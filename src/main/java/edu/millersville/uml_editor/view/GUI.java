@@ -4,10 +4,12 @@ import java.awt.Font;
 
 import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -31,6 +33,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.LineBorder;
 import javax.swing.JTextPane;
 import javax.swing.JToolBar;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.JSlider;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
@@ -622,26 +625,28 @@ public class GUI implements ViewInterface{
     	box = new classBox(controller);
     	createBox(box);
     	JPanel panel = box.boxPanel();
+		
     	
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		
 		GroupLayout groupLayout = new GroupLayout(Uml_Editor.getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.CENTER)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+					.addGroup(groupLayout.createParallelGroup(Alignment.CENTER)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(163)
-							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 278, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(panel, GroupLayout.DEFAULT_SIZE, 278, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap(376, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.CENTER)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 231, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 231, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(246, Short.MAX_VALUE))
 		);
+
 		Uml_Editor.getContentPane().setLayout(groupLayout);
 	}
     
