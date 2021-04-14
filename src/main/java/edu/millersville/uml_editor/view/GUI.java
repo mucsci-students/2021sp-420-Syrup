@@ -14,12 +14,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.JMenuItem;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -42,6 +44,9 @@ import javax.swing.JMenuBar;
 import java.awt.Point;
 import java.awt.TextField;
 
+import java.io.File;
+import java.awt.image.BufferedImage;
+import java.awt.Graphics2D;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.JPasswordField;
@@ -178,7 +183,9 @@ public class GUI implements ViewInterface{
 		menu.add(save);
 		JMenuItem help = new JMenuItem("Help");
 		menu.add(help);
-		
+		JMenuItem exportImage = new JMenuItem("Export as Image");
+		menu.add(exportImage);
+		exportImage.addActionListener(controller.exportImageCall());
 		////////////////////////////////
 		//
 		// Class Option
@@ -977,6 +984,19 @@ public class GUI implements ViewInterface{
     	
     	changeRelID.setText("");
     	newRelType.setText("");
+	}
+	public void exportImageAction(){
+		
+		BufferedImage image = new BufferedImage(Uml_Editor.getWidth(), Uml_Editor.getHeight(), BufferedImage.TYPE_INT_RGB);
+		Graphics2D g = image.createGraphics();
+		Uml_Editor.printAll(g);
+		g.dispose();
+			try {
+				ImageIO.write(image, "jpg", new File("UmlImage.jpg"));
+				ImageIO.write(image, "png", new File("UmlImage.png"));
+			} catch (IOException exp) {
+				exp.printStackTrace();
+			}
 	}
 	
 	////////////////////////////////

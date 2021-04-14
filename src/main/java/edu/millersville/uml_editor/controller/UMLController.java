@@ -52,6 +52,11 @@ public class UMLController {
         };
     }*/
     
+    public ActionListener exportImageCall(){
+        return (ActionEvent e) -> {
+            gui.exportImageAction();
+        };
+    }
 	////////////////////////////////
 	//
 	// Print class box
