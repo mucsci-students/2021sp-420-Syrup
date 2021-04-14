@@ -1,5 +1,6 @@
 package edu.millersville.uml_editor.model;
 
+
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -21,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.TextArea;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JDesktopPane;
 import javax.swing.JPanel;
 import javax.swing.JMenuBar;
@@ -29,9 +31,13 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.LineBorder;
+import javax.swing.event.MouseInputAdapter;
+
 import java.awt.Color;
 import java.awt.BorderLayout;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
@@ -42,6 +48,7 @@ import javax.swing.JPopupMenu;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -73,6 +80,7 @@ public class classBox extends JComponent {
     private JTextField textBox6;
     private JTextField paramName;
     private JTextField paramType;
+
     
     private JMenu deleteMethod;
     private ArrayList<JButton> methodButtonList;
@@ -97,7 +105,11 @@ public class classBox extends JComponent {
 	 * Initialize the contents of the frame.
 	 */
 	public void initialize() {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch(Exception e) {
 		
+		}
 		////////////////////////////////
 		//
 		// Create class box display
@@ -122,14 +134,23 @@ public class classBox extends JComponent {
 		// Movement Listener
 		//
 		////////////////////////////////
+		MouseInputAdapter l = new MouseInputAdapter (){
+			private int x;
+			private int y;
+		public void mousePressed(MouseEvent e) {
+			this.x = e.getX();
+			this.y = e.getY();
+		}
+		public void mouseDragged(MouseEvent e) {
+			panel.setLocation(panel.getX() + (e.getX() - this.x), panel.getY() + (e.getY() - this.y));
+		}
+		};
+	
+		panel.addMouseListener(l);
+		panel.addMouseMotionListener(l);
 		
-		panel.addMouseMotionListener(new MouseMotionAdapter(){
-			public void mouseDragged(MouseEvent e) {
-				e.translatePoint(e.getComponent().getLocation().x, e.getComponent()
-				  .getLocation().y);
-				panel.setLocation(e.getX(), e.getY());
-			}
-		});
+
+		
 		
 			////////////////////////////////
 			//
@@ -139,27 +160,28 @@ public class classBox extends JComponent {
 		
 			className.setFont(new Font("Serif", Font.BOLD, 16));
 			
+			
 			GroupLayout gl_panel = new GroupLayout(panel);
 			
 			gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 			.addGroup(gl_panel.createSequentialGroup()
 			.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-				.addComponent(methodPanel, GroupLayout.PREFERRED_SIZE, 275, GroupLayout.PREFERRED_SIZE)
+				.addComponent(methodPanel, GroupLayout.DEFAULT_SIZE, 275, GroupLayout.DEFAULT_SIZE)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(91)
-					.addComponent(className, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-				.addComponent(fieldPanel, GroupLayout.PREFERRED_SIZE, 275, GroupLayout.PREFERRED_SIZE))
+					.addGap(100)
+					.addComponent(className, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE))
+				.addComponent(fieldPanel, GroupLayout.DEFAULT_SIZE, 275, GroupLayout.DEFAULT_SIZE))
 			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 			);
 			
 			gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 			.addGroup(gl_panel.createSequentialGroup()
-			.addComponent(className, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-			.addPreferredGap(ComponentPlacement.RELATED)
-			.addComponent(fieldPanel, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-			.addPreferredGap(ComponentPlacement.RELATED)
+			.addComponent(className, GroupLayout.DEFAULT_SIZE, 28, GroupLayout.DEFAULT_SIZE)
+			.addPreferredGap(ComponentPlacement.UNRELATED)
+			.addComponent(fieldPanel, GroupLayout.DEFAULT_SIZE, 83, GroupLayout.DEFAULT_SIZE)
+			.addPreferredGap(ComponentPlacement.UNRELATED)
 			.addComponent(methodPanel, GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
 			);
 			
