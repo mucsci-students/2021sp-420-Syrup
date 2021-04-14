@@ -22,6 +22,18 @@ public class UMLModel implements Model{
 		relMap = new HashMap<String, Relationships>();
     }
     
+    public UMLModel(UMLModel newModel) {
+    	classMap = new HashMap<String, ClassObject>();
+		relMap = new HashMap<String, Relationships>();
+		
+		for(String key : newModel.getClasses().keySet()) {
+			classMap.put(key, newModel.getClassFor(key));
+		}
+		for(String key : newModel.getRelationships().keySet()) {
+			relMap.put(key, newModel.getRelFor(key));
+		}
+    }
+    
     public UMLModel(Map<String, ClassObject> newClassMap, Map<String, Relationships> newRelMap) {
     	classMap = newClassMap;
     	relMap = newRelMap;
@@ -30,6 +42,10 @@ public class UMLModel implements Model{
     public void clear() {
     	classMap.clear();
     	relMap.clear();
+    }
+    
+    public UMLModel copy() {
+    	return new UMLModel(classMap, relMap);
     }
     
 
@@ -59,8 +75,17 @@ public class UMLModel implements Model{
     	return true;
     }
 
+    /**
+     * A method that gets the class object specified by the class name.
+     * @param className the name of the class
+     * @return the value where className is mapped to.
+     */
     public ClassObject getClassFor(String className) {
         return classMap.get(className);
+    }
+    
+    public Relationships getRelFor(String relName) {
+    	return relMap.get(relName);
     }
     
     public boolean hasRelID(String ID) {
@@ -480,7 +505,7 @@ public class UMLModel implements Model{
 	 * @throws IOException
 	 */
 	
-	public void loadJSON(String filepath) throws IOException{
+	public UMLModel loadJSON(String filepath) throws IOException{
 		File jsonClassFile = new File(filepath+"class.json");
 		File jsonRelFile = new File(filepath+"rel.json");
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -498,7 +523,7 @@ public class UMLModel implements Model{
     	ObjectMapper relObjectMapper = new ObjectMapper();
     	relObjectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
     	try {
-    		classMap.clear();
+    		relMap.clear();
     		String relFile = FileUtils.readFileToString(jsonRelFile, StandardCharsets.UTF_8);
     		HashMap<String, Relationships> newMap = relObjectMapper.readValue(relFile, HashMap.class);
     		relMap = newMap;
@@ -506,6 +531,7 @@ public class UMLModel implements Model{
     	catch(Exception e) {
     		e.printStackTrace();
     	}
+    	return new UMLModel(classMap, relMap);
     	
 	}
 }
