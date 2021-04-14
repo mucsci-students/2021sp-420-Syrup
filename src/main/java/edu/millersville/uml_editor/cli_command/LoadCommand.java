@@ -62,4 +62,8 @@ public class LoadCommand extends Command {
     public String getFile() {
     	return file;
 	}
+    
+    public UMLModel getModel() {
+    	return this.model;
+    }
 }

@@ -33,8 +33,7 @@ public class CLIController extends ControllerType{
     private ArrayList<Memento> mementos;
     private String file;
     protected int currMeme;
-    private Originator originator;
-    private CareTaker careTaker;
+
 	
     /**
      * A method that initializes the model, tab completer, and cli.
@@ -49,8 +48,6 @@ public class CLIController extends ControllerType{
         currMeme = 0;
         mementos = new ArrayList<Memento>();
         mementos.add(new Memento(this.model));
-        originator = new Originator();
-        careTaker  = new CareTaker();
         terminal = TerminalBuilder.builder().system(true).build();
      
         AggregateCompleter completer = new TabCompleter().updateCompleter(model);
@@ -73,11 +70,12 @@ public class CLIController extends ControllerType{
      * A method that prints and handles what the user sees and does.
      */
     public void init() throws IOException {
-        view.printIntro();
+        
+    	view.printIntro();
 
         while (true) {
             String line = null;
-
+            // prompts user
             line = reader.readLine("Enter a command: ", "", (MaskingCallback) null, null);
             line = line.trim();
 
@@ -98,10 +96,9 @@ public class CLIController extends ControllerType{
      */
     public void evaluateCommand(String[] commands) {
     	// creates a new memento of the current model.
-        Memento meme = new Memento(new UMLModel(this.model.getClasses(), this.model.getRelationships()));
-        //originator.setState(model);
-        //careTaker.add(originator.saveStateToMemento());
-        // goes through the commands and executes.
+        Memento meme = new Memento(new UMLModel(this.model));
+       
+        // executes commands based on first word.
         switch (commands[0]) {
             case "quit":
                 MiscCommand quit = new MiscCommand(model, view, commands, prompt, savePromptReader);
@@ -119,11 +116,11 @@ public class CLIController extends ControllerType{
             case "load":
                 LoadCommand load = new LoadCommand(meme.getModel(), view, commands, prompt, savePromptReader, file);
                 prompt = load.execute();
-                file = load.getFile();
+                //file = load.getFile();
+               // this.model = load.getModel();
                 newMeme(meme);
                 break;
             case "add":
-            	
             	AddCommand create = new AddCommand(meme.getModel(), view, commands, prompt);
                 prompt = create.execute();             
                 newMeme(meme);
@@ -169,28 +166,7 @@ public class CLIController extends ControllerType{
                 view.printInvalidCommand();
         }
     }
-/*
-    private void undo() {
-        if (currMeme > 0) {
-            --currMeme;
-            this.model = mementos.get(currMeme).getModel();
-            prompt = true;
-        } else {
-            System.out.println("No actions to undo.");
 
-        }
-    }
-
-    private void redo() {
-        if (currMeme < mementos.size() - 1) {
-            ++currMeme;
-            this.model = mementos.get(currMeme).getModel();
-            prompt = true;
-        } else {
-            System.out.println("No actions to redo.");
-        }
-    }
-*/
     /**
      * A method that removes the states ahead of the current state. 
      */
@@ -210,8 +186,7 @@ public class CLIController extends ControllerType{
         truncateMemes();
         mementos.add(meme);
         ++currMeme;
-        this.model = meme.getModel();
-        
+        this.model = meme.getModel();  
     }
 
     /**
@@ -221,7 +196,4 @@ public class CLIController extends ControllerType{
     public UMLModel getModel() {
         return model;
     }
-    
-    
-    
 }
