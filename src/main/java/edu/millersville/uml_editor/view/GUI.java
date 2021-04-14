@@ -684,13 +684,17 @@ public class GUI implements ViewInterface{
 		String newName = renameClassNew.getText();
 		
 		classDupFalse();
-		
-		//NEED TO ADD ERROR CHECKS
-		boxMap.get(oldName).renameClassName(newName);
-		boxMap.put(newName, boxMap.get(oldName));
-		model.renameClassGUI(oldName, newName);
-		boxMap.remove(oldName);
-		Uml_Editor.repaint();
+		if(model.hasClass(oldName) && !model.hasClass(newName))
+        {
+			boxMap.get(oldName).renameClassName(newName);
+			boxMap.put(newName, boxMap.get(oldName));
+			model.renameClassGUI(oldName, newName);
+			boxMap.remove(oldName);
+			Uml_Editor.repaint();
+        }
+		else{
+			classDupTrue();
+		}
 		renameClassOld.setText("");
 		renameClassNew.setText("");
 	}
