@@ -290,5 +290,5 @@ public interface Model {
 	//
 	///////////////////////////////////////////////////////////
 	
-	void loadJSON(String filepath) throws IOException;
+	UMLModel loadJSON(String filepath) throws IOException;
 }
