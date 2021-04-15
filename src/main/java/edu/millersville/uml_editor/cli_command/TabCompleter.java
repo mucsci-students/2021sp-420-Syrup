@@ -61,8 +61,12 @@ public class TabCompleter {
         ArrayList<String> UMLclasses = new ArrayList<>();
 
         Map<String, ClassObject> theClasses = classes.getClasses();
+        Collection<ClassObject> classValues = theClasses.values();
+        
         
         for (String key : theClasses.keySet()) {
+        	//System.out.println(theClasses.get(key));
+        	//System.out.println(classValues);
             ClassObject currClass = theClasses.get(key);
             UMLclasses.add(key);
             

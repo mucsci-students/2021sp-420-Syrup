@@ -52,6 +52,14 @@ public class UMLModel implements Model{
     public  Map<String, ClassObject> getClasses() {
         return classMap;
     }
+    
+    public Map<String, ClassObject> getAllClasses(UMLModel model){
+    	Map<String, ClassObject> newMap = new HashMap<String, ClassObject>();
+    	for(String key : classMap.keySet()) {
+    		newMap.put(key, model.getClassFor(key));
+    	}
+    	return newMap;
+    }
 
     public Map<String, Relationships> getRelationships() {
         return relMap;
