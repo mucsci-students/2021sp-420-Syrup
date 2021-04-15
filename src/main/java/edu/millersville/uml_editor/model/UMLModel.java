@@ -505,7 +505,7 @@ public class UMLModel implements Model{
 	 * @throws IOException
 	 */
 	
-	public UMLModel loadJSON(String filepath) throws IOException{
+	public void loadJSON(String filepath) throws IOException{
 		File jsonClassFile = new File(filepath+"class.json");
 		File jsonRelFile = new File(filepath+"rel.json");
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -531,7 +531,6 @@ public class UMLModel implements Model{
     	catch(Exception e) {
     		e.printStackTrace();
     	}
-    	return new UMLModel(classMap, relMap);
     	
 	}
 }

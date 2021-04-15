@@ -116,7 +116,7 @@ public class CLIController extends ControllerType{
             case "load":
                 LoadCommand load = new LoadCommand(meme.getModel(), view, commands, prompt, savePromptReader, file);
                 prompt = load.execute();
-                //file = load.getFile();
+                file = load.getFile();
                // this.model = load.getModel();
                 newMeme(meme);
                 break;
