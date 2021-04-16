@@ -92,9 +92,42 @@ public class UMLModel implements Model{
     	return relMap.containsKey(ID);
     }
     
+    /**
+     * A method that checks to see if the parameter exists
+     * @param className name of class the method is in
+     * @param methodName name of method the parameter is in
+     * @param paramName name of parameter
+     * @return returns true if the parameter exists
+     */
+    public boolean hasParam(String className, String methodName, String paramName) {
+    	if(classMap.containsKey(className) && this.hasMethod(className, methodName)) {
+        	Method methodObject = classMap.get(className).getMethod(methodName);
+        	return methodObject.containsParameter(paramName);
+    	}
+    	return false;
+    }
+    
+    /**
+     * A method that checks to see if the parameter's type is correct.
+     * @param className the name of the class the method is in.
+     * @param methodName the name of the method the parameter is in.
+     * @param paramName the name of the parameter associated with the type to check.
+     * @param paramType the type of the parameter.
+     * @return returns a boolean value that returns true when the parameter's type matches.
+     */
+    public boolean hasParamType(String className, String methodName, String paramName, String paramType) {
+    	if(classMap.containsKey(className) && this.hasMethod(className, methodName)) {
+        	Method methodObject = classMap.get(className).getMethod(methodName);
+        	return methodObject.checkParameterType(paramName, paramType);
+    	}
+    	return false;
+    }
+    
     public boolean isEmpty() {
     	return classMap.isEmpty();
     }
+   
+    
 
     ///////////////////////////////////////////////////////////
     //
@@ -533,5 +566,14 @@ public class UMLModel implements Model{
     	}
     	return new UMLModel(classMap, relMap);
     	
+	}
+	
+	/**
+	 * A method to check if a file has been created.
+	 * @param file the name of the file to check.
+	 * @return A boolean value true when the file exists.
+	 */
+	public boolean fileCheck(String file) {
+		return new File(file).exists();
 	}
 }
