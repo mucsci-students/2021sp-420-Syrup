@@ -148,6 +148,24 @@ public class Method extends Formal {
 	}
 	
 	/**
+	 * Helper method that returns true if a parameter's type is correct.
+	 * @param type
+	 * 		The type of the parameter.
+	 * @return
+	 * 		A boolean value true if the parameter's type is correct.
+	 */
+	public boolean checkParameterType(String name, String type) {
+		for(Parameter param : parameters) {
+			if(param.getName().equals(name)) {
+				if(param.getType().equals(type)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
 	 * Accessor method to get a reference to the ArrayList of parameters
 	 * @return
 	 * 		A reference to the ArrayList of parameters.
