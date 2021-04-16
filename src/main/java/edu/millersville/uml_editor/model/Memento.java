@@ -39,8 +39,5 @@ public class Memento {
     public UMLModel getModel() {
     	return this.m;
     }
-    
-    public UMLModel getState(){
-        return m;
-     }
+  
 }
