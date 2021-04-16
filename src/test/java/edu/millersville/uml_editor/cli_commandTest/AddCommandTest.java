@@ -1,4 +1,4 @@
-package cli_commandTest;
+package edu.millersville.uml_editor.cli_commandTest;
 
 import edu.millersville.uml_editor.model.*;
 import edu.millersville.uml_editor.cli_command.*;
