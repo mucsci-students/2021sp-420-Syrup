@@ -89,6 +89,8 @@ public class GUI implements ViewInterface{
 	private JTextField fieldCurrent;
     private JTextField fieldNew;
     
+    private JTextField textBoxExportImage;
+    
     private JTextField addRelID;
     private JTextField addRelSource;
     private JTextField addRelDest;
@@ -96,6 +98,8 @@ public class GUI implements ViewInterface{
     private JTextField delRel;
     private JTextField changeRelID;
     private JTextField newRelType;
+    private JMenu exportImage;
+    private JMenu menu;
     
     private Map<String, classBox> boxMap;
     
@@ -175,7 +179,7 @@ public class GUI implements ViewInterface{
 		JMenuBar menuBar = new JMenuBar();
 		Uml_Editor.setJMenuBar(menuBar);
 		
-		JMenu menu = new JMenu("Menu");
+		menu = new JMenu("Menu");
 		menuBar.add(menu);
 		JMenuItem load = new JMenuItem("Save");
 		menu.add(load);
@@ -183,9 +187,29 @@ public class GUI implements ViewInterface{
 		menu.add(save);
 		JMenuItem help = new JMenuItem("Help");
 		menu.add(help);
-		JMenuItem exportImage = new JMenuItem("Export as Image");
+		exportImage = new JMenu("Export as Image");
+		
+		////////////////////////////////
+		//
+		// Export Option
+		//
+		////////////////////////////////
+		
+		JLabel directoryLabel = new JLabel("Directory: ");
+		directoryLabel.setFont(new Font("Serif", Font.BOLD, 12));
+		
+		textBoxExportImage = new JTextField();
+		textBoxExportImage.setColumns(15);
+		
+		JButton exportButton = new JButton("Export");
+		
+		exportImage.add(directoryLabel);
+		exportImage.add(textBoxExportImage);
+		exportImage.add(exportButton);
+		
 		menu.add(exportImage);
-		exportImage.addActionListener(controller.exportImageCall());
+		exportButton.addActionListener(controller.exportImageCall());
+		
 		////////////////////////////////
 		//
 		// Class Option
@@ -985,18 +1009,44 @@ public class GUI implements ViewInterface{
     	changeRelID.setText("");
     	newRelType.setText("");
 	}
+	
+	////////////////////////////////
+	//
+	// Export Image Action
+	//
+	////////////////////////////////
+	
 	public void exportImageAction(){
+		String path = textBoxExportImage.getText();
+		String jpgPath = "";
+		String pngPath = "";
 		
+		if (!path.equals(""))
+		{
+			jpgPath = path + "/UmlImage.jpg";
+			pngPath = path + "/UmlImage.png";
+		}
+		else 
+		{
+			jpgPath = "UmlImage.jpg";
+			pngPath = "UmlImage.png";
+		}
+		
+		menu.setPopupMenuVisible(false);
+		exportImage.setPopupMenuVisible(false);
+
 		BufferedImage image = new BufferedImage(Uml_Editor.getWidth(), Uml_Editor.getHeight(), BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = image.createGraphics();
 		Uml_Editor.printAll(g);
 		g.dispose();
-			try {
-				ImageIO.write(image, "jpg", new File("UmlImage.jpg"));
-				ImageIO.write(image, "png", new File("UmlImage.png"));
-			} catch (IOException exp) {
-				exp.printStackTrace();
-			}
+		
+		try {
+			ImageIO.write(image, "jpg", new File(jpgPath));
+			ImageIO.write(image, "png", new File(pngPath));
+		} catch (IOException exp) {
+			exp.printStackTrace();
+		}
+		textBoxExportImage.setText("");
 	}
 	
 	////////////////////////////////
