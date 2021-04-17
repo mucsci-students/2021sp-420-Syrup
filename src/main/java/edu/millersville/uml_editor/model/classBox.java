@@ -110,6 +110,7 @@ public class classBox extends JComponent {
 		} catch(Exception e) {
 		
 		}
+		
 		////////////////////////////////
 		//
 		// Create class box display
@@ -149,67 +150,64 @@ public class classBox extends JComponent {
 		panel.addMouseListener(l);
 		panel.addMouseMotionListener(l);
 		
-
-		
-		
-			////////////////////////////////
-			//
-			// Default class label
-			//
-			////////////////////////////////
-		
-			className.setFont(new Font("Serif", Font.BOLD, 16));
-			
-			
-			GroupLayout gl_panel = new GroupLayout(panel);
-			
-			gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-			.addGroup(gl_panel.createSequentialGroup()
-			.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-				.addComponent(methodPanel, GroupLayout.DEFAULT_SIZE, 275, GroupLayout.DEFAULT_SIZE)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(100)
-					.addComponent(className, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE))
-				.addComponent(fieldPanel, GroupLayout.DEFAULT_SIZE, 275, GroupLayout.DEFAULT_SIZE))
-			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-			);
-			
-			gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-			.addGroup(gl_panel.createSequentialGroup()
-			.addComponent(className, GroupLayout.DEFAULT_SIZE, 28, GroupLayout.DEFAULT_SIZE)
-			.addPreferredGap(ComponentPlacement.UNRELATED)
-			.addComponent(fieldPanel, GroupLayout.DEFAULT_SIZE, 83, GroupLayout.DEFAULT_SIZE)
-			.addPreferredGap(ComponentPlacement.UNRELATED)
-			.addComponent(methodPanel, GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
-			);
-			
-			panel.setVisible(true);
-			panel.setLayout(gl_panel);
-		}
-		
 		////////////////////////////////
 		//
-		// Popup menu Listeners
+		// Default class label
 		//
 		////////////////////////////////
-		private void addPopup(Component component, final JPopupMenu popup) {
-			component.addMouseListener(new MouseAdapter() {
-				public void mousePressed(MouseEvent e) {
-					if (e.isPopupTrigger())
+	
+		className.setFont(new Font("Serif", Font.BOLD, 16));
+		
+		
+		GroupLayout gl_panel = new GroupLayout(panel);
+		
+		gl_panel.setHorizontalGroup(
+		gl_panel.createParallelGroup(Alignment.LEADING)
+		.addGroup(gl_panel.createSequentialGroup()
+		.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+			.addComponent(methodPanel, GroupLayout.DEFAULT_SIZE, 275, GroupLayout.DEFAULT_SIZE)
+			.addGroup(gl_panel.createSequentialGroup()
+				.addGap(100)
+				.addComponent(className, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE))
+			.addComponent(fieldPanel, GroupLayout.DEFAULT_SIZE, 275, GroupLayout.DEFAULT_SIZE))
+		.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		
+		gl_panel.setVerticalGroup(
+		gl_panel.createParallelGroup(Alignment.LEADING)
+		.addGroup(gl_panel.createSequentialGroup()
+		.addComponent(className, GroupLayout.DEFAULT_SIZE, 28, GroupLayout.DEFAULT_SIZE)
+		.addPreferredGap(ComponentPlacement.UNRELATED)
+		.addComponent(fieldPanel, GroupLayout.DEFAULT_SIZE, 83, GroupLayout.DEFAULT_SIZE)
+		.addPreferredGap(ComponentPlacement.UNRELATED)
+		.addComponent(methodPanel, GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
+		);
+		
+		panel.setVisible(true);
+		panel.setLayout(gl_panel);
+	}
+		
+	////////////////////////////////
+	//
+	// Popup menu Listeners
+	//
+	////////////////////////////////
+	private void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger())
+					showMenu(e);
+				}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) 
 						showMenu(e);
-					}
-				public void mouseReleased(MouseEvent e) {
-					if (e.isPopupTrigger()) 
-							showMenu(e);
-				}
-				private void showMenu(MouseEvent e) {
-					popup.show(e.getComponent(), e.getX(), e.getY());
-				}
-			});
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
 
-		}
+	}
 		
 	////////////////////////////////
 	//
@@ -268,10 +266,11 @@ public class classBox extends JComponent {
 	//
 	////////////////////////////////
 	public void addMethod(String methodName, String methodType) {
-		JLabel method = new JLabel(methodName + ", " + methodType);
+		JLabel method = new JLabel();
 		methodMap.put(methodName, method);
 		methodPanel.add(method);
 		methodPanel.repaint();
+		methodMap.get(methodName).setText(methodName + " : " + methodType);
 	}
 	
 	public void addParam(String methodName, String paramName, String paramType) {
@@ -305,21 +304,7 @@ public class classBox extends JComponent {
 	}
 	
 	public void renameMethodName(String methodName, String methodNewName, String methodType) {
-		methodPanel.remove(methodMap.get(methodName));
-		JLabel method = new JLabel(methodNewName + ", " + methodType);
-		methodPanel.add(method);
-		paramMap.put(methodNewName, paramMap.get(methodName));
-		paramMap.remove(methodName);
-		methodMap.put(methodNewName, method);
-		methodMap.remove(methodName);
-		ArrayList<JLabel> newList = paramMap.get(methodNewName);
-		if(newList != null) {
-			for(int i = 0; i < newList.size(); i++) {
-				methodPanel.remove(newList.get(i));
-				methodPanel.add(newList.get(i));
-			}
-		}
-		methodPanel.repaint();
+		methodMap.get(methodName).setText(methodNewName + " : " + methodType);
 	}
 	
 	////////////////////////////////
@@ -329,10 +314,11 @@ public class classBox extends JComponent {
 	////////////////////////////////
 	
 	public void addField(String fieldName, String fieldType) {
-		JLabel field = new JLabel(fieldName + ", " + fieldType);
+		JLabel field = new JLabel();
 		fieldMap.put(fieldName, field);
 		fieldPanel.add(field);
 		fieldPanel.repaint();
+		fieldMap.get(fieldName).setText(fieldName + " : " + fieldType);
 	}
 
 	public JPanel deleteField(String fieldName) {
@@ -342,11 +328,6 @@ public class classBox extends JComponent {
 	}
 	
 	public void renameFieldName(String fieldName, String newFieldName, String fieldType) {
-		fieldPanel.remove(fieldMap.get(fieldName));
-		JLabel field = new JLabel(newFieldName + ", " + fieldType);
-		fieldPanel.add(field);
-		fieldMap.put(newFieldName, field);
-		fieldMap.remove(fieldName);
-		fieldPanel.repaint();
+		fieldMap.get(fieldName).setText(newFieldName + " : " + fieldType);
 	}
 }

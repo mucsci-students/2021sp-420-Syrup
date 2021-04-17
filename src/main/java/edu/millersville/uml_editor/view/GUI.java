@@ -722,7 +722,8 @@ public class GUI implements ViewInterface{
 	public void deleteClassAction()
 	{	
 		String className = textBoxClassDel.getText();
-		
+		classDupFalse();
+		notExistFalse();
 		Uml_Editor.remove(boxMap.get(className).boxPanel());
 		boxMap.remove(className);
 		textBoxClassDel.setText("");
@@ -823,6 +824,8 @@ public class GUI implements ViewInterface{
 		String methodName = addMethodName.getText();
 		String methodType = addMethodType.getText();
 		
+		classDupFalse();
+		notExistFalse();
 		if(!paramListName.isEmpty()) {
 			String parName;
 			String parType;
@@ -907,6 +910,8 @@ public class GUI implements ViewInterface{
 		String fieldName = addFieldName.getText();
 		String fieldType = addFieldType.getText();
 		
+		classDupFalse();
+		notExistFalse();
     	if (!model.hasClass(className))
     	{
     		notExistTrue();
@@ -936,11 +941,14 @@ public class GUI implements ViewInterface{
 		String className = deleteFieldClassName.getText();
 		String fieldName = deleteFieldName.getText();
 		
+		classDupFalse();
+		notExistFalse();
 		if (!model.hasClass(className) || !model.hasField(className, fieldName))
 			notExistTrue();
 		else
 		{
 			model.deleteField(className, fieldName);
+			boxMap.get(className).deleteField(fieldName);
 			Uml_Editor.remove(boxMap.get(className).deleteField(fieldName));
 			Uml_Editor.repaint();
 			deleteFieldClassName.setText("");
@@ -968,8 +976,6 @@ public class GUI implements ViewInterface{
 			model.renameField(className, fieldName, newFieldName);
 			String fieldType = model.getFieldType(className, newFieldName);
 			boxMap.get(className).renameFieldName(fieldName, newFieldName, fieldType);
-			boxMap.put(newFieldName, boxMap.get(fieldName));
-			boxMap.remove(fieldName);
 			Uml_Editor.repaint();
 			renameFieldCN.setText("");
 			fieldCurrent.setText("");
@@ -991,6 +997,7 @@ public class GUI implements ViewInterface{
         String sourceClass = addRelSource.getText();
         String destClass = addRelDest.getText();
         String type = addRelType.getText();
+        
         classDupFalse();
 		notExistFalse();
         if (!model.hasClass(sourceClass) || !model.hasClass(destClass))
@@ -1021,6 +1028,8 @@ public class GUI implements ViewInterface{
 	public void removeArrow() {
 		String id = delRel.getText();
 		
+		classDupFalse();
+		notExistFalse();
 		if(model.hasRelID(id)){
             model.deleteRelationshipGUI(id);
         }
@@ -1037,6 +1046,8 @@ public class GUI implements ViewInterface{
 	  	String ID = changeRelID.getText();
     	String type = newRelType.getText();
     	
+    	classDupFalse();
+		notExistFalse();
     	if (!model.hasRelID(ID))
     		notExistTrue();
     	else if (!type.equals("A") && !type.equals("C") && !type.equals("I") && !type.equals("R"))
