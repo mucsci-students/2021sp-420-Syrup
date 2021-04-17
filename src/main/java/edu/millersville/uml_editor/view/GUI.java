@@ -61,6 +61,7 @@ import edu.millersville.uml_editor.controller.*;
 
 public class GUI implements ViewInterface{
 	private JFrame Uml_Editor;
+	private JFrame help;
 	
 	private JLabel notEx1 = null;
 	private JLabel classDupLabel = null;
@@ -203,6 +204,7 @@ public class GUI implements ViewInterface{
 		menu.add(save);
 		JMenuItem help = new JMenuItem("Help");
 		menu.add(help);
+		help.addActionListener(controller.helpCommand());
 		exportImage = new JMenu("Export as Image");
 		
 		////////////////////////////////
@@ -728,7 +730,6 @@ public class GUI implements ViewInterface{
 		boxMap.remove(className);
 		textBoxClassDel.setText("");
 		
-		Uml_Editor.repaint();
 		classOption.setPopupMenuVisible(false);
 		deleteClass.setPopupMenuVisible(false);
 	}
@@ -745,7 +746,6 @@ public class GUI implements ViewInterface{
 			boxMap.put(newName, boxMap.get(oldName));
 			model.renameClassGUI(oldName, newName);
 			boxMap.remove(oldName);
-			Uml_Editor.repaint();
         }
 		else{
 			classDupTrue();
@@ -840,12 +840,10 @@ public class GUI implements ViewInterface{
 				parType = typeArray[i];
 				boxMap.get(className).addParam(methodName, parName, parType);
 			}
-			Uml_Editor.repaint();
 			return;
 		}
 		else {
 			boxMap.get(className).addMethod(methodName, methodType);
-			Uml_Editor.repaint();
 		}
 	}
 	
@@ -861,7 +859,6 @@ public class GUI implements ViewInterface{
 		{
 			model.deleteMethod(delMethodClassName, delMethodN);
 			Uml_Editor.remove(boxMap.get(delMethodClassName).deleteMethod(delMethodN));
-			Uml_Editor.repaint();
 			delMethodCN.setText("");
 			delMethodName.setText("");
 		}
@@ -888,9 +885,7 @@ public class GUI implements ViewInterface{
 			String methodType = model.getMethodType(className, newMethodName);
 			boxMap.get(className).renameMethodName(methodName, newMethodName, methodType);
 			boxMap.put(newMethodName, boxMap.get(methodName));
-			boxMap.remove(methodName);
-			Uml_Editor.repaint();
-			
+			boxMap.remove(methodName);			
 		}
 		renClassName.setText("");
 		renameMethodOldName.setText("");
@@ -932,7 +927,6 @@ public class GUI implements ViewInterface{
 			addFieldType.setText("");
     	}
     	
-    	Uml_Editor.repaint();
     	field.setPopupMenuVisible(false);
 		addField.setPopupMenuVisible(false);
 	}
@@ -950,7 +944,6 @@ public class GUI implements ViewInterface{
 			model.deleteField(className, fieldName);
 			boxMap.get(className).deleteField(fieldName);
 			Uml_Editor.remove(boxMap.get(className).deleteField(fieldName));
-			Uml_Editor.repaint();
 			deleteFieldClassName.setText("");
 			deleteFieldName.setText("");
 		}
@@ -976,7 +969,6 @@ public class GUI implements ViewInterface{
 			model.renameField(className, fieldName, newFieldName);
 			String fieldType = model.getFieldType(className, newFieldName);
 			boxMap.get(className).renameFieldName(fieldName, newFieldName, fieldType);
-			Uml_Editor.repaint();
 			renameFieldCN.setText("");
 			fieldCurrent.setText("");
 			fieldNew.setText("");
@@ -1100,6 +1092,105 @@ public class GUI implements ViewInterface{
 			exp.printStackTrace();
 		}
 		textBoxExportImage.setText("");
+	}
+	
+	////////////////////////////////
+	//
+	// helpPanel
+	//
+	////////////////////////////////
+	
+	public void helpPanel() {
+		help = new JFrame();
+		help.setTitle("Help Menu");
+		help.setBounds(100, 100, 1266, 683);
+		help.setLayout(new GridLayout(21,0));
+		
+		JLabel title = new JLabel("Help Menu", SwingConstants.CENTER);
+		title.setFont(new Font("Serif", Font.BOLD, 30));
+		help.add(title);
+		
+		//CLASS HELP LABELS
+		JLabel classTitle = new JLabel("Classes");
+		classTitle.setFont(new Font("Serif", Font.BOLD, 20));
+		help.add(classTitle);
+		
+		JLabel classAddHelp = new JLabel("ADD:  Hit the Add Class button at the top left of the frame.");
+		classAddHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(classAddHelp);
+		JLabel classDelHelp = new JLabel("DELETE:  Under 'Class' on the menu bar, click Delete. Enter the name of the class to delete.");
+		classDelHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(classDelHelp);
+		JLabel classRenHelp = new JLabel("RENAME:  Under 'Class' on the menu bar, click Rename. Enter the current name of the class, as well as the new name for that class.");
+		classRenHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(classRenHelp);
+		
+		//METHOD HELP LABELS
+		JLabel methodTitle = new JLabel("Methods");
+		methodTitle.setFont(new Font("Serif", Font.BOLD, 20));
+		help.add(methodTitle);
+		
+		JLabel methodAddHelp = new JLabel("ADD:  Under 'Method' on the menu bar, click Add. Enter the class name, as well as the method name and type. Parameters are optional, if you do not wish to add any parameters, hit the 'Done' button.");
+		methodAddHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(methodAddHelp);
+		JLabel methodAddParamHelp = new JLabel("If you would like to add parameters, Enter the parameter name and type, and hit the 'Add Parameter to list' button. Once finished, hit 'Done'.");
+		methodAddParamHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(methodAddParamHelp);
+		JLabel methodDelHelp = new JLabel("DELETE:  Under 'Method' on the menu bar, click Delete. Enter the name of the class as well as the name of the method to delete.");
+		methodDelHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(methodDelHelp);
+		JLabel methodRenHelp = new JLabel("RENAME:  Under 'Method' on the menu bar, click Rename. Enter the name of the class, the current name of the method and the new name for that method.");
+		methodRenHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(methodRenHelp);
+		
+		//FIELD HELP LABELS
+		JLabel fieldTitle = new JLabel("Fields");
+		fieldTitle.setFont(new Font("Serif", Font.BOLD, 20));
+		help.add(fieldTitle);
+		
+		JLabel fieldAddHelp = new JLabel("ADD:  Under 'Field' on the menu bar, click Add. Enter the class name and the field name along with the type for that field.");
+		fieldAddHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(fieldAddHelp);
+		JLabel fieldDelHelp = new JLabel("DELETE:  Under 'Field' on the menu bar, click Delete. Enter the name of the class as well as the name of the field to delete.");
+		fieldDelHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(fieldDelHelp);
+		JLabel fieldRenHelp = new JLabel("RENAME:  Under 'Field' on the menu bar, click Rename. Enter the name of the class, the current name of the field along with the new name for that field.");
+		fieldRenHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(fieldRenHelp);
+		
+		//RELATIONSHIP HELP LABELS
+		JLabel relTitle = new JLabel("Relationships");
+		relTitle.setFont(new Font("Serif", Font.BOLD, 20));
+		help.add(relTitle);
+		
+		JLabel relAddHelp = new JLabel("ADD:  Under 'Relationship' on the menu bar, click Add. Enter a distinct ID, the source and destination for the relationship, as well as the type the relationship is. (Either 'A', 'C', 'I', 'R')");
+		relAddHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(relAddHelp);
+		JLabel relDelHelp = new JLabel("DELETE:  Under 'Relationship' on the menu bar, click Delete. Enter the ID of the relationship to delete.");
+		relDelHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(relDelHelp);
+		JLabel relRenHelp = new JLabel("CHANGE TYPE:  Under 'Relationship' on the menu bar, click Change Type. Enter the ID of the relationship, as well as the new type for that relationship.");
+		relRenHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(relRenHelp);
+		
+		//EXPORT IMAGE HELP LABEL
+		JLabel exportTitle = new JLabel("Export Image");
+		exportTitle.setFont(new Font("Serif", Font.BOLD, 20));
+		help.add(exportTitle);
+		JLabel exportDesc = new JLabel("Under 'Menu' on the menu bar, click 'Export as Image'. Enter the directory to save the image in and click the 'Export' button. Both a jpg and png image will be saved.");
+		exportDesc.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(exportDesc);
+		
+		help.setVisible(true);
+		
+		JButton close = new JButton("Close");
+		close.setPreferredSize(new Dimension(1,1));
+		help.add(close);
+		close.addActionListener(controller.closeHelp());
+	}
+	
+	public void closeHelpPanel() {
+		help.setVisible(false);
 	}
 	
 	////////////////////////////////
