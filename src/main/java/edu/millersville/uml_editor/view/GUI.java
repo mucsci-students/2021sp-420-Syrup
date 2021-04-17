@@ -106,6 +106,14 @@ public class GUI implements ViewInterface{
     private JMenu addMethod;
     private JMenu deleteMethod;
     private JMenu renameMethod;
+    private JMenu field;
+    private JMenu addField;
+    private JMenu deleteField;
+    private JMenu renameField;
+    private JMenu rel;
+    private JMenu addRel;
+    private JMenu deleteRel;
+    private JMenu changeRelType;
     private JMenu exportImage;
     private JMenu menu;
     
@@ -413,7 +421,7 @@ public class GUI implements ViewInterface{
 		//
 		////////////////////////////////
 		
-		JMenu field = new JMenu("Field");
+		field = new JMenu("Field");
         menuBar.add(field);
         
 		////////////////////////////////
@@ -422,7 +430,7 @@ public class GUI implements ViewInterface{
 		//
 		////////////////////////////////
 		
-		JMenu addField = new JMenu("Add");
+		addField = new JMenu("Add");
         field.add(addField);
         
         JLabel addFieldClassLabel = new JLabel("Class Name:");
@@ -458,7 +466,7 @@ public class GUI implements ViewInterface{
 		//
 		////////////////////////////////
 		
-		JMenu deleteField = new JMenu("Delete");
+		deleteField = new JMenu("Delete");
         field.add(deleteField);
         
         JLabel deleteFieldNameLabel = new JLabel("Class Name:");
@@ -488,7 +496,7 @@ public class GUI implements ViewInterface{
 		//
 		////////////////////////////////
 		
-		JMenu renameField = new JMenu("Rename");
+		renameField = new JMenu("Rename");
         field.add(renameField);
         
         JLabel renameFieldClassLabel = new JLabel("Class Name:");
@@ -524,14 +532,14 @@ public class GUI implements ViewInterface{
 		//
 		////////////////////////////////
 		
-		JMenu rel = new JMenu("Relationship");
+		rel = new JMenu("Relationship");
         menuBar.add(rel);
         
-        JMenu addRel = new JMenu("Add");
+        addRel = new JMenu("Add");
 		rel.add(addRel);
-		JMenu deleteRel = new JMenu("Delete");
+		deleteRel = new JMenu("Delete");
 		rel.add(deleteRel);
-		JMenu changeRelType = new JMenu("Change Type");
+		changeRelType = new JMenu("Change Type");
 		rel.add(changeRelType);
 		
 		////////////////////////////////
@@ -920,6 +928,8 @@ public class GUI implements ViewInterface{
     	}
     	
     	Uml_Editor.repaint();
+    	field.setPopupMenuVisible(false);
+		addField.setPopupMenuVisible(false);
 	}
 	
 	public void deleteFieldAction() {
@@ -936,6 +946,8 @@ public class GUI implements ViewInterface{
 			deleteFieldClassName.setText("");
 			deleteFieldName.setText("");
 		}
+		field.setPopupMenuVisible(false);
+		deleteField.setPopupMenuVisible(false);
 	}
 	
 	public void renameFieldAction() {
@@ -963,6 +975,8 @@ public class GUI implements ViewInterface{
 			fieldCurrent.setText("");
 			fieldNew.setText("");
 		}
+		field.setPopupMenuVisible(false);
+		renameField.setPopupMenuVisible(false);
 	}
 	
 	////////////////////////////////
@@ -977,7 +991,6 @@ public class GUI implements ViewInterface{
         String sourceClass = addRelSource.getText();
         String destClass = addRelDest.getText();
         String type = addRelType.getText();
-
         classDupFalse();
 		notExistFalse();
         if (!model.hasClass(sourceClass) || !model.hasClass(destClass))
@@ -995,7 +1008,8 @@ public class GUI implements ViewInterface{
         addRelSource.setText("");
         addRelDest.setText("");
         addRelType.setText("");
-        
+        rel.setPopupMenuVisible(false);
+		addRel.setPopupMenuVisible(false);
 	}
 	
 	public void drawArrow() {
@@ -1007,9 +1021,16 @@ public class GUI implements ViewInterface{
 	public void removeArrow() {
 		String id = delRel.getText();
 		
-		
+		if(model.hasRelID(id)){
+            model.deleteRelationshipGUI(id);
+        }
+        else{
+            notExistTrue();
+        }
 		
 		delRel.setText("");
+		rel.setPopupMenuVisible(false);
+		deleteRel.setPopupMenuVisible(false);
 	}
 	
 	public void changeRelTypeAction() {
@@ -1027,6 +1048,8 @@ public class GUI implements ViewInterface{
     	
     	changeRelID.setText("");
     	newRelType.setText("");
+    	rel.setPopupMenuVisible(false);
+		changeRelType.setPopupMenuVisible(false);
 	}
 	
 	////////////////////////////////
