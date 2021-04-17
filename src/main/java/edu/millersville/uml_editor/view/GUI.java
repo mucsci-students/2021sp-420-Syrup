@@ -98,6 +98,14 @@ public class GUI implements ViewInterface{
     private JTextField delRel;
     private JTextField changeRelID;
     private JTextField newRelType;
+    
+    private JMenu classOption;
+    private JMenu deleteClass;
+    private JMenu renameClass;
+    private JMenu method;
+    private JMenu addMethod;
+    private JMenu deleteMethod;
+    private JMenu renameMethod;
     private JMenu exportImage;
     private JMenu menu;
     
@@ -216,7 +224,7 @@ public class GUI implements ViewInterface{
 		//
 		////////////////////////////////
 		
-		JMenu classOption = new JMenu("Class");
+		classOption = new JMenu("Class");
         menuBar.add(classOption);
         
 		////////////////////////////////
@@ -230,7 +238,7 @@ public class GUI implements ViewInterface{
         
         JButton classDelButton = new JButton("Delete");
         
-        JMenu deleteClass = new JMenu("Delete");
+        deleteClass = new JMenu("Delete");
         classOption.add(deleteClass);
         
         deleteClass.add(classNameDel);
@@ -255,7 +263,7 @@ public class GUI implements ViewInterface{
 		
 		JButton renameClassButton = new JButton("Rename");
 		
-        JMenu renameClass = new JMenu("Rename");
+        renameClass = new JMenu("Rename");
         classOption.add(renameClass);
         renameClassOld = new JTextField();
 		renameClassOld.setColumns(15);
@@ -275,7 +283,7 @@ public class GUI implements ViewInterface{
 		//
 		////////////////////////////////
 		
-		JMenu method = new JMenu("Method");
+		method = new JMenu("Method");
         menuBar.add(method);
         
 		////////////////////////////////
@@ -284,7 +292,7 @@ public class GUI implements ViewInterface{
 		//
 		////////////////////////////////
 		
-		JMenu addMethod = new JMenu("Add");
+		addMethod = new JMenu("Add");
 		method.add(addMethod);
 		
 		JLabel addMethodClassName = new JLabel("Class Name:");
@@ -339,7 +347,7 @@ public class GUI implements ViewInterface{
 		//
 		////////////////////////////////
 		
-		JMenu deleteMethod = new JMenu("Delete");
+		deleteMethod = new JMenu("Delete");
         method.add(deleteMethod);
         
         JLabel delMethodClassName = new JLabel("Class Name:");
@@ -369,7 +377,7 @@ public class GUI implements ViewInterface{
 		//
 		////////////////////////////////
 		
-		JMenu renameMethod = new JMenu("Rename");
+		renameMethod = new JMenu("Rename");
         method.add(renameMethod);
         
         JLabel renMethodClassName = new JLabel("Class Name:");
@@ -712,6 +720,8 @@ public class GUI implements ViewInterface{
 		textBoxClassDel.setText("");
 		
 		Uml_Editor.repaint();
+		classOption.setPopupMenuVisible(false);
+		deleteClass.setPopupMenuVisible(false);
 	}
 	
 	public void renameActionPerformed()
@@ -733,6 +743,8 @@ public class GUI implements ViewInterface{
 		}
 		renameClassOld.setText("");
 		renameClassNew.setText("");
+		classOption.setPopupMenuVisible(false);
+		renameClass.setPopupMenuVisible(false);
 	}
 	
 	////////////////////////////////
@@ -782,6 +794,9 @@ public class GUI implements ViewInterface{
 		addMethodCN.setText("");
 		addMethodName.setText("");
 		addMethodType.setText("");
+		
+		method.setPopupMenuVisible(false);
+		addMethod.setPopupMenuVisible(false);
 	}
 	
 	public void addParamToList() {
@@ -839,6 +854,8 @@ public class GUI implements ViewInterface{
 			delMethodCN.setText("");
 			delMethodName.setText("");
 		}
+		method.setPopupMenuVisible(false);
+		deleteMethod.setPopupMenuVisible(false);
 	}
 	
 	public void renameMethodAction() {
@@ -867,6 +884,8 @@ public class GUI implements ViewInterface{
 		renClassName.setText("");
 		renameMethodOldName.setText("");
 		renameMethodNewName.setText("");
+		method.setPopupMenuVisible(false);
+		renameMethod.setPopupMenuVisible(false);
 	}
 	
 	////////////////////////////////

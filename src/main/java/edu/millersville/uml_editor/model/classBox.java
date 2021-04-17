@@ -294,8 +294,10 @@ public class classBox extends JComponent {
 		methodPanel.remove(methodMap.get(methodName));
 		if(paramMap.containsKey(methodName)) {
 			ArrayList<JLabel> temp = paramMap.get(methodName);
-			for(int i = 0; i < temp.size(); i++) {
-				methodPanel.remove(temp.get(i));
+			if(temp != null) {
+				for(int i = 0; i < temp.size(); i++) {
+					methodPanel.remove(temp.get(i));
+				}
 			}
 		}
 		methodPanel.repaint();
