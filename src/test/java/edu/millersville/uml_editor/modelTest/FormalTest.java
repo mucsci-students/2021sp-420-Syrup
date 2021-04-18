@@ -19,12 +19,12 @@ public class FormalTest {
     @Test
     public void testGettersAndSetters()
     {
-	Formal f = new Formal("f", "int");
-	
-	f.setName("g");
-	f.setType("char");
-	
-	assertEquals("Name changed correctly", "g", f.getName());
-	assertEquals("Type changed correctly", "char", f.getType());
+		Formal f = new Formal("f", "int");
+		
+		f.setName("g");
+		f.setType("char");
+		
+		assertEquals("Name changed correctly", "g", f.getName());
+		assertEquals("Type changed correctly", "char", f.getType());
     }
 }

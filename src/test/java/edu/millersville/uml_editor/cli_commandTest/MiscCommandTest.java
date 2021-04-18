@@ -71,6 +71,7 @@ public class MiscCommandTest {
     	prompt = create.execute();
     }
     
+    //Help command
     @Test
     public void helpTest() {
     	String[] help = {"help"};

@@ -319,7 +319,5 @@ public class UMLModelTest {
 		model.loadJSON("umlexample");
 		assertTrue("class1 exists from loaded json file", model.hasClass("class1"));
 		assertFalse("class2 should not exist in the model", model.hasClass("class2"));
-
-
 	}
 }

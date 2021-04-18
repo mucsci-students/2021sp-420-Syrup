@@ -34,12 +34,12 @@ public class RenameCommandTest {
     
     @Before
     public void createCLI() throws IOException {
-	System.setOut(new PrintStream(out));
-	System.setErr(new PrintStream(err));
-	model = new UMLModel();
-	viewTemp = new ViewTemplate(ViewTemplate.InterfaceType.CLI);
-	view = (CLIView) viewTemp.getViewinterface();
-	prompt = false;
+		System.setOut(new PrintStream(out));
+		System.setErr(new PrintStream(err));
+		model = new UMLModel();
+		viewTemp = new ViewTemplate(ViewTemplate.InterfaceType.CLI);
+		view = (CLIView) viewTemp.getViewinterface();
+		prompt = false;
     }
     
     @After
@@ -65,6 +65,7 @@ public class RenameCommandTest {
     	prompt = create.execute();
     }
     
+    //Rename class
     @Test
     public void renameClassTest() {
     	// Setup
@@ -84,6 +85,7 @@ public class RenameCommandTest {
         assertFalse("class1 does not exist anymore.", model.hasClass("class1"));
     }
     
+    //Rename field
     @Test
     public void renameFieldTest() {
     	String[] classCommands = {"create", "class", "class1"};
@@ -97,6 +99,8 @@ public class RenameCommandTest {
 		assertFalse("field1 should not exist.", class1.containsField("field1"));
 		assertTrue("newfield1 should exist.", class1.containsField("newfield1"));
     }
+    
+    //Rename method
     @Test
     public void renameMethodTest() {
     	String[] classCommands = {"create", "class", "class1"};
@@ -111,6 +115,7 @@ public class RenameCommandTest {
     	assertTrue("newmethod1 should exist.", class1.containsMethod("newmethod1"));
     }
     
+    //Rename parameter
     @Test
     public void renameParameterTest() {
     	String[] classCommands = {"create", "class", "class1"};

@@ -36,20 +36,20 @@ public class DeleteCommandTest {
 
     @Before
     public void createCLI() throws IOException {
-	System.setOut(new PrintStream(out));
-	System.setErr(new PrintStream(err));
-	model = new UMLModel();
-	viewTemp = new ViewTemplate(ViewTemplate.InterfaceType.CLI);
-	view = (CLIView) viewTemp.getViewinterface();
-	prompt = false;
+		System.setOut(new PrintStream(out));
+		System.setErr(new PrintStream(err));
+		model = new UMLModel();
+		viewTemp = new ViewTemplate(ViewTemplate.InterfaceType.CLI);
+		view = (CLIView) viewTemp.getViewinterface();
+		prompt = false;
     }
 
     @After
     public void cleanCLI() {
-	System.setOut(origOut);
-	System.setErr(origErr);
-	String[] commands = { "sudo", "clear" };
-	command = new AddCommand(model, view, commands, prompt);
+		System.setOut(origOut);
+		System.setErr(origErr);
+		String[] commands = { "sudo", "clear" };
+		command = new AddCommand(model, view, commands, prompt);
     }
     
     private void resetStreams() {
@@ -108,6 +108,7 @@ public class DeleteCommandTest {
 
 	}
 
+    //Deleting fields
     @Test
     public void deleteFieldTest() {
     	String[] classCommands = { "create", "class", "class1" };
@@ -121,6 +122,7 @@ public class DeleteCommandTest {
     	assertFalse("Should not have any fields.", class1.containsField("field1"));
     }
 
+    //Deleting methods
     @Test
     public void deleteMethodTest() {
     	String[] classCommands = { "create", "class", "class1" };
@@ -134,6 +136,7 @@ public class DeleteCommandTest {
 		assertFalse("Method1 should not exist.", class1.containsMethod("method1"));
     }
 
+    //Deleting parameters
     @Test
     public void deleteParameterTest() {
     	String[] classCommands = { "create", "class", "class1" };

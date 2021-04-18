@@ -53,6 +53,7 @@ public class ListCommandTest {
     	prompt = create.execute();
     }
     
+    //List classes
     @Test
     public void listClassesTest() {
     	System.out.println();
@@ -65,6 +66,7 @@ public class ListCommandTest {
         assertEquals("Initial print all does not equal printout", expected, actual);
     }
     
+    //List relationships
     @Test
     public void listRelationshipTest() {
     	System.out.println();
