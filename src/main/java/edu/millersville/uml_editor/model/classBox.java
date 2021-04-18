@@ -1,58 +1,30 @@
 package edu.millersville.uml_editor.model;
 
 
-import javax.swing.JFrame;
-import javax.swing.GroupLayout;
+import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JTextArea;
-import javax.swing.JTextPane;
-import javax.swing.JLayeredPane;
-import java.awt.Component;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 
-import java.awt.Choice;
-import java.awt.List;
-import javax.swing.JComboBox;
+import java.awt.Component;
+
 import javax.swing.JComponent;
-import javax.swing.JEditorPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import java.awt.TextArea;
 import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JDesktopPane;
 import javax.swing.JPanel;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.border.LineBorder;
 import javax.swing.event.MouseInputAdapter;
 
 import java.awt.Color;
-import java.awt.BorderLayout;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import javax.swing.JPopupMenu;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.swing.JMenu;
 import javax.swing.JTextField;
 import edu.millersville.uml_editor.model.*;
 import edu.millersville.uml_editor.view.GUI;
@@ -60,29 +32,15 @@ import edu.millersville.uml_editor.controller.*;
 
 public class classBox extends JComponent {
 
-	private JFrame Uml_Editor;
-	
-	private JLabel dup1, dup2, dup3 = null;
 	private JLabel className = null;
-	private JLabel classDupLabel = null;
-	
-	private JButton renameClassButton = null;
 	
 	private JPanel panel = null;
 	private JPanel methodPanel = null;
 	private JPanel fieldPanel = null;
 	
-	private JTextField textBox1;
-    private JTextField textBox2;
-    private JTextField textBox3;
-    private JTextField textBox4;
     private JTextField textBox5;
     private JTextField textBox6;
-    private JTextField paramName;
-    private JTextField paramType;
 
-    
-    private JMenu deleteMethod;
     private ArrayList<JButton> methodButtonList;
     private ArrayList<JButton> fieldButtonList;
     
@@ -91,8 +49,6 @@ public class classBox extends JComponent {
     private HashMap<String, JLabel> fieldMap = new HashMap();
     
     private UMLController controller;
-    
-    private boolean isMethod = false;
 
     public classBox(UMLController c) {
     	className = new JLabel("New Class");
@@ -138,13 +94,13 @@ public class classBox extends JComponent {
 		MouseInputAdapter l = new MouseInputAdapter (){
 			private int x;
 			private int y;
-		public void mousePressed(MouseEvent e) {
-			this.x = e.getX();
-			this.y = e.getY();
-		}
-		public void mouseDragged(MouseEvent e) {
-			panel.setLocation(panel.getX() + (e.getX() - this.x), panel.getY() + (e.getY() - this.y));
-		}
+			public void mousePressed(MouseEvent e) {
+				this.x = e.getX();
+				this.y = e.getY();
+			}
+			public void mouseDragged(MouseEvent e) {
+				panel.setLocation(panel.getX() + (e.getX() - this.x), panel.getY() + (e.getY() - this.y));
+			}
 		};
 	
 		panel.addMouseListener(l);
@@ -206,7 +162,6 @@ public class classBox extends JComponent {
 				popup.show(e.getComponent(), e.getX(), e.getY());
 			}
 		});
-
 	}
 		
 	////////////////////////////////

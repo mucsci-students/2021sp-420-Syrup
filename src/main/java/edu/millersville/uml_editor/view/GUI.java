@@ -1,71 +1,34 @@
 package edu.millersville.uml_editor.view;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
-
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseMotionListener;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Vector;
-
-import javax.swing.JMenuItem;
-import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JLabel;
-import java.awt.Color;
-import javax.swing.JComboBox;
-import javax.swing.JDesktopPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.LineBorder;
-import javax.swing.JTextPane;
-import javax.swing.JToolBar;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.JSlider;
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
-import java.awt.Canvas;
-import javax.swing.JMenuBar;
-import java.awt.Point;
-import java.awt.TextField;
+
+import java.awt.*;
+import java.io.IOException;
+import java.util.*;
+
+import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
+import javax.imageio.ImageIO;
 
 import java.io.File;
-import java.awt.image.BufferedImage;
-import java.awt.Graphics2D;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.JPasswordField;
-import javax.swing.JMenu;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.GridLayout;
 import edu.millersville.uml_editor.model.*;
 import edu.millersville.uml_editor.controller.*;
-
 
 public class GUI implements ViewInterface{
 	private JFrame Uml_Editor;
 	private JFrame help;
 	
-	private JLabel notEx1 = null;
 	private JLabel classDupLabel = null;
 
+	//Textfield declarations
     private JTextField textBoxClassDel;
     private JTextField renameClassOld;
     private JTextField renameClassNew;
@@ -100,6 +63,7 @@ public class GUI implements ViewInterface{
     private JTextField changeRelID;
     private JTextField newRelType;
     
+    //JMenu declarations
     private JMenu classOption;
     private JMenu deleteClass;
     private JMenu renameClass;
@@ -286,7 +250,6 @@ public class GUI implements ViewInterface{
 		renameClass.add(renameClassButton);
 		renameClassButton.addActionListener(controller.renameClassCall());
 		
-		
 		////////////////////////////////
 		//
 		// Method Option
@@ -379,8 +342,6 @@ public class GUI implements ViewInterface{
 		deleteMethod.add(methodDelButton);
 		methodDelButton.addActionListener(controller.deleteMethodCall());
 		
-
-		
 		////////////////////////////////
 		//
 		// Rename Method Option
@@ -400,7 +361,6 @@ public class GUI implements ViewInterface{
 		methodNewName.setFont(new Font("Serif", Font.BOLD, 12));
 		
 		JButton rename = new JButton("Rename");
-		
 		
 		renameMethod.add(renMethodClassName);
 		renClassName = new JTextField();
@@ -446,7 +406,6 @@ public class GUI implements ViewInterface{
 		
 		JButton createField = new JButton("Add");
 		
-		
 		addField.add(addFieldClassLabel);
 		addFieldCN = new JTextField();
 		addFieldCN.setColumns(15);
@@ -479,7 +438,6 @@ public class GUI implements ViewInterface{
 		
 		JButton deleteFieldButton = new JButton("Delete");
 		
-		
 		deleteFieldClassName = new JTextField();
 		deleteFieldClassName.setColumns(15);
 		deleteField.add(deleteFieldNameLabel);
@@ -491,7 +449,6 @@ public class GUI implements ViewInterface{
 		deleteField.add(deleteFieldButton);
 		deleteFieldButton.addActionListener(controller.deleteFieldCall());
 
-		
 		////////////////////////////////
 		//
 		// Rename Field Option
@@ -511,7 +468,6 @@ public class GUI implements ViewInterface{
 		fieldNewName.setFont(new Font("Serif", Font.BOLD, 12));
 		
 		JButton renameFieldButton = new JButton("Rename");
-		
 		
 		renameField.add(renameFieldClassLabel);
 		renameFieldCN = new JTextField();
@@ -669,13 +625,11 @@ public class GUI implements ViewInterface{
     	//
 		////////////////////////////////
     	
-    	
     	model.createNewClassGUI("New Class");
     	box = new classBox(controller);
     	createBox(box);
     	JPanel panel = box.boxPanel();
 		
-    	
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		
 		GroupLayout groupLayout = new GroupLayout(Uml_Editor.getContentPane());
@@ -710,9 +664,7 @@ public class GUI implements ViewInterface{
 	///////////////////////////////////////////////////////////
 	public void createBox(classBox box) 
 	{
-	
 		boxMap.put(box.getClassName(), box);
-	
 	}
 	
 	////////////////////////////////

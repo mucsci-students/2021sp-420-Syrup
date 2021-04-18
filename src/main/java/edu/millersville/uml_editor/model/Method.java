@@ -141,7 +141,7 @@ public class Method extends Formal {
 	public boolean containsParameter(String name) {
 		for(Parameter param : parameters) {
 			if(param.getName().equals(name)) {
-			return true;
+				return true;
 			}
 		}
 		return false;

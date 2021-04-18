@@ -94,5 +94,4 @@ public class AddCommand extends Command {
 		}
 		return prompt;
 	}
-	
 }
