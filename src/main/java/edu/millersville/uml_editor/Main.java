@@ -14,11 +14,13 @@ public class Main
 		ViewTemplate view;
 		Controller control;
 		
+		//if program is ran with cli arg, run cli version
 		if(args.length == 1 && args[0].equals("--cli")) {
 			view = new ViewTemplate(ViewTemplate.InterfaceType.CLI);
     	    control = new Controller(model, view);
     	    control.init();
 		}
+		//else run gui version
 		else if(args.length == 0) {
 			GUI view2 = new GUI(model);
     	    view2.drawGUI();

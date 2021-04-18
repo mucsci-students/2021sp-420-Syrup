@@ -100,19 +100,23 @@ public class CLIController extends ControllerType{
        
         // executes commands based on first word.
         switch (commands[0]) {
+        	//quit
             case "quit":
                 MiscCommand quit = new MiscCommand(model, view, commands, prompt, savePromptReader);
                 prompt = quit.execute();
                 break;
+            //help
             case "help":
                 MiscCommand help = new MiscCommand(model, view, commands, prompt, savePromptReader);
                 prompt = help.execute();
                 break;
+            //save
             case "save":
                 SaveCommand save = new SaveCommand(model, view, commands, prompt, file);
                 prompt = save.execute();
                 file = save.getFile();
                 break;
+            //load
             case "load":
                 LoadCommand load = new LoadCommand(meme.getModel(), view, commands, prompt, savePromptReader, file);
                 prompt = load.execute();
@@ -120,30 +124,36 @@ public class CLIController extends ControllerType{
                // this.model = load.getModel();
                 newMeme(meme);
                 break;
+            //add
             case "add":
             	AddCommand create = new AddCommand(meme.getModel(), view, commands, prompt);
                 prompt = create.execute();             
                 newMeme(meme);
                 break;
+            //delete
             case "delete":
                 DeleteCommand delete = new DeleteCommand(meme.getModel(), view, commands, prompt);
                 prompt = delete.execute();
                 newMeme(meme);
                 break;
+            //rename
             case "rename":
                 RenameCommand rename = new RenameCommand(meme.getModel(), view, commands, prompt);
                 prompt = rename.execute();
                 newMeme(meme);
                 break;
+            //list
             case "list":
                 ListCommand list = new ListCommand(model, view, commands, prompt);
                 prompt = list.execute();
                 break;
+            //clear
             case "clear":
                 MiscCommand clear = new MiscCommand(meme.getModel(), view, commands, prompt, savePromptReader);
                 prompt = clear.execute();
                 newMeme(meme);
                 break;
+            //undo
             case "undo":
             	if (currMeme > 0) {
                     --currMeme;
