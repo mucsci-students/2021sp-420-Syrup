@@ -24,15 +24,15 @@ public class CLIViewTest {
     
     @Before
     public void createCLI() throws IOException {
-	System.setOut(new PrintStream(out));
-	System.setErr(new PrintStream(err));
-	view = new CLIView();
+		System.setOut(new PrintStream(out));
+		System.setErr(new PrintStream(err));
+		view = new CLIView();
     }
     
     @After
     public void cleanCLI() {
-	System.setOut(origOut);
-	System.setErr(origErr);
+		System.setOut(origOut);
+		System.setErr(origErr);
     }
     
     private void resetStreams() {
@@ -40,6 +40,7 @@ public class CLIViewTest {
         err.reset();
     }
     
+    /* test cli terminal intro */
     @Test
     public void printIntroTest() throws IOException {
     	System.out.println("Welcome to Syrup's UML Editor!");
@@ -50,6 +51,7 @@ public class CLIViewTest {
     	assertEquals("printIntro text is wrong.", expected, out.toString());
     }
     
+    /* test invalid command print */
     @Test
     public void printInvalidCommandTest() {
     	System.out.println("\nInvalid command.\nType help to see a list of all commands.\n");
@@ -59,6 +61,7 @@ public class CLIViewTest {
     	assertEquals("printInvalidCommand text is wrong.", expected, out.toString());
     }
     
+    /* test error print */
     @Test
     public void printErrorTest() {
     	String e = "This is a test!";

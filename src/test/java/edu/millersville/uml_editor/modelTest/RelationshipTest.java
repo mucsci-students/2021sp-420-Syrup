@@ -7,6 +7,7 @@ import org.junit.Test;
 
 public class RelationshipTest {
 
+    /* test constructor and getters */
 	@Test
 	public void testConstructorandGetters() {
 		ClassObject class1 = new ClassObject("class1");

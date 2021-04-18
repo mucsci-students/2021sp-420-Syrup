@@ -116,7 +116,7 @@ public class AddCommandTest {
     	assertTrue("Should be one parameter called p1.", method1.containsParameter("param1"));	
     }
     
-    /*
+    /**
      * Test to add a relationship
      */
     @Test

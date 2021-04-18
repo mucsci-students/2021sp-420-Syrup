@@ -20,5 +20,5 @@ public class ControllerTest {
 		Controller c = new Controller(m, v);
 		
 		assertTrue("Controller equals null.", c != null);
-	    }
+	  }
 }
