@@ -17,6 +17,11 @@ public class UMLModel implements Model{
     private Map<String, ClassObject> classMap;
     private Map<String, Relationships> relMap;
     
+    ///////////////////////////////////////////////////////////
+    //
+    //	Constructors
+    //
+    ///////////////////////////////////////////////////////////
     public UMLModel() {
 		classMap = new HashMap<String, ClassObject>();
 		relMap = new HashMap<String, Relationships>();
@@ -39,6 +44,12 @@ public class UMLModel implements Model{
     	relMap = newRelMap;
     }
     
+    ///////////////////////////////////////////////////////////
+    //
+    //	Copy/clear
+    //
+    ///////////////////////////////////////////////////////////
+    
     public void clear() {
     	classMap.clear();
     	relMap.clear();
@@ -48,14 +59,11 @@ public class UMLModel implements Model{
     	return new UMLModel(classMap, relMap);
     }
     
-
-    public  Map<String, ClassObject> getClasses() {
-        return classMap;
-    }
-
-    public Map<String, Relationships> getRelationships() {
-        return relMap;
-    }
+    ///////////////////////////////////////////////////////////
+    //
+    //	Bool checks
+    //
+    ///////////////////////////////////////////////////////////
 
     public boolean hasClass(String className) {
         return classMap.containsKey(className);
@@ -73,19 +81,6 @@ public class UMLModel implements Model{
     	if (FieldObject == null)
     		return false;
     	return true;
-    }
-
-    /**
-     * A method that gets the class object specified by the class name.
-     * @param className the name of the class
-     * @return the value where className is mapped to.
-     */
-    public ClassObject getClassFor(String className) {
-        return classMap.get(className);
-    }
-    
-    public Relationships getRelFor(String relName) {
-    	return relMap.get(relName);
     }
     
     public boolean hasRelID(String ID) {
@@ -126,8 +121,40 @@ public class UMLModel implements Model{
     public boolean isEmpty() {
     	return classMap.isEmpty();
     }
-   
+
+    ///////////////////////////////////////////////////////////
+    //
+    //	Getters
+    //
+    ///////////////////////////////////////////////////////////
+    /**
+     * A method that gets the class object specified by the class name.
+     * @param className the name of the class
+     * @return the value where className is mapped to.
+     */
+    public ClassObject getClassFor(String className) {
+        return classMap.get(className);
+    }
     
+    public Relationships getRelFor(String relName) {
+    	return relMap.get(relName);
+    }
+    
+    public  Map<String, ClassObject> getClasses() {
+        return classMap;
+    }
+
+    public Map<String, Relationships> getRelationships() {
+        return relMap;
+    }
+    
+    public String getMethodType(String className, String methodName) {
+    	return classMap.get(className).getMethod(methodName).getType();
+    }
+    
+    public String getFieldType(String className, String fieldName) {
+    	return classMap.get(className).getField(fieldName).getType();
+    }
 
     ///////////////////////////////////////////////////////////
     //
@@ -158,7 +185,6 @@ public class UMLModel implements Model{
     		return true;
     	}
     	return false;
-        
     }
 
     ///////////////////////////////////////////////////////////
@@ -174,8 +200,7 @@ public class UMLModel implements Model{
         	return false;
         }
         getClasses().remove(name);
-        return true;
-        
+        return true;   
     }
     
     //////////////////////////////////////////////////////////
@@ -297,15 +322,6 @@ public class UMLModel implements Model{
     	}
     	return classMap.get(className).changeMethodType(methodName, newType);
     }
-    
-    public String getMethodType(String className, String methodName) {
-    	return classMap.get(className).getMethod(methodName).getType();
-    }
-    
-    public String getFieldType(String className, String fieldName) {
-    	return classMap.get(className).getField(fieldName).getType();
-    }
-    
     
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Field Functions
@@ -502,6 +518,11 @@ public class UMLModel implements Model{
 	 * @throws IOException
 	 */
 	
+    ///////////////////////////////////////////////////////////
+    //
+    //	Save/Load
+    //
+    ///////////////////////////////////////////////////////////
 	public void saveJSON(String name) throws IOException {
 		UMLModel model = new UMLModel(classMap, relMap);
 		

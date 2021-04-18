@@ -31,7 +31,6 @@ public class Relationships implements Serializable {
 
 	public String sourceName()
 	{
-		//return source.getClassName();
 		return source.getName();
 	}
 	
@@ -46,14 +45,12 @@ public class Relationships implements Serializable {
 
 	public String destinationName()
 	{
-		//return destination.getClassName();
 		return destination.getName();
 	}
 
 	
 	public String getDestination()
 	{
-		//return destination.getClassName();
 		return destination.getName();
 	}
 	
@@ -70,15 +67,14 @@ public class Relationships implements Serializable {
 	
 	public String getType()
 	{
-		//return destination.getClassName();
 		return type;
 	}
 
 	public String getID()
 	{
-		//return destination.getClassName();
 		return ID;
 	}
+	
 ///////////////////////////////////////////////////////////
 //
 //	relType
@@ -89,6 +85,12 @@ public class Relationships implements Serializable {
 	{
 		return type;
 	}
+	
+///////////////////////////////////////////////////////////
+//
+// Printing
+//
+///////////////////////////////////////////////////////////
 	
 	public String printID() {
 		return "Relationship ID: " + ID;

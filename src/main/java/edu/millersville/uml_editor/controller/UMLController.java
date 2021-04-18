@@ -18,6 +18,12 @@ public class UMLController {
         this.gui = newGUI;
     }
     
+	////////////////////////////////
+	//
+	// Menu drop down 
+	//
+	////////////////////////////////
+    
     public ActionListener helpCommand(){
         return(ActionEvent e) -> {
             if(e.getActionCommand() == "Help"){

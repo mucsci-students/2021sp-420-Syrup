@@ -14,6 +14,7 @@ public class SaveCommand extends Command{
         this.file = file;
     }
 
+    //function that saves the program
     public boolean execute() {
         if (commands.length == 2) {
             try {

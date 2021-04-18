@@ -19,6 +19,4 @@ public class Controller {
     public void init() throws IOException {
     	control.init();
     }
-    
-   
 }
