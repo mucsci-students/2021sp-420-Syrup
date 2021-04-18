@@ -96,30 +96,32 @@ public class MiscCommand extends Command {
 
     //help function that displays all possible tasks
     private static void help(String[] commandUsage) {
-		System.out.print("\nList of commands:");
-		System.out.println(
-			commandUsage[0] + " - Save file to specific path" 
-			+ commandUsage[1] + " - Loads a file at a specific path\n" 
-			+ commandUsage[2] + " - add a class with title <name>"
-			+ commandUsage[3] + " - add a field in <class name>, titled <field name> with type <field type>"
-			+ commandUsage[4] + " - add a method in <class name>, titled <method name> with type type <method type>"
-			+ commandUsage[5] + " - add relationship between <class name1> and <class name2> with type <type> (Aggregation, Realization, Composition, Inheritance)"
-			+ commandUsage[6] + " - add a parameter in <class name> for <method>  titled <parameter name> with type <parameter type>\n"
-			+ commandUsage[7] + " - delete a class with title <name>" 
-			+ commandUsage[8] + " - delete field in class titled <class name> with name <field name>" 
-			+ commandUsage[9] + " - delete method in class titled <class name> with name <method name>" 
-			+ commandUsage[10] + " - delete a relationship between <class name1> and <class name2> with type <type> (Aggregation, Realization, Composition, Inheritance)"
-			+ commandUsage[11] + " - delete a parameter in <class name> for <method name> with <parameter name>\n"
-			+ commandUsage[12] + " - rename class <name> to <new name>" 
-			+ commandUsage[13] + " - rename field in class titled <class name> with field name <field name> to <newname>" 
-			+ commandUsage[14] + " - rename method in class titled <class name> with method name <method name> to <newname>" 
-			+ commandUsage[15] + " - rename parameter in <class name> for <method> titled <parameter name> to <parameter newname>\n"
-			+ commandUsage[16] +  " - List all existing classes" 
-			+ commandUsage[17] + " - List all existing relationships" 
-			+ commandUsage[18] + " - List all existing classes and relationships\n" 
-			+ commandUsage[19] + " - Clear all classes and relationships\n"
-			+ "  undo - Reverts the most recent change to the UML Editor\n"
-			+ "  redo - Restores the most recently undone action.\n" + "  quit - exits the program\n");
+
+	System.out.print("\nList of commands:");
+	System.out.println(
+		commandUsage[0] + " - Save file to specific path" 
+		+ commandUsage[1] + " - Loads a file at a specific path\n" 
+		+ commandUsage[2] + " - add a class with title <name>"
+		+ commandUsage[3] + " - add a field in <class name>, titled <field name> with type <field type>"
+		+ commandUsage[4] + " - add a method in <class name>, titled <method name> with type type <method type>"
+		+ commandUsage[5] + " - add relationship between <class name1> and <class name2> with type <type> (Aggregation, Realization, Composition, Inheritance)"
+		+ commandUsage[6] + " - add a parameter in <class name> for <method>  titled <parameter name> with type <parameter type>\n"
+		+ commandUsage[7] + " - delete a class with title <name>" 
+		+ commandUsage[8] + " - delete field in class titled <class name> with name <field name>" 
+		+ commandUsage[9] + " - delete method in class titled <class name> with name <method name>" 
+		+ commandUsage[10] + " - delete a relationship between <class name1> and <class name2> with type <type> (Aggregation, Realization, Composition, Inheritance)"
+		+ commandUsage[11] + " - delete a parameter in <class name> for <method name> with <parameter name>\n"
+		+ commandUsage[12] + " - rename class <name> to <new name>" 
+		+ commandUsage[13] + " - rename field in class titled <class name> with field name <field name> to <newname>" 
+		+ commandUsage[14] + " - rename method in class titled <class name> with method name <method name> to <newname>" 
+		+ commandUsage[15] + " - rename parameter in <class name> for <method> titled <parameter name> to <parameter newname>\n"
+		+ commandUsage[16] +  " - List all existing classes" 
+		+ commandUsage[17] + " - List all existing relationships" 
+		+ commandUsage[18] + " - Clear all classes and relationships\n"
+		+ "  undo - Reverts the most recent change to the UML Editor\n"
+		+ "  redo - Restores the most recently undone action.\n" + "  quit - exits the program\n");
+
+	
     }
 }
 

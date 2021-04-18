@@ -82,7 +82,7 @@ public class AddCommandTest {
 	
     	String[] fieldCommands = {"add", "field", "class1", "field1", "int"};
     	executeCommand(fieldCommands);
-    	assertTrue("Should be one field called f1.", class1.containsField("field1"));
+    	assertTrue("Should be one field called field1.", class1.containsField("field1"));
 	}
       
     /**
