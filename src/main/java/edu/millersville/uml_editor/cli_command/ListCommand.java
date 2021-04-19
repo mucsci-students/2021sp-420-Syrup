@@ -1,7 +1,6 @@
 package edu.millersville.uml_editor.cli_command;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -48,6 +47,9 @@ public class ListCommand extends Command{
 	}
 
 
+	/**
+	 * Prints classes to terminal
+	 */
 	private void printClasses() {
 		Map<String, ClassObject> classMap = model.getClasses();
 
@@ -60,17 +62,24 @@ public class ListCommand extends Command{
 			System.out.println(divider);
 			
 			if(!i.getFields().isEmpty()) {
-				printFields(i);
+				printFields(i, getDivLength(i));
 				System.out.println(divider);
 			}
 			if(!i.getMethods().isEmpty()) {
-				printMethods(i);
+				printMethods(i, getDivLength(i));
 				System.out.println(divider);
 			}
 		}
 
 	}
 
+	/**
+	 * Adds pipes to either side of a given string
+	 * @param inputString
+	 * 		String to add pipes to
+	 * @return
+	 * 		Returns string with pipes on either side
+	 */
 	private String addBorder(String inputString) {
 		return "| " + inputString + " |";
 	}
@@ -80,21 +89,27 @@ public class ListCommand extends Command{
 	 * @param classEntity
 	 * 		The class that the fields will be printed for.
 	 */
-	private void printFields(ClassObject classEntity) {
+	private void printFields(ClassObject classEntity, int lineWidth) {
 		ArrayList<Field> fields = classEntity.getFields();
 
 		for(Field f : fields) {
 			String fieldLine = f.getName() + ":" + f.getType(); // Formats field print line
+			fieldLine = StringUtils.rightPad(fieldLine, lineWidth);
 			fieldLine = addBorder(fieldLine);
 			System.out.println(fieldLine);
 		}
 	}
 
-	private void printMethods(ClassObject classEntity) {
+	/**
+	 * Prints methods for a given class
+	 * @param classEntity
+	 */
+	private void printMethods(ClassObject classEntity, int lineWidth) {
 		ArrayList<Method> methods = classEntity.getMethods();
 
 		for(Method m : methods) {
 			String methodLine = m.getName() + "():" + m.getType(); // Formats method print line
+			methodLine = StringUtils.rightPad(methodLine, lineWidth);
 			methodLine = addBorder(methodLine);
 			System.out.println(methodLine);
 		}
