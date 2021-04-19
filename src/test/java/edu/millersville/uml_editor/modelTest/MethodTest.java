@@ -8,9 +8,8 @@ import static org.junit.Assert.assertFalse;
 import java.util.*;
 
 public class MethodTest {
-	/**
-	 * Test the method constructor
-	 */
+	
+    /* test constructor */
 	@Test
 	public void Method() {
 		Method method = new Method("method", "int");
@@ -19,6 +18,7 @@ public class MethodTest {
 		assertTrue("Parameter list is empty", method.getParameters().isEmpty());
 	}
 	
+    /* test addParameter */
 	@Test
 	public void testAddParameter() {
 		Method method = new Method("method", "int");
@@ -29,6 +29,7 @@ public class MethodTest {
 		assertFalse("Creating parameter with duplicate name", method.addParameter("param", "String"));
 	}
 	
+    /* test renameParameter */
 	@Test
 	public void testRenameParameter() {
 		Method method = new Method("method", "int");
@@ -63,9 +64,7 @@ public class MethodTest {
         assertFalse("non-existing parameter not found", method.containsParameter("fake"));
     }
     
-    /**
-     * Test changing a Method Parameter type
-     */
+    /* test changeParameterType */
     @Test
     public void testChangeParameterType()
     {
@@ -75,6 +74,7 @@ public class MethodTest {
         assertTrue("param type changed", m.getParameters().get(0).getType().equals("newtype"));
     }
     
+    /* test param getter */
     @Test
     public void testGetParameterNames()
     {
@@ -89,6 +89,7 @@ public class MethodTest {
         assertEquals("Correct param 3 name", "param3", paramNames.get(2));
     }
     
+    /* test replaceParameterList */
     @Test
     public void testReplaceParameterList() {
     	Method method = new Method("method", "type");
@@ -103,6 +104,7 @@ public class MethodTest {
     	assertTrue("param list replaced with new list", method.replaceParameterList(newList));
     }
 
+    /* test deleteAllParameters */
     @Test
     public void testDeleteAllParameters() {
     	Method method = new Method("method", "type");
@@ -110,6 +112,5 @@ public class MethodTest {
     	method.addParameter("param2", "type");
     	method.addParameter("param3", "type");
     	assertTrue("all params deleted", method.deleteAllParameters());
-    }
-    
+    } 
 }

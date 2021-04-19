@@ -16,6 +16,7 @@ public class TabCompleter {
 
 	private AggregateCompleter completer;
 
+	//constructor that creates the tab completion options
     public TabCompleter() {
         this.completer = new AggregateCompleter(
                 new ArgumentCompleter(
@@ -69,6 +70,7 @@ public class TabCompleter {
             ArrayList<String> classFields = new ArrayList<>();
             for (Field f : currClass.getFields()) {
                 classFields.add(f.getName());
+                //fields
                 completers.add(
                         new ArgumentCompleter(
                                 new StringsCompleter("field"),
@@ -92,6 +94,8 @@ public class TabCompleter {
             ArrayList<String> classMethods = new ArrayList<>();
             for (Method m : currClass.getMethods()) {
                 classMethods.add(m.getName());
+                
+                //methods
                 completers.add(
                         new ArgumentCompleter(  
                                 new StringsCompleter("method"),
@@ -110,6 +114,7 @@ public class TabCompleter {
                                 new NullCompleter()
                         )
                 );
+                //parameters
                 completers.add(
                         new ArgumentCompleter(
                                 new StringsCompleter("add"),
@@ -154,6 +159,7 @@ public class TabCompleter {
                 )
         );
         
+        //relationships
         Map<String, Relationships> newMap = classes.getRelationships();
         ArrayList<Relationships> relArray = new ArrayList<Relationships>();
         for(String k : newMap.keySet()) {

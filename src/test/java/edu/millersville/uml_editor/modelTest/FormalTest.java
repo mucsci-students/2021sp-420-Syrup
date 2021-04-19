@@ -2,8 +2,6 @@ package edu.millersville.uml_editor.modelTest;
 
 import edu.millersville.uml_editor.model.*;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 
 public class FormalTest {
@@ -21,12 +19,12 @@ public class FormalTest {
     @Test
     public void testGettersAndSetters()
     {
-	Formal f = new Formal("f", "int");
-	
-	f.setName("g");
-	f.setType("char");
-	
-	assertEquals("Name changed correctly", "g", f.getName());
-	assertEquals("Type changed correctly", "char", f.getType());
+		Formal f = new Formal("f", "int");
+		
+		f.setName("g");
+		f.setType("char");
+		
+		assertEquals("Name changed correctly", "g", f.getName());
+		assertEquals("Type changed correctly", "char", f.getType());
     }
 }

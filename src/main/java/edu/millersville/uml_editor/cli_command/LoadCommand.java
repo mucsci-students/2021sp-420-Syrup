@@ -41,7 +41,6 @@ public class LoadCommand extends Command {
 
     private static boolean savePrompt() {
         while (prompt) {
-
             String line = savePromptReader.readLine("", "", (MaskingCallback) null, null);
             line = line.trim();
 

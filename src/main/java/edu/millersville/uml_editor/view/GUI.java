@@ -1,70 +1,34 @@
 package edu.millersville.uml_editor.view;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
-
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseMotionListener;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Vector;
-
-import javax.swing.JMenuItem;
-import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JLabel;
-import java.awt.Color;
-import javax.swing.JComboBox;
-import javax.swing.JDesktopPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.LineBorder;
-import javax.swing.JTextPane;
-import javax.swing.JToolBar;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.JSlider;
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
-import java.awt.Canvas;
-import javax.swing.JMenuBar;
-import java.awt.Point;
-import java.awt.TextField;
+
+import java.awt.*;
+import java.io.IOException;
+import java.util.*;
+
+import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
+import javax.imageio.ImageIO;
 
 import java.io.File;
-import java.awt.image.BufferedImage;
-import java.awt.Graphics2D;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.JPasswordField;
-import javax.swing.JMenu;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.GridLayout;
 import edu.millersville.uml_editor.model.*;
 import edu.millersville.uml_editor.controller.*;
 
-
 public class GUI implements ViewInterface{
 	private JFrame Uml_Editor;
+	private JFrame help;
 	
-	private JLabel notEx1 = null;
 	private JLabel classDupLabel = null;
 
+	//Textfield declarations
     private JTextField textBoxClassDel;
     private JTextField renameClassOld;
     private JTextField renameClassNew;
@@ -89,6 +53,8 @@ public class GUI implements ViewInterface{
 	private JTextField fieldCurrent;
     private JTextField fieldNew;
     
+    private JTextField textBoxExportImage;
+    
     private JTextField addRelID;
     private JTextField addRelSource;
     private JTextField addRelDest;
@@ -96,6 +62,25 @@ public class GUI implements ViewInterface{
     private JTextField delRel;
     private JTextField changeRelID;
     private JTextField newRelType;
+    
+    //JMenu declarations
+    private JMenu classOption;
+    private JMenu deleteClass;
+    private JMenu renameClass;
+    private JMenu method;
+    private JMenu addMethod;
+    private JMenu deleteMethod;
+    private JMenu renameMethod;
+    private JMenu field;
+    private JMenu addField;
+    private JMenu deleteField;
+    private JMenu renameField;
+    private JMenu rel;
+    private JMenu addRel;
+    private JMenu deleteRel;
+    private JMenu changeRelType;
+    private JMenu exportImage;
+    private JMenu menu;
     
     private Map<String, classBox> boxMap;
     
@@ -175,7 +160,7 @@ public class GUI implements ViewInterface{
 		JMenuBar menuBar = new JMenuBar();
 		Uml_Editor.setJMenuBar(menuBar);
 		
-		JMenu menu = new JMenu("Menu");
+		menu = new JMenu("Menu");
 		menuBar.add(menu);
 		JMenuItem load = new JMenuItem("Save");
 		menu.add(load);
@@ -183,16 +168,37 @@ public class GUI implements ViewInterface{
 		menu.add(save);
 		JMenuItem help = new JMenuItem("Help");
 		menu.add(help);
-		JMenuItem exportImage = new JMenuItem("Export as Image");
+		help.addActionListener(controller.helpCommand());
+		exportImage = new JMenu("Export as Image");
+		
+		////////////////////////////////
+		//
+		// Export Option
+		//
+		////////////////////////////////
+		
+		JLabel directoryLabel = new JLabel("Directory: ");
+		directoryLabel.setFont(new Font("Serif", Font.BOLD, 12));
+		
+		textBoxExportImage = new JTextField();
+		textBoxExportImage.setColumns(15);
+		
+		JButton exportButton = new JButton("Export");
+		
+		exportImage.add(directoryLabel);
+		exportImage.add(textBoxExportImage);
+		exportImage.add(exportButton);
+		
 		menu.add(exportImage);
-		exportImage.addActionListener(controller.exportImageCall());
+		exportButton.addActionListener(controller.exportImageCall());
+		
 		////////////////////////////////
 		//
 		// Class Option
 		//
 		////////////////////////////////
 		
-		JMenu classOption = new JMenu("Class");
+		classOption = new JMenu("Class");
         menuBar.add(classOption);
         
 		////////////////////////////////
@@ -206,7 +212,7 @@ public class GUI implements ViewInterface{
         
         JButton classDelButton = new JButton("Delete");
         
-        JMenu deleteClass = new JMenu("Delete");
+        deleteClass = new JMenu("Delete");
         classOption.add(deleteClass);
         
         deleteClass.add(classNameDel);
@@ -231,7 +237,7 @@ public class GUI implements ViewInterface{
 		
 		JButton renameClassButton = new JButton("Rename");
 		
-        JMenu renameClass = new JMenu("Rename");
+        renameClass = new JMenu("Rename");
         classOption.add(renameClass);
         renameClassOld = new JTextField();
 		renameClassOld.setColumns(15);
@@ -244,14 +250,13 @@ public class GUI implements ViewInterface{
 		renameClass.add(renameClassButton);
 		renameClassButton.addActionListener(controller.renameClassCall());
 		
-		
 		////////////////////////////////
 		//
 		// Method Option
 		//
 		////////////////////////////////
 		
-		JMenu method = new JMenu("Method");
+		method = new JMenu("Method");
         menuBar.add(method);
         
 		////////////////////////////////
@@ -260,7 +265,7 @@ public class GUI implements ViewInterface{
 		//
 		////////////////////////////////
 		
-		JMenu addMethod = new JMenu("Add");
+		addMethod = new JMenu("Add");
 		method.add(addMethod);
 		
 		JLabel addMethodClassName = new JLabel("Class Name:");
@@ -315,7 +320,7 @@ public class GUI implements ViewInterface{
 		//
 		////////////////////////////////
 		
-		JMenu deleteMethod = new JMenu("Delete");
+		deleteMethod = new JMenu("Delete");
         method.add(deleteMethod);
         
         JLabel delMethodClassName = new JLabel("Class Name:");
@@ -337,15 +342,13 @@ public class GUI implements ViewInterface{
 		deleteMethod.add(methodDelButton);
 		methodDelButton.addActionListener(controller.deleteMethodCall());
 		
-
-		
 		////////////////////////////////
 		//
 		// Rename Method Option
 		//
 		////////////////////////////////
 		
-		JMenu renameMethod = new JMenu("Rename");
+		renameMethod = new JMenu("Rename");
         method.add(renameMethod);
         
         JLabel renMethodClassName = new JLabel("Class Name:");
@@ -358,7 +361,6 @@ public class GUI implements ViewInterface{
 		methodNewName.setFont(new Font("Serif", Font.BOLD, 12));
 		
 		JButton rename = new JButton("Rename");
-		
 		
 		renameMethod.add(renMethodClassName);
 		renClassName = new JTextField();
@@ -381,7 +383,7 @@ public class GUI implements ViewInterface{
 		//
 		////////////////////////////////
 		
-		JMenu field = new JMenu("Field");
+		field = new JMenu("Field");
         menuBar.add(field);
         
 		////////////////////////////////
@@ -390,7 +392,7 @@ public class GUI implements ViewInterface{
 		//
 		////////////////////////////////
 		
-		JMenu addField = new JMenu("Add");
+		addField = new JMenu("Add");
         field.add(addField);
         
         JLabel addFieldClassLabel = new JLabel("Class Name:");
@@ -403,7 +405,6 @@ public class GUI implements ViewInterface{
 		addFieldTypeLabel.setFont(new Font("Serif", Font.BOLD, 12));
 		
 		JButton createField = new JButton("Add");
-		
 		
 		addField.add(addFieldClassLabel);
 		addFieldCN = new JTextField();
@@ -426,7 +427,7 @@ public class GUI implements ViewInterface{
 		//
 		////////////////////////////////
 		
-		JMenu deleteField = new JMenu("Delete");
+		deleteField = new JMenu("Delete");
         field.add(deleteField);
         
         JLabel deleteFieldNameLabel = new JLabel("Class Name:");
@@ -436,7 +437,6 @@ public class GUI implements ViewInterface{
 		deleteFieldTypeLabel.setFont(new Font("Serif", Font.BOLD, 12));
 		
 		JButton deleteFieldButton = new JButton("Delete");
-		
 		
 		deleteFieldClassName = new JTextField();
 		deleteFieldClassName.setColumns(15);
@@ -449,14 +449,13 @@ public class GUI implements ViewInterface{
 		deleteField.add(deleteFieldButton);
 		deleteFieldButton.addActionListener(controller.deleteFieldCall());
 
-		
 		////////////////////////////////
 		//
 		// Rename Field Option
 		//
 		////////////////////////////////
 		
-		JMenu renameField = new JMenu("Rename");
+		renameField = new JMenu("Rename");
         field.add(renameField);
         
         JLabel renameFieldClassLabel = new JLabel("Class Name:");
@@ -469,7 +468,6 @@ public class GUI implements ViewInterface{
 		fieldNewName.setFont(new Font("Serif", Font.BOLD, 12));
 		
 		JButton renameFieldButton = new JButton("Rename");
-		
 		
 		renameField.add(renameFieldClassLabel);
 		renameFieldCN = new JTextField();
@@ -492,14 +490,14 @@ public class GUI implements ViewInterface{
 		//
 		////////////////////////////////
 		
-		JMenu rel = new JMenu("Relationship");
+		rel = new JMenu("Relationship");
         menuBar.add(rel);
         
-        JMenu addRel = new JMenu("Add");
+        addRel = new JMenu("Add");
 		rel.add(addRel);
-		JMenu deleteRel = new JMenu("Delete");
+		deleteRel = new JMenu("Delete");
 		rel.add(deleteRel);
-		JMenu changeRelType = new JMenu("Change Type");
+		changeRelType = new JMenu("Change Type");
 		rel.add(changeRelType);
 		
 		////////////////////////////////
@@ -627,13 +625,11 @@ public class GUI implements ViewInterface{
     	//
 		////////////////////////////////
     	
-    	
     	model.createNewClassGUI("New Class");
     	box = new classBox(controller);
     	createBox(box);
     	JPanel panel = box.boxPanel();
 		
-    	
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		
 		GroupLayout groupLayout = new GroupLayout(Uml_Editor.getContentPane());
@@ -668,9 +664,7 @@ public class GUI implements ViewInterface{
 	///////////////////////////////////////////////////////////
 	public void createBox(classBox box) 
 	{
-	
 		boxMap.put(box.getClassName(), box);
-	
 	}
 	
 	////////////////////////////////
@@ -682,12 +676,14 @@ public class GUI implements ViewInterface{
 	public void deleteClassAction()
 	{	
 		String className = textBoxClassDel.getText();
-		
+		classDupFalse();
+		notExistFalse();
 		Uml_Editor.remove(boxMap.get(className).boxPanel());
 		boxMap.remove(className);
 		textBoxClassDel.setText("");
 		
-		Uml_Editor.repaint();
+		classOption.setPopupMenuVisible(false);
+		deleteClass.setPopupMenuVisible(false);
 	}
 	
 	public void renameActionPerformed()
@@ -702,13 +698,14 @@ public class GUI implements ViewInterface{
 			boxMap.put(newName, boxMap.get(oldName));
 			model.renameClassGUI(oldName, newName);
 			boxMap.remove(oldName);
-			Uml_Editor.repaint();
         }
 		else{
 			classDupTrue();
 		}
 		renameClassOld.setText("");
 		renameClassNew.setText("");
+		classOption.setPopupMenuVisible(false);
+		renameClass.setPopupMenuVisible(false);
 	}
 	
 	////////////////////////////////
@@ -758,6 +755,9 @@ public class GUI implements ViewInterface{
 		addMethodCN.setText("");
 		addMethodName.setText("");
 		addMethodType.setText("");
+		
+		method.setPopupMenuVisible(false);
+		addMethod.setPopupMenuVisible(false);
 	}
 	
 	public void addParamToList() {
@@ -776,6 +776,8 @@ public class GUI implements ViewInterface{
 		String methodName = addMethodName.getText();
 		String methodType = addMethodType.getText();
 		
+		classDupFalse();
+		notExistFalse();
 		if(!paramListName.isEmpty()) {
 			String parName;
 			String parType;
@@ -790,12 +792,10 @@ public class GUI implements ViewInterface{
 				parType = typeArray[i];
 				boxMap.get(className).addParam(methodName, parName, parType);
 			}
-			Uml_Editor.repaint();
 			return;
 		}
 		else {
 			boxMap.get(className).addMethod(methodName, methodType);
-			Uml_Editor.repaint();
 		}
 	}
 	
@@ -811,10 +811,11 @@ public class GUI implements ViewInterface{
 		{
 			model.deleteMethod(delMethodClassName, delMethodN);
 			Uml_Editor.remove(boxMap.get(delMethodClassName).deleteMethod(delMethodN));
-			Uml_Editor.repaint();
 			delMethodCN.setText("");
 			delMethodName.setText("");
 		}
+		method.setPopupMenuVisible(false);
+		deleteMethod.setPopupMenuVisible(false);
 	}
 	
 	public void renameMethodAction() {
@@ -836,13 +837,13 @@ public class GUI implements ViewInterface{
 			String methodType = model.getMethodType(className, newMethodName);
 			boxMap.get(className).renameMethodName(methodName, newMethodName, methodType);
 			boxMap.put(newMethodName, boxMap.get(methodName));
-			boxMap.remove(methodName);
-			Uml_Editor.repaint();
-			
+			boxMap.remove(methodName);			
 		}
 		renClassName.setText("");
 		renameMethodOldName.setText("");
 		renameMethodNewName.setText("");
+		method.setPopupMenuVisible(false);
+		renameMethod.setPopupMenuVisible(false);
 	}
 	
 	////////////////////////////////
@@ -856,6 +857,8 @@ public class GUI implements ViewInterface{
 		String fieldName = addFieldName.getText();
 		String fieldType = addFieldType.getText();
 		
+		classDupFalse();
+		notExistFalse();
     	if (!model.hasClass(className))
     	{
     		notExistTrue();
@@ -876,23 +879,28 @@ public class GUI implements ViewInterface{
 			addFieldType.setText("");
     	}
     	
-    	Uml_Editor.repaint();
+    	field.setPopupMenuVisible(false);
+		addField.setPopupMenuVisible(false);
 	}
 	
 	public void deleteFieldAction() {
 		String className = deleteFieldClassName.getText();
 		String fieldName = deleteFieldName.getText();
 		
+		classDupFalse();
+		notExistFalse();
 		if (!model.hasClass(className) || !model.hasField(className, fieldName))
 			notExistTrue();
 		else
 		{
 			model.deleteField(className, fieldName);
+			boxMap.get(className).deleteField(fieldName);
 			Uml_Editor.remove(boxMap.get(className).deleteField(fieldName));
-			Uml_Editor.repaint();
 			deleteFieldClassName.setText("");
 			deleteFieldName.setText("");
 		}
+		field.setPopupMenuVisible(false);
+		deleteField.setPopupMenuVisible(false);
 	}
 	
 	public void renameFieldAction() {
@@ -913,13 +921,12 @@ public class GUI implements ViewInterface{
 			model.renameField(className, fieldName, newFieldName);
 			String fieldType = model.getFieldType(className, newFieldName);
 			boxMap.get(className).renameFieldName(fieldName, newFieldName, fieldType);
-			boxMap.put(newFieldName, boxMap.get(fieldName));
-			boxMap.remove(fieldName);
-			Uml_Editor.repaint();
 			renameFieldCN.setText("");
 			fieldCurrent.setText("");
 			fieldNew.setText("");
 		}
+		field.setPopupMenuVisible(false);
+		renameField.setPopupMenuVisible(false);
 	}
 	
 	////////////////////////////////
@@ -934,7 +941,7 @@ public class GUI implements ViewInterface{
         String sourceClass = addRelSource.getText();
         String destClass = addRelDest.getText();
         String type = addRelType.getText();
-
+        
         classDupFalse();
 		notExistFalse();
         if (!model.hasClass(sourceClass) || !model.hasClass(destClass))
@@ -952,7 +959,8 @@ public class GUI implements ViewInterface{
         addRelSource.setText("");
         addRelDest.setText("");
         addRelType.setText("");
-        
+        rel.setPopupMenuVisible(false);
+		addRel.setPopupMenuVisible(false);
 	}
 	
 	public void drawArrow() {
@@ -964,15 +972,26 @@ public class GUI implements ViewInterface{
 	public void removeArrow() {
 		String id = delRel.getText();
 		
-		
+		classDupFalse();
+		notExistFalse();
+		if(model.hasRelID(id)){
+            model.deleteRelationshipGUI(id);
+        }
+        else{
+            notExistTrue();
+        }
 		
 		delRel.setText("");
+		rel.setPopupMenuVisible(false);
+		deleteRel.setPopupMenuVisible(false);
 	}
 	
 	public void changeRelTypeAction() {
 	  	String ID = changeRelID.getText();
     	String type = newRelType.getText();
     	
+    	classDupFalse();
+		notExistFalse();
     	if (!model.hasRelID(ID))
     		notExistTrue();
     	else if (!type.equals("A") && !type.equals("C") && !type.equals("I") && !type.equals("R"))
@@ -984,19 +1003,146 @@ public class GUI implements ViewInterface{
     	
     	changeRelID.setText("");
     	newRelType.setText("");
+    	rel.setPopupMenuVisible(false);
+		changeRelType.setPopupMenuVisible(false);
 	}
+	
+	////////////////////////////////
+	//
+	// Export Image Action
+	//
+	////////////////////////////////
+	
 	public void exportImageAction(){
+		String path = textBoxExportImage.getText();
+		String jpgPath = "";
+		String pngPath = "";
 		
+		if (!path.equals(""))
+		{
+			jpgPath = path + "/UmlImage.jpg";
+			pngPath = path + "/UmlImage.png";
+		}
+		else 
+		{
+			jpgPath = "UmlImage.jpg";
+			pngPath = "UmlImage.png";
+		}
+		
+		menu.setPopupMenuVisible(false);
+		exportImage.setPopupMenuVisible(false);
+
 		BufferedImage image = new BufferedImage(Uml_Editor.getWidth(), Uml_Editor.getHeight(), BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = image.createGraphics();
 		Uml_Editor.printAll(g);
 		g.dispose();
-			try {
-				ImageIO.write(image, "jpg", new File("UmlImage.jpg"));
-				ImageIO.write(image, "png", new File("UmlImage.png"));
-			} catch (IOException exp) {
-				exp.printStackTrace();
-			}
+		
+		try {
+			ImageIO.write(image, "jpg", new File(jpgPath));
+			ImageIO.write(image, "png", new File(pngPath));
+		} catch (IOException exp) {
+			exp.printStackTrace();
+		}
+		textBoxExportImage.setText("");
+	}
+	
+	////////////////////////////////
+	//
+	// helpPanel
+	//
+	////////////////////////////////
+	
+	public void helpPanel() {
+		help = new JFrame();
+		help.setTitle("Help Menu");
+		help.setBounds(100, 100, 1266, 683);
+		help.setLayout(new GridLayout(21,0));
+		
+		JLabel title = new JLabel("Help Menu", SwingConstants.CENTER);
+		title.setFont(new Font("Serif", Font.BOLD, 30));
+		help.add(title);
+		
+		//CLASS HELP LABELS
+		JLabel classTitle = new JLabel("Classes");
+		classTitle.setFont(new Font("Serif", Font.BOLD, 20));
+		help.add(classTitle);
+		
+		JLabel classAddHelp = new JLabel("ADD:  Hit the Add Class button at the top left of the frame.");
+		classAddHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(classAddHelp);
+		JLabel classDelHelp = new JLabel("DELETE:  Under 'Class' on the menu bar, click Delete. Enter the name of the class to delete.");
+		classDelHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(classDelHelp);
+		JLabel classRenHelp = new JLabel("RENAME:  Under 'Class' on the menu bar, click Rename. Enter the current name of the class, as well as the new name for that class.");
+		classRenHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(classRenHelp);
+		
+		//METHOD HELP LABELS
+		JLabel methodTitle = new JLabel("Methods");
+		methodTitle.setFont(new Font("Serif", Font.BOLD, 20));
+		help.add(methodTitle);
+		
+		JLabel methodAddHelp = new JLabel("ADD:  Under 'Method' on the menu bar, click Add. Enter the class name, as well as the method name and type. Parameters are optional, if you do not wish to add any parameters, hit the 'Done' button.");
+		methodAddHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(methodAddHelp);
+		JLabel methodAddParamHelp = new JLabel("If you would like to add parameters, Enter the parameter name and type, and hit the 'Add Parameter to list' button. Once finished, hit 'Done'.");
+		methodAddParamHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(methodAddParamHelp);
+		JLabel methodDelHelp = new JLabel("DELETE:  Under 'Method' on the menu bar, click Delete. Enter the name of the class as well as the name of the method to delete.");
+		methodDelHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(methodDelHelp);
+		JLabel methodRenHelp = new JLabel("RENAME:  Under 'Method' on the menu bar, click Rename. Enter the name of the class, the current name of the method and the new name for that method.");
+		methodRenHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(methodRenHelp);
+		
+		//FIELD HELP LABELS
+		JLabel fieldTitle = new JLabel("Fields");
+		fieldTitle.setFont(new Font("Serif", Font.BOLD, 20));
+		help.add(fieldTitle);
+		
+		JLabel fieldAddHelp = new JLabel("ADD:  Under 'Field' on the menu bar, click Add. Enter the class name and the field name along with the type for that field.");
+		fieldAddHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(fieldAddHelp);
+		JLabel fieldDelHelp = new JLabel("DELETE:  Under 'Field' on the menu bar, click Delete. Enter the name of the class as well as the name of the field to delete.");
+		fieldDelHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(fieldDelHelp);
+		JLabel fieldRenHelp = new JLabel("RENAME:  Under 'Field' on the menu bar, click Rename. Enter the name of the class, the current name of the field along with the new name for that field.");
+		fieldRenHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(fieldRenHelp);
+		
+		//RELATIONSHIP HELP LABELS
+		JLabel relTitle = new JLabel("Relationships");
+		relTitle.setFont(new Font("Serif", Font.BOLD, 20));
+		help.add(relTitle);
+		
+		JLabel relAddHelp = new JLabel("ADD:  Under 'Relationship' on the menu bar, click Add. Enter a distinct ID, the source and destination for the relationship, as well as the type the relationship is. (Either 'A', 'C', 'I', 'R')");
+		relAddHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(relAddHelp);
+		JLabel relDelHelp = new JLabel("DELETE:  Under 'Relationship' on the menu bar, click Delete. Enter the ID of the relationship to delete.");
+		relDelHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(relDelHelp);
+		JLabel relRenHelp = new JLabel("CHANGE TYPE:  Under 'Relationship' on the menu bar, click Change Type. Enter the ID of the relationship, as well as the new type for that relationship.");
+		relRenHelp.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(relRenHelp);
+		
+		//EXPORT IMAGE HELP LABEL
+		JLabel exportTitle = new JLabel("Export Image");
+		exportTitle.setFont(new Font("Serif", Font.BOLD, 20));
+		help.add(exportTitle);
+		JLabel exportDesc = new JLabel("Under 'Menu' on the menu bar, click 'Export as Image'. Enter the directory to save the image in and click the 'Export' button. Both a jpg and png image will be saved.");
+		exportDesc.setFont(new Font("Serif", Font.LAYOUT_LEFT_TO_RIGHT, 16));
+		help.add(exportDesc);
+		
+		help.setVisible(true);
+		
+		JButton close = new JButton("Close");
+		close.setPreferredSize(new Dimension(1,1));
+		help.add(close);
+		close.addActionListener(controller.closeHelp());
+	}
+	
+	public void closeHelpPanel() {
+		help.setVisible(false);
 	}
 	
 	////////////////////////////////

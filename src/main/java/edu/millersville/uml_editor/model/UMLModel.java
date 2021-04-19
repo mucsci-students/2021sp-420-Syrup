@@ -17,6 +17,11 @@ public class UMLModel implements Model{
     private Map<String, ClassObject> classMap;
     private Map<String, Relationships> relMap;
     
+    ///////////////////////////////////////////////////////////
+    //
+    //	Constructors
+    //
+    ///////////////////////////////////////////////////////////
     public UMLModel() {
 		classMap = new HashMap<String, ClassObject>();
 		relMap = new HashMap<String, Relationships>();
@@ -39,6 +44,12 @@ public class UMLModel implements Model{
     	relMap = newRelMap;
     }
     
+    ///////////////////////////////////////////////////////////
+    //
+    //	Copy/clear
+    //
+    ///////////////////////////////////////////////////////////
+    
     public void clear() {
     	classMap.clear();
     	relMap.clear();
@@ -48,14 +59,11 @@ public class UMLModel implements Model{
     	return new UMLModel(classMap, relMap);
     }
     
-
-    public  Map<String, ClassObject> getClasses() {
-        return classMap;
-    }
-
-    public Map<String, Relationships> getRelationships() {
-        return relMap;
-    }
+    ///////////////////////////////////////////////////////////
+    //
+    //	Bool checks
+    //
+    ///////////////////////////////////////////////////////////
 
     public boolean hasClass(String className) {
         return classMap.containsKey(className);
@@ -74,7 +82,51 @@ public class UMLModel implements Model{
     		return false;
     	return true;
     }
+    
+    public boolean hasRelID(String ID) {
+    	return relMap.containsKey(ID);
+    }
+    
+    /**
+     * A method that checks to see if the parameter exists
+     * @param className name of class the method is in
+     * @param methodName name of method the parameter is in
+     * @param paramName name of parameter
+     * @return returns true if the parameter exists
+     */
+    public boolean hasParam(String className, String methodName, String paramName) {
+    	if(classMap.containsKey(className) && this.hasMethod(className, methodName)) {
+        	Method methodObject = classMap.get(className).getMethod(methodName);
+        	return methodObject.containsParameter(paramName);
+    	}
+    	return false;
+    }
+    
+    /**
+     * A method that checks to see if the parameter's type is correct.
+     * @param className the name of the class the method is in.
+     * @param methodName the name of the method the parameter is in.
+     * @param paramName the name of the parameter associated with the type to check.
+     * @param paramType the type of the parameter.
+     * @return returns a boolean value that returns true when the parameter's type matches.
+     */
+    public boolean hasParamType(String className, String methodName, String paramName, String paramType) {
+    	if(classMap.containsKey(className) && this.hasMethod(className, methodName)) {
+        	Method methodObject = classMap.get(className).getMethod(methodName);
+        	return methodObject.checkParameterType(paramName, paramType);
+    	}
+    	return false;
+    }
+    
+    public boolean isEmpty() {
+    	return classMap.isEmpty();
+    }
 
+    ///////////////////////////////////////////////////////////
+    //
+    //	Getters
+    //
+    ///////////////////////////////////////////////////////////
     /**
      * A method that gets the class object specified by the class name.
      * @param className the name of the class
@@ -88,12 +140,20 @@ public class UMLModel implements Model{
     	return relMap.get(relName);
     }
     
-    public boolean hasRelID(String ID) {
-    	return relMap.containsKey(ID);
+    public  Map<String, ClassObject> getClasses() {
+        return classMap;
+    }
+
+    public Map<String, Relationships> getRelationships() {
+        return relMap;
     }
     
-    public boolean isEmpty() {
-    	return classMap.isEmpty();
+    public String getMethodType(String className, String methodName) {
+    	return classMap.get(className).getMethod(methodName).getType();
+    }
+    
+    public String getFieldType(String className, String fieldName) {
+    	return classMap.get(className).getField(fieldName).getType();
     }
 
     ///////////////////////////////////////////////////////////
@@ -125,7 +185,6 @@ public class UMLModel implements Model{
     		return true;
     	}
     	return false;
-        
     }
 
     ///////////////////////////////////////////////////////////
@@ -141,8 +200,7 @@ public class UMLModel implements Model{
         	return false;
         }
         getClasses().remove(name);
-        return true;
-        
+        return true;   
     }
     
     //////////////////////////////////////////////////////////
@@ -264,15 +322,6 @@ public class UMLModel implements Model{
     	}
     	return classMap.get(className).changeMethodType(methodName, newType);
     }
-    
-    public String getMethodType(String className, String methodName) {
-    	return classMap.get(className).getMethod(methodName).getType();
-    }
-    
-    public String getFieldType(String className, String fieldName) {
-    	return classMap.get(className).getField(fieldName).getType();
-    }
-    
     
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Field Functions
@@ -469,6 +518,11 @@ public class UMLModel implements Model{
 	 * @throws IOException
 	 */
 	
+    ///////////////////////////////////////////////////////////
+    //
+    //	Save/Load
+    //
+    ///////////////////////////////////////////////////////////
 	public void saveJSON(String name) throws IOException {
 		UMLModel model = new UMLModel(classMap, relMap);
 		
@@ -533,5 +587,14 @@ public class UMLModel implements Model{
     	}
     	return new UMLModel(classMap, relMap);
     	
+	}
+	
+	/**
+	 * A method to check if a file has been created.
+	 * @param file the name of the file to check.
+	 * @return A boolean value true when the file exists.
+	 */
+	public boolean fileCheck(String file) {
+		return new File(file).exists();
 	}
 }
