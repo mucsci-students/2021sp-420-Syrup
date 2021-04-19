@@ -6,10 +6,8 @@ import java.util.Map;
 
 public interface Model {
 
-    
     void clear();
     
-
     Map<String, ClassObject> getClasses();
 
     Map<String, Relationships> getRelationships();
@@ -290,5 +288,5 @@ public interface Model {
 	//
 	///////////////////////////////////////////////////////////
 	
-	void loadJSON(String filepath) throws IOException;
+	UMLModel loadJSON(String filepath) throws IOException;
 }

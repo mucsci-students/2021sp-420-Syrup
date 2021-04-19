@@ -41,7 +41,6 @@ public class LoadCommand extends Command {
 
     private static boolean savePrompt() {
         while (prompt) {
-
             String line = savePromptReader.readLine("", "", (MaskingCallback) null, null);
             line = line.trim();
 
@@ -62,4 +61,8 @@ public class LoadCommand extends Command {
     public String getFile() {
     	return file;
 	}
+    
+    public UMLModel getModel() {
+    	return this.model;
+    }
 }

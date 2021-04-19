@@ -20,7 +20,5 @@ public class UMLControllerTest {
     @Test
     public void constructorTest() throws Exception {
     	new UMLController(model,umlViewMock);
-    }
-    
-    
+    }  
 }

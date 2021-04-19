@@ -29,7 +29,9 @@ public class ClassObject {
 		
 	}
 	
-	
+	///////////////////////////////////////////////////////////////////////////////////////////
+	// Class Functions
+	///////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Getter method to return the name of the class.
 	 * @return
@@ -79,6 +81,16 @@ public class ClassObject {
 	 */
 	public ArrayList<Field> getFields(){
 		return fields;
+	}
+	
+	public Field getField(String name)
+	{
+		for(Field field : fields) {
+			if(field.getName().equals(name)) {
+				return field;
+			}
+		}
+		return null;
 	}
 	
 	/**
@@ -202,6 +214,16 @@ public class ClassObject {
 	 */
 	public ArrayList<Method> getMethods() {
 		return methods;
+	}
+	
+	public Method getMethod(String name)
+	{
+		for(Method method : methods) {
+			if(method.getName().equals(name)) {
+				return method;
+			}
+		}
+		return null;
 	}
 	
 	/**
@@ -387,40 +409,6 @@ public class ClassObject {
 		return false;
 	}
 	
-	public String printMethods() {
-		return " Methods:  " + methods;
-	}
-	
-	public String printFields() {
-		return " Fields:  " + fields;
-	}
-	
-	
-	public String toString() {
-		
-		return printFields() + printMethods();
-	}
-	
-	public Method getMethod(String name)
-	{
-		for(Method method : methods) {
-			if(method.getName().equals(name)) {
-				return method;
-			}
-		}
-		return null;
-	}
-	
-	public Field getField(String name)
-	{
-		for(Field field : fields) {
-			if(field.getName().equals(name)) {
-				return field;
-			}
-		}
-		return null;
-	}
-	
 	public void deleteAllParams(String methodName) {
         for(Method method : methods) {
             if(method.getName().equals(methodName)) {
@@ -429,4 +417,21 @@ public class ClassObject {
             }
         }
     }
+	
+	
+	////////////////////////////////////////////////////////////////////////////////////
+	// Print Functions
+	////////////////////////////////////////////////////////////////////////////////////
+	public String printMethods() {
+		return " Methods:  " + methods;
+	}
+	
+	public String printFields() {
+		return " Fields:  " + fields;
+	}
+	
+	public String toString() {
+		
+		return printFields() + printMethods();
+	}
 }

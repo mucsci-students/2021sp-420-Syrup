@@ -33,7 +33,14 @@ public class CLIController extends ControllerType{
     private ArrayList<Memento> mementos;
     private String file;
     protected int currMeme;
+
 	
+    /**
+     * A method that initializes the model, tab completer, and cli.
+     * @param model
+     * @param view
+     * @throws IOException
+     */
     public CLIController(UMLModel model, ViewTemplate view) throws IOException {
         super();
         this.model = model;
@@ -41,9 +48,8 @@ public class CLIController extends ControllerType{
         currMeme = 0;
         mementos = new ArrayList<Memento>();
         mementos.add(new Memento(this.model));
-
         terminal = TerminalBuilder.builder().system(true).build();
-
+     
         AggregateCompleter completer = new TabCompleter().updateCompleter(model);
 
         StringsCompleter savePromptCompleter = new StringsCompleter("yes", "no");
@@ -60,17 +66,21 @@ public class CLIController extends ControllerType{
                 .variable(LineReader.MENU_COMPLETE, true).parser(parser).build();
     }
 
+    /**
+     * A method that prints and handles what the user sees and does.
+     */
     public void init() throws IOException {
-        view.printIntro();
+        
+    	view.printIntro();
 
         while (true) {
             String line = null;
-
+            // prompts user
             line = reader.readLine("Enter a command: ", "", (MaskingCallback) null, null);
             line = line.trim();
 
             String[] commands = line.split(" ");
-
+            
             evaluateCommand(commands);
 
             AggregateCompleter completer = new TabCompleter().updateCompleter(model);
@@ -80,89 +90,96 @@ public class CLIController extends ControllerType{
         }
     }
 
+    /**
+     * A method that executes the command based on the first word of the command.
+     * @param commands a list of commands.
+     */
     public void evaluateCommand(String[] commands) {
-        Memento meme = new Memento(new UMLModel(this.model.getClasses(), this.model.getRelationships()));
+    	// creates a new memento of the current model.
+        Memento meme = new Memento(new UMLModel(this.model));
+       
+        // executes commands based on first word.
         switch (commands[0]) {
+        	//quit
             case "quit":
                 MiscCommand quit = new MiscCommand(model, view, commands, prompt, savePromptReader);
                 prompt = quit.execute();
                 break;
+            //help
             case "help":
                 MiscCommand help = new MiscCommand(model, view, commands, prompt, savePromptReader);
                 prompt = help.execute();
                 break;
+            //save
             case "save":
                 SaveCommand save = new SaveCommand(model, view, commands, prompt, file);
                 prompt = save.execute();
                 file = save.getFile();
                 break;
+            //load
             case "load":
                 LoadCommand load = new LoadCommand(meme.getModel(), view, commands, prompt, savePromptReader, file);
                 prompt = load.execute();
-                file = load.getFile();
+                //file = load.getFile();
+               // this.model = load.getModel();
                 newMeme(meme);
                 break;
+            //add
             case "add":
-                AddCommand create = new AddCommand(meme.getModel(), view, commands, prompt);
-                prompt = create.execute();
+            	AddCommand create = new AddCommand(meme.getModel(), view, commands, prompt);
+                prompt = create.execute();             
                 newMeme(meme);
                 break;
+            //delete
             case "delete":
                 DeleteCommand delete = new DeleteCommand(meme.getModel(), view, commands, prompt);
                 prompt = delete.execute();
                 newMeme(meme);
                 break;
+            //rename
             case "rename":
                 RenameCommand rename = new RenameCommand(meme.getModel(), view, commands, prompt);
                 prompt = rename.execute();
                 newMeme(meme);
                 break;
-           
+            //list
             case "list":
                 ListCommand list = new ListCommand(model, view, commands, prompt);
                 prompt = list.execute();
                 break;
+            //clear
             case "clear":
                 MiscCommand clear = new MiscCommand(meme.getModel(), view, commands, prompt, savePromptReader);
                 prompt = clear.execute();
                 newMeme(meme);
                 break;
-            case "sudo":
-                MiscCommand sudo = new MiscCommand(model, view, commands, prompt, savePromptReader);
-                prompt = sudo.execute();
-                break;
+            //undo
             case "undo":
-                undo();
+            	if (currMeme > 0) {
+                    --currMeme;
+                    this.model = mementos.get(currMeme).getModel();
+                    prompt = true;
+                } else {
+                    System.out.println("No actions to undo.");
+                }
                 break;
             case "redo":
-                redo();
+            	 if (currMeme < mementos.size() - 1) {
+                     ++currMeme;
+                     this.model = mementos.get(currMeme).getModel();
+                     prompt = true;
+                 } else {
+                     System.out.println("No actions to redo.");
+                 }
                 break;
             default:
                 view.printInvalidCommand();
         }
     }
 
-    private void undo() {
-        if (currMeme > 0) {
-            --currMeme;
-            this.model = mementos.get(currMeme).getModel();
-            prompt = true;
-        } else {
-            System.out.println("No actions to undo.");
-
-        }
-    }
-
-    private void redo() {
-        if (currMeme < mementos.size() - 1) {
-            ++currMeme;
-            this.model = mementos.get(currMeme).getModel();
-            prompt = true;
-        } else {
-            System.out.println("No actions to redo.");
-        }
-    }
-
+    /**
+     * A method that removes the states ahead of the current state. 
+     */
     private void truncateMemes() {
         if (currMeme < mementos.size() - 1) {
             for (int i = mementos.size() - 1; i > currMeme; --i) {
@@ -171,17 +188,22 @@ public class CLIController extends ControllerType{
         }
     }
 
+    /**
+     * A method that adds a memento to the list. The memento list stores the different states of the model.
+     * @param meme state of current model.
+     */
     private void newMeme(Memento meme) {
         truncateMemes();
         mementos.add(meme);
-        this.model = meme.getModel();
         ++currMeme;
+        this.model = meme.getModel();  
     }
 
+    /**
+     * A method that returns the current model.
+     * @return	the current model.
+     */
     public UMLModel getModel() {
         return model;
     }
-    
-    
-    
 }

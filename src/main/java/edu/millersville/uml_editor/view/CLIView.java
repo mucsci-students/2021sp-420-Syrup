@@ -20,7 +20,4 @@ public class CLIView implements ViewInterface{
     public void printError(String e) {
     	System.out.println("\nERROR: " + e);
     }
-    
-	 
-    
 }

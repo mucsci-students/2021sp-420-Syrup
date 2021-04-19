@@ -18,6 +18,7 @@ public class MiscCommand extends Command {
 
     public boolean execute() {
 	switch (commands[0]) {
+	//switch case that ends program if user types quit
 	case "quit":
 	    if (commands.length != 1) {
 	    	view.printError(errorMessage + commandUsage[21] + "\n");
@@ -30,10 +31,11 @@ public class MiscCommand extends Command {
 	    	System.exit(0);
 	    }
 	    return true;
-
+	//switch case that displays the help menu
 	case "help":
 	    help(commandUsage);
 	    return prompt;
+	//switch case that clears the contents
 	case "clear":
 	    if (commands.length != 1) {
 	    	view.printError(errorMessage + commandUsage[18] + "\n");
@@ -41,59 +43,60 @@ public class MiscCommand extends Command {
 	    } else if (!model.isEmpty()) {
 	    	System.out.println("\nAre you sure you want to delete everything?");
 	    	System.out.println("Type 'yes' to delete, or 'no' to go back.");
-		boolean answer = savePrompt(true);
-
-		if (!answer) {
-		    model.clear();
-		    prompt = true;
-		}
+			boolean answer = savePrompt(true);
+	
+			if (!answer) {
+			    model.clear();
+			    prompt = true;
+			}
 	    }
 	    return prompt;
 	case "sudo":
 	    if (commands[1].equals("quit") && commands.length == 2) {
 	    	System.exit(0);
 	    } else if (commands[1].equals("load") && commands.length == 3) {
-		try {
-		    String file = commands[2];
-		    model.loadJSON(file);
-		    prompt = false;
-		} catch (Exception e) {
-		    System.out.println("Failed to parse directory. Exiting.");
-		}
+			try {
+			    String file = commands[2];
+			    model.loadJSON(file);
+			    prompt = false;
+			} catch (Exception e) {
+			    System.out.println("Failed to parse directory. Exiting.");
+			}
 	    } else if (commands[1].equals("clear") && commands.length == 2) {
 	    	model.clear();
 	    	prompt = true;
 	    } else {
-		System.out.println("\nInvalid command.\nType help to see a list of commands.\n");
+	    	System.out.println("\nInvalid command.\nType help to see a list of commands.\n");
 	    }
 	    return prompt;
 	}
 	return prompt;
     }
 
-    
+    //save prompt
     private static boolean savePrompt(boolean prompt) {
-	while (prompt) {
-
-	    String line = savePromptReader.readLine("", "", (MaskingCallback) null, null);
-	    line = line.trim();
-
-	    if (line.equals("yes")) {
-	    	System.out.println("Proceeding.\n");
-	    	prompt = false;
-	    	break;
-	    } else if (line.equals("no")) {
-	    	System.out.println("Stopping.\n");
-	    	prompt = true;
-	    	break;
-	    }
-	    System.out.println("Invalid command. Type 'yes' to proceed, or 'no' to go back.");
-	}
-	return prompt;
+		while (prompt) {
+	
+		    String line = savePromptReader.readLine("", "", (MaskingCallback) null, null);
+		    line = line.trim();
+	
+		    if (line.equals("yes")) {
+		    	System.out.println("Proceeding.\n");
+		    	prompt = false;
+		    	break;
+		    } else if (line.equals("no")) {
+		    	System.out.println("Stopping.\n");
+		    	prompt = true;
+		    	break;
+		    }
+		    System.out.println("Invalid command. Type 'yes' to proceed, or 'no' to go back.");
+		}
+		return prompt;
     }
 
-    
+    //help function that displays all possible tasks
     private static void help(String[] commandUsage) {
+
 	System.out.print("\nList of commands:");
 	System.out.println(
 		commandUsage[0] + " - Save file to specific path" 
@@ -114,11 +117,11 @@ public class MiscCommand extends Command {
 		+ commandUsage[15] + " - rename parameter in <class name> for <method> titled <parameter name> to <parameter newname>\n"
 		+ commandUsage[16] +  " - List all existing classes" 
 		+ commandUsage[17] + " - List all existing relationships" 
-		+ commandUsage[18] + " - List all existing classes and relationships\n" 
-		+ commandUsage[19] + " - Clear all classes and relationships\n"
+		+ commandUsage[18] + " - Clear all classes and relationships\n"
 		+ "  undo - Reverts the most recent change to the UML Editor\n"
 		+ "  redo - Restores the most recently undone action.\n" + "  quit - exits the program\n");
-    }
 
+	
+    }
 }
 
