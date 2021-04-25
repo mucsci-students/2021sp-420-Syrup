@@ -1,24 +1,21 @@
 package edu.millersville.uml_editor.model;
 
 import java.awt.BasicStroke;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Polygon;
 
 import javax.swing.JPanel;
 import edu.millersville.uml_editor.*;
 
 public class Arrow extends JPanel {
 	
-    final static float THICKNESS = 2;
-    final static float DASH_ARRAY[] = {15};
+    final float THICKNESS = 2;
+    final float DASH_ARRAY[] = {15};
     
-    final static BasicStroke SOLIDLINE = new BasicStroke(THICKNESS);
-    final static BasicStroke DASHEDLINE = new BasicStroke(THICKNESS, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 15, DASH_ARRAY, 0);
-    
-    final static int CAP_MAJOR_LENGTH = 16;
-    final static int CAP_MINOR_LENGTH = 8;
-    
-    Boolean right;
-    Boolean left;
+    boolean right;
+    boolean left;
 	
 	private JPanel sourcePanel;
 	private JPanel destPanel;
@@ -80,5 +77,71 @@ public class Arrow extends JPanel {
         }
 	}
 	
+	private void drawType(boolean shapeType, Graphics2D g) {
+	    final int MAX_SIZE = 20;
+	    final int MIN_SIZE = 10;
+
+	    int destX = destPoint.x;
+	    int destY = destPoint.y;
+	    
+		Polygon shape = new Polygon();
+		shape.addPoint(destPoint.x, destPoint.y);
+		if(!left) {
+			if(!right) {
+				shape.addPoint(MIN_SIZE + destX, destY - MAX_SIZE);
+				if(shapeType) {
+					shape.addPoint(destX,  destY - (MAX_SIZE * 2));
+				}
+				shape.addPoint(destX - MIN_SIZE, destY - MAX_SIZE);
+			}
+			else {
+				shape.addPoint(destX - MAX_SIZE, destY - MIN_SIZE);
+				if(shapeType) {
+					shape.addPoint(destX - (MAX_SIZE * 2), destY);
+				}
+				shape.addPoint(destX - MAX_SIZE, MIN_SIZE + destY);
+			}
+		}
+		else {
+			if(!right) {
+				shape.addPoint(MIN_SIZE + destX, MAX_SIZE + destY);
+				if(shapeType) {
+					shape.addPoint(destX, (MAX_SIZE * 2) + destY);
+				}
+				shape.addPoint(destX - MIN_SIZE, MAX_SIZE + destY);
+			}
+			else {
+				shape.addPoint(MAX_SIZE + destX, destY - MIN_SIZE);
+				if(shapeType) {
+					shape.addPoint((MAX_SIZE * 2) + destX, destY);
+				}
+				shape.addPoint(MAX_SIZE + destX, MIN_SIZE + destY);
+			}
+		}
+		g.draw(shape);
+	}
+	
+	public void drawLine(Graphics g) {
+		final BasicStroke SOLIDLINE = new BasicStroke(THICKNESS);
+		final BasicStroke DASHEDLINE = new BasicStroke(THICKNESS, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 15, DASH_ARRAY, 0);
+		    
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
+		
+		boolean shapeType = false;
+		if(type.equals("A") || type.equals("C")) {
+			shapeType = true;
+		}
+		
+		if(type.equals("C") || type.equals("I")) {
+			g2.setStroke(SOLIDLINE);
+		}
+		else {
+			g2.setStroke(DASHEDLINE);
+		}
+	
+		
+		
+	}
 	
 }
