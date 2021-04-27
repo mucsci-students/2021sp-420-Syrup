@@ -83,6 +83,7 @@ public class GUI implements ViewInterface{
     private JMenu menu;
     
     private Map<String, classBox> boxMap;
+    private Map<String, Arrow> arrowMap;
     
     private Vector<String> paramListName = new Vector<String>();
     private Vector<String> paramListType = new Vector<String>();
@@ -97,6 +98,7 @@ public class GUI implements ViewInterface{
         this.model = m;
         this.controller = null;
         boxMap = new HashMap<String, classBox>();
+        arrowMap = new HashMap<String, Arrow>();
     }
 
 	/**
@@ -953,8 +955,8 @@ public class GUI implements ViewInterface{
         else
         {
             model.createRelationshipGUI(sourceClass, destClass, ID, type);
+            drawArrow(ID, sourceClass, destClass, type);
         }
-        drawArrow();
         addRelID.setText("");
         addRelSource.setText("");
         addRelDest.setText("");
@@ -963,10 +965,18 @@ public class GUI implements ViewInterface{
 		addRel.setPopupMenuVisible(false);
 	}
 	
-	public void drawArrow() {
+	public void drawArrow(String ID, String sourceClass, String destClass, String type) {
+		JPanel sourcePan = boxMap.get(sourceClass).boxPanel();
+		JPanel destPan = boxMap.get(destClass).boxPanel();
+		Arrow newArrow = new Arrow(sourcePan, destPan, type);
 		
-		
-		
+		arrowMap.put(ID, newArrow);
+		newArrow.setVisible(true);
+		newArrow.setOpaque(false);
+        newArrow.setLocation(0, 0);
+        newArrow.setSize(Uml_Editor.getSize());
+		Uml_Editor.add(newArrow);
+		Uml_Editor.repaint();
 	}
 	
 	public void removeArrow() {
