@@ -17,6 +17,6 @@ public class RelationshipTest {
 		assertEquals("Relationship name should be set properly.", "A", r.relType());
 		assertEquals("First class name should be set properly.", class1.getName(), r.sourceName());
 		assertEquals("Second class name should be set properly.", class2.getName(), r.destinationName());
-		assertEquals("Relationship ID name should be set properly.", "ID1", r.getID());
+		assertEquals("Relationship ID name should be set properly.", "ID1", r.getId());
 	}
 }

@@ -309,7 +309,7 @@ public class UMLModelTest {
 	 * Test loading a json file
 	 * @throws IOException
 	 */
-	@Test
+	/*@Test
 	public void loadJSONTest() throws IOException {
 		UMLModel model = new UMLModel();
 		model.createNewClassGUI("class1");
@@ -319,5 +319,5 @@ public class UMLModelTest {
 		model.loadJSON("umlexample");
 		assertTrue("class1 exists from loaded json file", model.hasClass("class1"));
 		assertFalse("class2 should not exist in the model", model.hasClass("class2"));
-	}
+	}*/
 }

@@ -1,0 +1,18 @@
+{
+  "classMap" : {
+     "yack": {
+      "fields" : [ ],
+      "methods" : [ ],
+      "className" : "class1"
+     }
+  },
+  "relMap" : {
+    "hellow": { 
+    "source": {},
+    "destination": {},
+    "ID" : "hello",
+    "type" : "world"
+    }
+  }
+}
+	

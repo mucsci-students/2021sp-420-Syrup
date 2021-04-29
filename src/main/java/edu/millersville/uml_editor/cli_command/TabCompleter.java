@@ -19,7 +19,19 @@ public class TabCompleter {
 	//constructor that creates the tab completion options
     public TabCompleter() {
         this.completer = new AggregateCompleter(
-                new ArgumentCompleter(
+        		new ArgumentCompleter(
+                        new StringsCompleter("undo"),
+                        new NullCompleter()
+                ),
+        		new ArgumentCompleter(
+                        new StringsCompleter("redo"),
+                        new NullCompleter()
+                ),
+        		new ArgumentCompleter(
+                        new StringsCompleter("help"),
+                        new NullCompleter()
+                ),
+        		new ArgumentCompleter(
                         new StringsCompleter("save"),
                         new NullCompleter()
                 ),
@@ -171,7 +183,7 @@ public class TabCompleter {
               new ArgumentCompleter(
                   new StringsCompleter("delete"),
                   new StringsCompleter("relationship"),
-                  new StringsCompleter(r.getID().toString()),
+                  new StringsCompleter(r.getId().toString()),
                   new StringsCompleter(r.getSource()),
                   new StringsCompleter(r.getDestination()),
                   new NullCompleter()

@@ -4,13 +4,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JLabel;
+
 import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONValue;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import com.fasterxml.jackson.databind.*;
+
+import edu.millersville.uml_editor.controller.ControllerType;
+import edu.millersville.uml_editor.view.GUI;
+import edu.millersville.uml_editor.view.ViewTemplate;
 
 
 public class UMLModel implements Model{
@@ -525,32 +534,13 @@ public class UMLModel implements Model{
     ///////////////////////////////////////////////////////////
 	public void saveJSON(String name) throws IOException {
 		UMLModel model = new UMLModel(classMap, relMap);
-		
-		ObjectMapper classMapper = new ObjectMapper();
 		ObjectMapper mapper = new ObjectMapper();
-	  	ObjectMapper relMapper = new ObjectMapper();
-
-		
+	  	
 		ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
     	String fileText = writer.writeValueAsString(model);
     	FileWriter file = new FileWriter(name+".json");
 		file.write(fileText);
 		file.close();
-		
-    	classMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-    	ObjectWriter classWriter = classMapper.writerWithDefaultPrettyPrinter();
-    	String classFileText = classWriter.writeValueAsString(classMap);
-		FileWriter classFile = new FileWriter(name + "class.json");
-		classFile.write(classFileText);
-		classFile.close();
-		
-    	relMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-    	ObjectWriter relWriter = relMapper.writerWithDefaultPrettyPrinter();
-    	String relFileText = relWriter.writeValueAsString(relMap);
-		FileWriter relFile = new FileWriter(name+"rel.json");
-		relFile.write(relFileText);
-		relFile.close();
-		
 	}
 	
 	/**
@@ -560,35 +550,26 @@ public class UMLModel implements Model{
 	 */
 	
 	public UMLModel loadJSON(String filepath) throws IOException{
-		File jsonClassFile = new File(filepath+"class.json");
-		File jsonRelFile = new File(filepath+"rel.json");
+		File jsonFile = new File(filepath);
 		ObjectMapper objectMapper = new ObjectMapper();
     	objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
     	try {
     		classMap.clear();
-    		String classFile = FileUtils.readFileToString(jsonClassFile, StandardCharsets.UTF_8);
-    		HashMap<String, ClassObject> newMap = objectMapper.readValue(classFile, HashMap.class);
-    		classMap = newMap;
+    		String classFile = FileUtils.readFileToString(jsonFile, StandardCharsets.UTF_8);
+    		UMLModel uml = objectMapper.readValue(classFile, UMLModel.class);
+    		classMap = uml.getClasses();
+    		relMap = uml.getRelationships();
+    		return null;
     	}
     	catch(Exception e) {
     		e.printStackTrace();
     	}
     	
-    	ObjectMapper relObjectMapper = new ObjectMapper();
-    	relObjectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-    	try {
-    		relMap.clear();
-    		String relFile = FileUtils.readFileToString(jsonRelFile, StandardCharsets.UTF_8);
-    		HashMap<String, Relationships> newMap = relObjectMapper.readValue(relFile, HashMap.class);
-    		relMap = newMap;
-    	}
-    	catch(Exception e) {
-    		e.printStackTrace();
-    	}
-    	return new UMLModel(classMap, relMap);
+    	return null;
     	
 	}
 	
+		
 	/**
 	 * A method to check if a file has been created.
 	 * @param file the name of the file to check.
