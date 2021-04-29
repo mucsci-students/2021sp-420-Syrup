@@ -63,6 +63,8 @@ public class GUI implements ViewInterface{
     private JTextField changeRelID;
     private JTextField newRelType;
     
+    private GroupLayout groupLayout;
+    
     //JMenu declarations
     private JMenu classOption;
     private JMenu deleteClass;
@@ -632,27 +634,18 @@ public class GUI implements ViewInterface{
     	createBox(box);
     	JPanel panel = box.boxPanel();
 		
-		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+    	panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+    	panel.setSize(278, 231);
+    	panel.setVisible(true);
+	
+    	classDupFalse();
+		notExistFalse();
 		
-		GroupLayout groupLayout = new GroupLayout(Uml_Editor.getContentPane());
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.CENTER)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.CENTER)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(163)
-							.addComponent(panel, GroupLayout.DEFAULT_SIZE, 278, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(376, Short.MAX_VALUE))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.CENTER)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 231, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(246, Short.MAX_VALUE))
-		);
-
-		Uml_Editor.getContentPane().setLayout(groupLayout);
+		Uml_Editor.add(panel);
+		
+		panel.validate();
+		
+		Uml_Editor.repaint();
 	}
     
     public Map<String, classBox> getBoxMap() {
@@ -974,8 +967,9 @@ public class GUI implements ViewInterface{
 		newArrow.setVisible(true);
 		newArrow.setOpaque(false);
         newArrow.setLocation(0, 0);
-        newArrow.setSize(Uml_Editor.getSize());
-		Uml_Editor.add(newArrow);
+        newArrow.setSize(5, 15);
+        Uml_Editor.add(newArrow);
+		        
 		Uml_Editor.repaint();
 	}
 	

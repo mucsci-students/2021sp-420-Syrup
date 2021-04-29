@@ -1,6 +1,7 @@
 package edu.millersville.uml_editor.model;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -14,6 +15,8 @@ public class Arrow extends JPanel {
 	
     final float THICKNESS = 2;
     final float DASH_ARRAY[] = {15};
+    private BasicStroke SOLIDLINE = new BasicStroke(THICKNESS);
+	private BasicStroke DASHEDLINE = new BasicStroke(THICKNESS, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 15, DASH_ARRAY, 0);
     
     boolean right;
     boolean left;
@@ -125,14 +128,16 @@ public class Arrow extends JPanel {
 			}
 		}
 		g.draw(shape);
+		g.setColor(Color.RED);
+		if (type.equals("A") || type.equals("C"))
+			g.setColor(Color.BLUE);
+		
 	}
 	
 	//Draws the line based on the relationship
 	public void drawLine(Graphics g) {
-		final BasicStroke SOLIDLINE = new BasicStroke(THICKNESS);
-		final BasicStroke DASHEDLINE = new BasicStroke(THICKNESS, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 15, DASH_ARRAY, 0);
-		    
 		super.paintComponent(g);
+		
 		Graphics2D g2 = (Graphics2D) g;
 		int Xos = sourcePoint.x + sourcePanel.getHeight() / 2;
 		int Yos = destPoint.y - sourcePanel.getHeight() / 2;
@@ -169,6 +174,7 @@ public class Arrow extends JPanel {
 			g2.draw(new Line2D.Float(Xos, Yos, destPoint.x, Yos));
 			g2.draw(new Line2D.Float(destPoint.x, Yos, destPoint.x, destPoint.y));
 		}
+		
 		drawType(shapeType, g2);
 	}
 }
