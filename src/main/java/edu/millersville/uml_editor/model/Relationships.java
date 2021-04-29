@@ -6,7 +6,7 @@ public class Relationships implements Serializable {
 
 	private ClassObject source;
 	private ClassObject destination;
-	private static String ID;
+	private String ID;
 	private String type;
 
 ///////////////////////////////////////////////////////////
@@ -14,7 +14,10 @@ public class Relationships implements Serializable {
 //	Constructor
 //
 ///////////////////////////////////////////////////////////
-
+	public Relationships( ) {
+		
+	}
+	
 	public Relationships(ClassObject class1, ClassObject class2, String id, String type1) 
 	{
 		source = class1;
@@ -34,6 +37,22 @@ public class Relationships implements Serializable {
 		return source.getName();
 	}
 	
+	public void setSource(ClassObject source) {
+		this.source = source;
+	}
+
+	public void setDestination(ClassObject destination) {
+		this.destination = destination;
+	}
+
+	public void setId(String iD) {
+		ID = iD;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	public String getSource() {
 		return source.getName();
 	}
@@ -70,7 +89,7 @@ public class Relationships implements Serializable {
 		return type;
 	}
 
-	public String getID()
+	public String getId()
 	{
 		return ID;
 	}
