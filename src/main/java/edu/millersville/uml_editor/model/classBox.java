@@ -40,9 +40,6 @@ public class classBox extends JComponent {
 	
     private JTextField textBox5;
     private JTextField textBox6;
-
-    private ArrayList<JButton> methodButtonList;
-    private ArrayList<JButton> fieldButtonList;
     
     private HashMap<String, JLabel> methodMap = new HashMap();
     private HashMap<String, ArrayList<JLabel>> paramMap = new HashMap();
@@ -134,34 +131,13 @@ public class classBox extends JComponent {
 		.addGroup(gl_panel.createSequentialGroup()
 		.addComponent(className, GroupLayout.DEFAULT_SIZE, 28, GroupLayout.DEFAULT_SIZE)
 		.addPreferredGap(ComponentPlacement.UNRELATED)
-		.addComponent(fieldPanel, GroupLayout.DEFAULT_SIZE, 83, GroupLayout.DEFAULT_SIZE)
+		.addComponent(fieldPanel, GroupLayout.DEFAULT_SIZE, 78, GroupLayout.DEFAULT_SIZE)
 		.addPreferredGap(ComponentPlacement.UNRELATED)
-		.addComponent(methodPanel, GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
+		.addComponent(methodPanel, GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE))
 		);
 		
 		panel.setVisible(true);
 		panel.setLayout(gl_panel);
-	}
-		
-	////////////////////////////////
-	//
-	// Popup menu Listeners
-	//
-	////////////////////////////////
-	private void addPopup(Component component, final JPopupMenu popup) {
-		component.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				if (e.isPopupTrigger())
-					showMenu(e);
-				}
-			public void mouseReleased(MouseEvent e) {
-				if (e.isPopupTrigger()) 
-						showMenu(e);
-			}
-			private void showMenu(MouseEvent e) {
-				popup.show(e.getComponent(), e.getX(), e.getY());
-			}
-		});
 	}
 		
 	////////////////////////////////
