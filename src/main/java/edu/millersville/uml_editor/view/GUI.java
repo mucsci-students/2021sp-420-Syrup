@@ -63,6 +63,8 @@ public class GUI implements ViewInterface{
     private JTextField changeRelID;
     private JTextField newRelType;
     
+    private GroupLayout groupLayout;
+    
     //JMenu declarations
     private JMenu classOption;
     private JMenu deleteClass;
@@ -83,6 +85,7 @@ public class GUI implements ViewInterface{
     private JMenu menu;
     
     private Map<String, classBox> boxMap;
+    private Map<String, Arrow> arrowMap;
     
     private Vector<String> paramListName = new Vector<String>();
     private Vector<String> paramListType = new Vector<String>();
@@ -97,6 +100,7 @@ public class GUI implements ViewInterface{
         this.model = m;
         this.controller = null;
         boxMap = new HashMap<String, classBox>();
+        arrowMap = new HashMap<String, Arrow>();
     }
 
 	/**
@@ -630,27 +634,18 @@ public class GUI implements ViewInterface{
     	createBox(box);
     	JPanel panel = box.boxPanel();
 		
-		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+    	panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+    	panel.setSize(278, 231);
+    	panel.setVisible(true);
+	
+    	classDupFalse();
+		notExistFalse();
 		
-		GroupLayout groupLayout = new GroupLayout(Uml_Editor.getContentPane());
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.CENTER)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.CENTER)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(163)
-							.addComponent(panel, GroupLayout.DEFAULT_SIZE, 278, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(376, Short.MAX_VALUE))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.CENTER)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 231, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(246, Short.MAX_VALUE))
-		);
-
-		Uml_Editor.getContentPane().setLayout(groupLayout);
+		Uml_Editor.add(panel);
+		
+		panel.validate();
+		
+		Uml_Editor.repaint();
 	}
     
     public Map<String, classBox> getBoxMap() {
@@ -953,8 +948,8 @@ public class GUI implements ViewInterface{
         else
         {
             model.createRelationshipGUI(sourceClass, destClass, ID, type);
+            drawArrow(ID, sourceClass, destClass, type);
         }
-        drawArrow();
         addRelID.setText("");
         addRelSource.setText("");
         addRelDest.setText("");
@@ -963,10 +958,19 @@ public class GUI implements ViewInterface{
 		addRel.setPopupMenuVisible(false);
 	}
 	
-	public void drawArrow() {
+	public void drawArrow(String ID, String sourceClass, String destClass, String type) {
+		JPanel sourcePan = boxMap.get(sourceClass).boxPanel();
+		JPanel destPan = boxMap.get(destClass).boxPanel();
+		Arrow newArrow = new Arrow(sourcePan, destPan, type);
 		
-		
-		
+		arrowMap.put(ID, newArrow);
+		newArrow.setVisible(true);
+		newArrow.setOpaque(false);
+        newArrow.setLocation(0, 0);
+        newArrow.setSize(5, 15);
+        Uml_Editor.add(newArrow);
+		        
+		Uml_Editor.repaint();
 	}
 	
 	public void removeArrow() {
