@@ -302,7 +302,7 @@ public class UMLModelTest {
 	public void saveJSONTest() throws IOException {
 		UMLModel model = new UMLModel();
 		model.saveJSON("umlexample");
-		assertTrue("umlexample.json exists", model.fileCheck("umlexample.json"));
+		assertTrue("umlexample.json exists", model.fileCheck("umlexample"));
 	}
 	
 	/**

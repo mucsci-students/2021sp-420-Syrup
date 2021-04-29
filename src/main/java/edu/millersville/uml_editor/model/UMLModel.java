@@ -4,22 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.JLabel;
 
 import org.apache.commons.io.FileUtils;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONValue;
-import org.json.JSONObject;
+
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import com.fasterxml.jackson.databind.*;
-
-import edu.millersville.uml_editor.controller.ControllerType;
-import edu.millersville.uml_editor.view.GUI;
-import edu.millersville.uml_editor.view.ViewTemplate;
 
 
 public class UMLModel implements Model{
@@ -533,13 +526,18 @@ public class UMLModel implements Model{
     //
     ///////////////////////////////////////////////////////////
 	public void saveJSON(String name) throws IOException {
-		UMLModel model = new UMLModel(classMap, relMap);
+		UMLModel model = new UMLModel();
+		model.classMap = classMap;
+		model.relMap = relMap;
 		ObjectMapper mapper = new ObjectMapper();
 	  	
 		ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
     	String fileText = writer.writeValueAsString(model);
-    	FileWriter file = new FileWriter(name+".json");
-		file.write(fileText);
+    	String finalText = fileText.replace("\"empty\"", "");
+    	String finalText2 = finalText.replace(": true,", "");
+    	String finalText3 = finalText2.replace(": false,", "");
+    	FileWriter file = new FileWriter(name);
+    	file.write(finalText3);
 		file.close();
 	}
 	
