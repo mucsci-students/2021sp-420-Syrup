@@ -25,6 +25,7 @@ public class GUI implements ViewInterface{
 	private JLabel classDupLabel = null;
 
 	//Textfield declarations
+	private JTextField textBoxClassAdd;
     private JTextField textBoxClassDel;
     private JTextField renameClassOld;
     private JTextField renameClassNew;
@@ -63,6 +64,7 @@ public class GUI implements ViewInterface{
     
     //JMenu declarations
     private JMenu classOption;
+    private JMenu addClass;
     private JMenu deleteClass;
     private JMenu renameClass;
     private JMenu method;
@@ -200,6 +202,28 @@ public class GUI implements ViewInterface{
 		
 		classOption = new JMenu("Class");
         menuBar.add(classOption);
+        
+		////////////////////////////////
+		//
+		// Add Class Option
+		//
+		////////////////////////////////
+        
+        JLabel classNameAdd = new JLabel("Enter Class Name:");
+        classNameAdd.setFont(new Font("Serif", Font.BOLD, 12));
+        
+        JButton classAddButton = new JButton("Add");
+        
+        addClass = new JMenu("Add");
+        classOption.add(addClass);
+        
+        addClass.add(classNameAdd);
+        textBoxClassAdd = new JTextField();
+		textBoxClassAdd.setColumns(15);
+		addClass.add(textBoxClassAdd);
+		addClass.add(classAddButton);
+		addClass.add(classDupLabel);
+		classAddButton.addActionListener(controller.addClassCall());
         
 		////////////////////////////////
 		//
@@ -602,7 +626,7 @@ public class GUI implements ViewInterface{
 		gl_Uml_Panel.setHorizontalGroup(
 			gl_Uml_Panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_Uml_Panel.createSequentialGroup()
-					.addComponent(addClassButton, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE)
+					//.addComponent(addClassButton, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE)
 					.addComponent(classDupLabel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 		));
@@ -610,14 +634,14 @@ public class GUI implements ViewInterface{
 			gl_Uml_Panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_Uml_Panel.createSequentialGroup()
 					.addGroup(gl_Uml_Panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(addClassButton, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
+						//.addComponent(addClassButton, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
 						.addComponent(classDupLabel, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
 						
 		)));
 		Uml_Editor.setLayout(gl_Uml_Panel);
 	}
 	
-    public void printClassBox(){
+    public void printClassBox(String newName){
 
 		////////////////////////////////
     	//
@@ -625,9 +649,11 @@ public class GUI implements ViewInterface{
     	//
 		////////////////////////////////
     	
-    	model.createNewClassGUI("New Class");
+    	model.createNewClassGUI(newName);
     	box = new classBox(controller);
     	createBox(box);
+    	boxMap.put(newName, box);
+    	box.setClassName(newName);
     	JPanel panel = box.boxPanel();
     	panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 
@@ -673,6 +699,16 @@ public class GUI implements ViewInterface{
 	// Class Actions
 	//
 	////////////////////////////////
+	
+	public void addActionPerformed() {
+		String newName = textBoxClassAdd.getText();
+		classDupFalse();
+		notExistFalse();
+		printClassBox(newName);
+		textBoxClassAdd.setText("");
+		classOption.setPopupMenuVisible(false);
+		addClass.setPopupMenuVisible(false);
+	}
     
 	public void deleteClassAction()
 	{	
@@ -683,6 +719,7 @@ public class GUI implements ViewInterface{
 		boxMap.remove(className);
 		textBoxClassDel.setText("");
 		
+		Uml_Editor.repaint();
 		classOption.setPopupMenuVisible(false);
 		deleteClass.setPopupMenuVisible(false);
 	}
@@ -1179,5 +1216,9 @@ public class GUI implements ViewInterface{
 	
 	public String delClassGet() {
 		return textBoxClassDel.getText();
+	}
+	
+	public String addClassGet() {
+		return textBoxClassAdd.getText();
 	}
 }

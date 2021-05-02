@@ -50,7 +50,7 @@ public class classBox extends JComponent {
     private UMLController controller;
 
     public classBox(UMLController c) {
-    	className = new JLabel("New Class");
+    	className = new JLabel("");
     	controller = c;
     	initialize();
     }
@@ -178,6 +178,10 @@ public class classBox extends JComponent {
 	
 	public GroupLayout groupLayout(){
 		return gl_panel;
+	}
+	
+	public void setClassName(String newName) {
+		className.setText(newName);
 	}
 	
 	////////////////////////////////

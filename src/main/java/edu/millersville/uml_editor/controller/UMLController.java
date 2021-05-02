@@ -57,7 +57,7 @@ public class UMLController {
             	if(!model.hasClass(className)){
             		gui.classDupFalse();
                     model.createNewClassGUI(className);
-                    gui.printClassBox();
+                    gui.printClassBox(className);
             	}
             	else
             		gui.classDupTrue();
@@ -70,6 +70,12 @@ public class UMLController {
 	// Popup menu: Class
 	//
 	////////////////////////////////
+    
+    public ActionListener addClassCall(){
+        return (ActionEvent e) -> {
+            gui.addActionPerformed();
+        };
+    }
     
     public ActionListener deleteClassCall(){
         return (ActionEvent e) -> {
