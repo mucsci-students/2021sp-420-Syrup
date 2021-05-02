@@ -211,11 +211,11 @@ public class classBox extends JComponent {
 		methodMap.put(methodName, method);
 		methodPanel.add(method);
 		methodPanel.repaint();
-		methodMap.get(methodName).setText(methodName + " : " + methodType);
+		methodMap.get(methodName).setText(methodName + "() : " + methodType);
 	}
 	
 	public void addParam(String methodName, String paramName, String paramType) {
-		JLabel param = new JLabel("(" + paramName + ", " + paramType + ")");
+		JLabel param = new JLabel("(" + paramName + " : " + paramType + ")");
 		if(paramMap.containsKey(methodName)) {
 			ArrayList<JLabel> temp = paramMap.get(methodName);
 			temp.add(param);
@@ -245,7 +245,11 @@ public class classBox extends JComponent {
 	}
 	
 	public void renameMethodName(String methodName, String methodNewName, String methodType) {
-		methodMap.get(methodName).setText(methodNewName + " : " + methodType);
+		methodMap.get(methodName).setText(methodNewName + "() : " + methodType);
+		methodMap.put(methodNewName, methodMap.get(methodName));
+        paramMap.put(methodNewName, paramMap.get(methodName));
+        methodMap.remove(methodName);
+        paramMap.remove(methodName);
 	}
 	
 	////////////////////////////////
@@ -270,5 +274,7 @@ public class classBox extends JComponent {
 	
 	public void renameFieldName(String fieldName, String newFieldName, String fieldType) {
 		fieldMap.get(fieldName).setText(newFieldName + " : " + fieldType);
+		fieldMap.put(newFieldName, fieldMap.get(fieldName));
+        fieldMap.remove(fieldName);
 	}
 }
