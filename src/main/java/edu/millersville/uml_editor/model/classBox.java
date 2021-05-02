@@ -41,6 +41,8 @@ public class classBox extends JComponent {
     private JTextField textBox5;
     private JTextField textBox6;
     
+    private GroupLayout gl_panel;
+    
     private HashMap<String, JLabel> methodMap = new HashMap();
     private HashMap<String, ArrayList<JLabel>> paramMap = new HashMap();
     private HashMap<String, JLabel> fieldMap = new HashMap();
@@ -112,7 +114,7 @@ public class classBox extends JComponent {
 		className.setFont(new Font("Serif", Font.BOLD, 16));
 		
 		
-		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel = new GroupLayout(panel);
 		
 		gl_panel.setHorizontalGroup(
 		gl_panel.createParallelGroup(Alignment.LEADING)
@@ -172,6 +174,10 @@ public class classBox extends JComponent {
 	
 	public JPanel fieldPanel() {
 		return fieldPanel;
+	}
+	
+	public GroupLayout groupLayout(){
+		return gl_panel;
 	}
 	
 	////////////////////////////////

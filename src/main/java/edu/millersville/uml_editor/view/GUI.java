@@ -3,10 +3,6 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 
-import javax.swing.JFrame;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.LineBorder;
 
@@ -633,17 +629,27 @@ public class GUI implements ViewInterface{
     	box = new classBox(controller);
     	createBox(box);
     	JPanel panel = box.boxPanel();
-		
     	panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
-    	panel.setSize(278, 231);
-    	panel.setVisible(true);
-	
-    	classDupFalse();
-		notExistFalse();
-		
-		Uml_Editor.add(panel);
-		
-		panel.validate();
+
+		GroupLayout groupLayout = new GroupLayout(Uml_Editor.getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.CENTER)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.CENTER)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(163)
+							.addComponent(panel, GroupLayout.DEFAULT_SIZE, 278, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(376, Short.MAX_VALUE))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.CENTER)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 231, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(246, Short.MAX_VALUE))
+		);
+
+		Uml_Editor.getContentPane().setLayout(groupLayout);
 		
 		Uml_Editor.repaint();
 	}
