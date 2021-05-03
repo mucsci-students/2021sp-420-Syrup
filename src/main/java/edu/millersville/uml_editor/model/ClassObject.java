@@ -22,6 +22,10 @@ public class ClassObject {
 	 * @param name
 	 * 		The name of the class.
 	 */
+	public ClassObject() {
+		
+	}
+	
 	public ClassObject(String name) {
 		this.className = name;
 		fields = new ArrayList<Field>();
@@ -81,6 +85,10 @@ public class ClassObject {
 	 */
 	public ArrayList<Field> getFields(){
 		return fields;
+	}
+	
+	public void setFields(ArrayList<Field> f) {
+		fields = f;
 	}
 	
 	public Field getField(String name)
@@ -214,6 +222,10 @@ public class ClassObject {
 	 */
 	public ArrayList<Method> getMethods() {
 		return methods;
+	}
+	
+	public void setMethods(ArrayList<Method> m) {
+		methods = m;
 	}
 	
 	public Method getMethod(String name)

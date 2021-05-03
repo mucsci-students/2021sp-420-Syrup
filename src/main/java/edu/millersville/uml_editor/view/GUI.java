@@ -3,10 +3,6 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 
-import javax.swing.JFrame;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.LineBorder;
 
@@ -29,6 +25,7 @@ public class GUI implements ViewInterface{
 	private JLabel classDupLabel = null;
 
 	//Textfield declarations
+	private JTextField textBoxClassAdd;
     private JTextField textBoxClassDel;
     private JTextField renameClassOld;
     private JTextField renameClassNew;
@@ -63,8 +60,11 @@ public class GUI implements ViewInterface{
     private JTextField changeRelID;
     private JTextField newRelType;
     
+    private GroupLayout groupLayout;
+    
     //JMenu declarations
     private JMenu classOption;
+    private JMenu addClass;
     private JMenu deleteClass;
     private JMenu renameClass;
     private JMenu method;
@@ -83,6 +83,7 @@ public class GUI implements ViewInterface{
     private JMenu menu;
     
     private Map<String, classBox> boxMap;
+    private Map<String, Arrow> arrowMap;
     
     private Vector<String> paramListName = new Vector<String>();
     private Vector<String> paramListType = new Vector<String>();
@@ -97,6 +98,7 @@ public class GUI implements ViewInterface{
         this.model = m;
         this.controller = null;
         boxMap = new HashMap<String, classBox>();
+        arrowMap = new HashMap<String, Arrow>();
     }
 
 	/**
@@ -200,6 +202,28 @@ public class GUI implements ViewInterface{
 		
 		classOption = new JMenu("Class");
         menuBar.add(classOption);
+        
+		////////////////////////////////
+		//
+		// Add Class Option
+		//
+		////////////////////////////////
+        
+        JLabel classNameAdd = new JLabel("Enter Class Name:");
+        classNameAdd.setFont(new Font("Serif", Font.BOLD, 12));
+        
+        JButton classAddButton = new JButton("Add");
+        
+        addClass = new JMenu("Add");
+        classOption.add(addClass);
+        
+        addClass.add(classNameAdd);
+        textBoxClassAdd = new JTextField();
+		textBoxClassAdd.setColumns(15);
+		addClass.add(textBoxClassAdd);
+		addClass.add(classAddButton);
+		addClass.add(classDupLabel);
+		classAddButton.addActionListener(controller.addClassCall());
         
 		////////////////////////////////
 		//
@@ -602,7 +626,7 @@ public class GUI implements ViewInterface{
 		gl_Uml_Panel.setHorizontalGroup(
 			gl_Uml_Panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_Uml_Panel.createSequentialGroup()
-					.addComponent(addClassButton, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE)
+					//.addComponent(addClassButton, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE)
 					.addComponent(classDupLabel, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 		));
@@ -610,14 +634,14 @@ public class GUI implements ViewInterface{
 			gl_Uml_Panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_Uml_Panel.createSequentialGroup()
 					.addGroup(gl_Uml_Panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(addClassButton, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
+						//.addComponent(addClassButton, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
 						.addComponent(classDupLabel, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
 						
 		)));
 		Uml_Editor.setLayout(gl_Uml_Panel);
 	}
 	
-    public void printClassBox(){
+    public void printClassBox(String newName){
 
 		////////////////////////////////
     	//
@@ -625,13 +649,14 @@ public class GUI implements ViewInterface{
     	//
 		////////////////////////////////
     	
-    	model.createNewClassGUI("New Class");
+    	model.createNewClassGUI(newName);
     	box = new classBox(controller);
     	createBox(box);
+    	boxMap.put(newName, box);
+    	box.setClassName(newName);
     	JPanel panel = box.boxPanel();
-		
-		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
-		
+    	panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+
 		GroupLayout groupLayout = new GroupLayout(Uml_Editor.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.CENTER)
@@ -651,6 +676,8 @@ public class GUI implements ViewInterface{
 		);
 
 		Uml_Editor.getContentPane().setLayout(groupLayout);
+		
+		Uml_Editor.repaint();
 	}
     
     public Map<String, classBox> getBoxMap() {
@@ -672,6 +699,16 @@ public class GUI implements ViewInterface{
 	// Class Actions
 	//
 	////////////////////////////////
+	
+	public void addActionPerformed() {
+		String newName = textBoxClassAdd.getText();
+		classDupFalse();
+		notExistFalse();
+		printClassBox(newName);
+		textBoxClassAdd.setText("");
+		classOption.setPopupMenuVisible(false);
+		addClass.setPopupMenuVisible(false);
+	}
     
 	public void deleteClassAction()
 	{	
@@ -682,6 +719,7 @@ public class GUI implements ViewInterface{
 		boxMap.remove(className);
 		textBoxClassDel.setText("");
 		
+		Uml_Editor.repaint();
 		classOption.setPopupMenuVisible(false);
 		deleteClass.setPopupMenuVisible(false);
 	}
@@ -953,8 +991,8 @@ public class GUI implements ViewInterface{
         else
         {
             model.createRelationshipGUI(sourceClass, destClass, ID, type);
+            drawArrow(ID, sourceClass, destClass, type);
         }
-        drawArrow();
         addRelID.setText("");
         addRelSource.setText("");
         addRelDest.setText("");
@@ -963,10 +1001,19 @@ public class GUI implements ViewInterface{
 		addRel.setPopupMenuVisible(false);
 	}
 	
-	public void drawArrow() {
+	public void drawArrow(String ID, String sourceClass, String destClass, String type) {
+		JPanel sourcePan = boxMap.get(sourceClass).boxPanel();
+		JPanel destPan = boxMap.get(destClass).boxPanel();
+		Arrow newArrow = new Arrow(sourcePan, destPan, type);
 		
-		
-		
+		arrowMap.put(ID, newArrow);
+		newArrow.setVisible(true);
+		newArrow.setOpaque(false);
+        newArrow.setLocation(0, 0);
+        newArrow.setSize(5, 15);
+        Uml_Editor.add(newArrow);
+		        
+		Uml_Editor.repaint();
 	}
 	
 	public void removeArrow() {
@@ -1169,5 +1216,9 @@ public class GUI implements ViewInterface{
 	
 	public String delClassGet() {
 		return textBoxClassDel.getText();
+	}
+	
+	public String addClassGet() {
+		return textBoxClassAdd.getText();
 	}
 }

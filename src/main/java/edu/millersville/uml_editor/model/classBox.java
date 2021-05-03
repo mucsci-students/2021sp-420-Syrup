@@ -40,9 +40,8 @@ public class classBox extends JComponent {
 	
     private JTextField textBox5;
     private JTextField textBox6;
-
-    private ArrayList<JButton> methodButtonList;
-    private ArrayList<JButton> fieldButtonList;
+    
+    private GroupLayout gl_panel;
     
     private HashMap<String, JLabel> methodMap = new HashMap();
     private HashMap<String, ArrayList<JLabel>> paramMap = new HashMap();
@@ -51,7 +50,7 @@ public class classBox extends JComponent {
     private UMLController controller;
 
     public classBox(UMLController c) {
-    	className = new JLabel("New Class");
+    	className = new JLabel("");
     	controller = c;
     	initialize();
     }
@@ -115,7 +114,7 @@ public class classBox extends JComponent {
 		className.setFont(new Font("Serif", Font.BOLD, 16));
 		
 		
-		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel = new GroupLayout(panel);
 		
 		gl_panel.setHorizontalGroup(
 		gl_panel.createParallelGroup(Alignment.LEADING)
@@ -134,34 +133,13 @@ public class classBox extends JComponent {
 		.addGroup(gl_panel.createSequentialGroup()
 		.addComponent(className, GroupLayout.DEFAULT_SIZE, 28, GroupLayout.DEFAULT_SIZE)
 		.addPreferredGap(ComponentPlacement.UNRELATED)
-		.addComponent(fieldPanel, GroupLayout.DEFAULT_SIZE, 83, GroupLayout.DEFAULT_SIZE)
+		.addComponent(fieldPanel, GroupLayout.DEFAULT_SIZE, 78, GroupLayout.DEFAULT_SIZE)
 		.addPreferredGap(ComponentPlacement.UNRELATED)
-		.addComponent(methodPanel, GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
+		.addComponent(methodPanel, GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE))
 		);
 		
 		panel.setVisible(true);
 		panel.setLayout(gl_panel);
-	}
-		
-	////////////////////////////////
-	//
-	// Popup menu Listeners
-	//
-	////////////////////////////////
-	private void addPopup(Component component, final JPopupMenu popup) {
-		component.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				if (e.isPopupTrigger())
-					showMenu(e);
-				}
-			public void mouseReleased(MouseEvent e) {
-				if (e.isPopupTrigger()) 
-						showMenu(e);
-			}
-			private void showMenu(MouseEvent e) {
-				popup.show(e.getComponent(), e.getX(), e.getY());
-			}
-		});
 	}
 		
 	////////////////////////////////
@@ -198,6 +176,14 @@ public class classBox extends JComponent {
 		return fieldPanel;
 	}
 	
+	public GroupLayout groupLayout(){
+		return gl_panel;
+	}
+	
+	public void setClassName(String newName) {
+		className.setText(newName);
+	}
+	
 	////////////////////////////////
 	//
 	// renameClass
@@ -225,11 +211,11 @@ public class classBox extends JComponent {
 		methodMap.put(methodName, method);
 		methodPanel.add(method);
 		methodPanel.repaint();
-		methodMap.get(methodName).setText(methodName + " : " + methodType);
+		methodMap.get(methodName).setText(methodName + "() : " + methodType);
 	}
 	
 	public void addParam(String methodName, String paramName, String paramType) {
-		JLabel param = new JLabel("(" + paramName + ", " + paramType + ")");
+		JLabel param = new JLabel("(" + paramName + " : " + paramType + ")");
 		if(paramMap.containsKey(methodName)) {
 			ArrayList<JLabel> temp = paramMap.get(methodName);
 			temp.add(param);
@@ -259,7 +245,11 @@ public class classBox extends JComponent {
 	}
 	
 	public void renameMethodName(String methodName, String methodNewName, String methodType) {
-		methodMap.get(methodName).setText(methodNewName + " : " + methodType);
+		methodMap.get(methodName).setText(methodNewName + "() : " + methodType);
+		methodMap.put(methodNewName, methodMap.get(methodName));
+        paramMap.put(methodNewName, paramMap.get(methodName));
+        methodMap.remove(methodName);
+        paramMap.remove(methodName);
 	}
 	
 	////////////////////////////////
@@ -284,5 +274,7 @@ public class classBox extends JComponent {
 	
 	public void renameFieldName(String fieldName, String newFieldName, String fieldType) {
 		fieldMap.get(fieldName).setText(newFieldName + " : " + fieldType);
+		fieldMap.put(newFieldName, fieldMap.get(fieldName));
+        fieldMap.remove(fieldName);
 	}
 }

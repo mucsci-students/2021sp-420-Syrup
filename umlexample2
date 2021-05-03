@@ -1,0 +1,11 @@
+{
+  "empty" : false,
+  "classes" : {
+    "class1" : {
+      "fields" : [ ],
+      "methods" : [ ],
+      "name" : "class1"
+    }
+  },
+  "relationships" : { }
+}
