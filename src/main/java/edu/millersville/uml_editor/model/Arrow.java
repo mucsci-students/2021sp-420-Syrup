@@ -155,7 +155,8 @@ public class Arrow extends JPanel {
 		else {
 			g2.setStroke(DASHEDLINE);
 		}
-	
+		
+		//if the relationship is not with the same class
 		if(sourcePanel != destPanel) {
 			if(!right) {
 				g2.draw(new Line2D.Float(sourcePoint.x, sourcePoint.y, sourcePoint.x, (sourcePoint.y + destPoint.y) / 2));
@@ -168,6 +169,7 @@ public class Arrow extends JPanel {
 				g2.draw(new Line2D.Float((sourcePoint.x + destPoint.x) / 2, destPoint.y, destPoint.x, destPoint.y));
 			}
 		}
+		//if it is with the same class
 		else {
 			g2.draw(new Line2D.Float(sourcePoint.x, sourcePoint.y, Xos, sourcePoint.y));
 			g2.draw(new Line2D.Float(Xos, sourcePoint.y, Xos, Yos));
@@ -175,6 +177,7 @@ public class Arrow extends JPanel {
 			g2.draw(new Line2D.Float(destPoint.x, Yos, destPoint.x, destPoint.y));
 		}
 		
+		//draw the type for the relationship
 		drawType(shapeType, g2);
 	}
 }
