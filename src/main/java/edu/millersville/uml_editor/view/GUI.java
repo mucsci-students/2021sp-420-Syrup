@@ -828,7 +828,7 @@ public class GUI implements ViewInterface{
 			for(int i = 0; i < paramListName.size(); i++) {
 				parName = nameArray[i];
 				parType = typeArray[i];
-				boxMap.get(className).addParam(methodName, parName, parType);
+				boxMap.get(className).addParam(methodName, methodType, parName, parType);
 			}
 			return;
 		}

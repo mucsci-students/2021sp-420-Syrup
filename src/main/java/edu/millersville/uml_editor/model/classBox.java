@@ -44,7 +44,7 @@ public class classBox extends JComponent {
     private GroupLayout gl_panel;
     
     private HashMap<String, JLabel> methodMap = new HashMap();
-    private HashMap<String, ArrayList<JLabel>> paramMap = new HashMap();
+    private HashMap<String, ArrayList<String>> paramMap = new HashMap();
     private HashMap<String, JLabel> fieldMap = new HashMap();
     
     private UMLController controller;
@@ -211,45 +211,60 @@ public class classBox extends JComponent {
 		methodMap.put(methodName, method);
 		methodPanel.add(method);
 		methodPanel.repaint();
-		methodMap.get(methodName).setText(methodName + "() : " + methodType);
+		methodMap.get(methodName).setText(methodType + " " + methodName);
 	}
 	
-	public void addParam(String methodName, String paramName, String paramType) {
-		JLabel param = new JLabel("(" + paramName + " : " + paramType + ")");
+	public void addParam(String methodName, String methodType, String paramName, String paramType) {
+		String param = methodType + " " + methodName + "(";
 		if(paramMap.containsKey(methodName)) {
-			ArrayList<JLabel> temp = paramMap.get(methodName);
-			temp.add(param);
+			ArrayList<String> temp = paramMap.get(methodName);
+			String anotherTemp = paramName + " : "  + paramType;
+			temp.add(anotherTemp);
 			paramMap.put(methodName, temp);
 		}
 		else {
-			ArrayList<JLabel> temp = new ArrayList<JLabel>();
-			temp.add(param);
+			ArrayList<String> temp = new ArrayList<String>();
+			String tempString = paramName + " : "  + paramType;
+			temp.add(tempString);
 			paramMap.put(methodName, temp);
 		}
-		methodPanel.add(param);
+		
+		for(String params : paramMap.get(methodName)) {
+			
+			param = param + params + ", ";
+		}
+		param = param.substring(0, param.length() - 2);
+		param = param + ")";
+		methodMap.get(methodName).setText(param);
 		methodPanel.repaint();
 	}
 	
 	public JPanel deleteMethod(String methodName) {
 		methodPanel.remove(methodMap.get(methodName));
+		methodMap.remove(methodName);
 		if(paramMap.containsKey(methodName)) {
-			ArrayList<JLabel> temp = paramMap.get(methodName);
-			if(temp != null) {
-				for(int i = 0; i < temp.size(); i++) {
-					methodPanel.remove(temp.get(i));
-				}
-			}
+			paramMap.remove(methodName);
 		}
 		methodPanel.repaint();
 		return methodPanel;
 	}
 	
 	public void renameMethodName(String methodName, String methodNewName, String methodType) {
-		methodMap.get(methodName).setText(methodNewName + "() : " + methodType);
+		String param = methodType + " " + methodNewName + "(";
 		methodMap.put(methodNewName, methodMap.get(methodName));
-        paramMap.put(methodNewName, paramMap.get(methodName));
+		if(paramMap.containsKey(methodName)) {
+	        paramMap.put(methodNewName, paramMap.get(methodName));
+			for(String params : paramMap.get(methodName)) {
+				
+				param = param + params + ", ";
+			}
+			param = param.substring(0, param.length() - 2);
+	        paramMap.remove(methodName);
+		}
+		param = param + ")";
+		methodMap.get(methodNewName).setText(param);
+		
         methodMap.remove(methodName);
-        paramMap.remove(methodName);
 	}
 	
 	////////////////////////////////
