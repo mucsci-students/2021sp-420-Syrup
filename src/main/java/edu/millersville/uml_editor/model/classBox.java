@@ -211,7 +211,7 @@ public class classBox extends JComponent {
 		methodMap.put(methodName, method);
 		methodPanel.add(method);
 		methodPanel.repaint();
-		methodMap.get(methodName).setText(methodType + " " + methodName);
+		methodMap.get(methodName).setText(methodType + " " + methodName + "()");
 	}
 	
 	public void addParam(String methodName, String methodType, String paramName, String paramType) {
